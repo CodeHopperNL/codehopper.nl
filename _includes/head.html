@@ -12,7 +12,7 @@
   {% else %}
   <meta name="description" content="{{ site.description }}">
   {% endif %}
-  {% if page.tags %}<meta name="keywords" content="{{ page.tags | join: ', ' }}">{% endif %}
+  {% if page.tags %}<meta name="keywords" content="{{ page.categories | join: ', ' }}">{% endif %}
   <!-- Twitter Cards -->
   {% if page.image %}{% capture image %}{{ page.image }}{% endcapture %}{% unless image contains 'http://' or image contains 'https://' %}{% capture image %}{{ site.url }}/{{ image }}{% endcapture %}{% endunless %}
   <meta name="twitter:card" content="summary_large_image">
