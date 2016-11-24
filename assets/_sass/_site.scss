@@ -472,9 +472,10 @@ canvas {
   position: absolute;
   bottom: 50px;
   left: 50px;
-  color: rgba($white, 0.6);
+  color: white;
   -ms-word-wrap: break-word;
   word-wrap: break-word;
+  background-color: rgba(#4dbe7a, 0.6);
   em {
     font-style: italic;
   }
