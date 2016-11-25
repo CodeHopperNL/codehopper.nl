@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "GoboLinux vs MacOSX 1-0"
-categories: [linux, apple]
+tags: [linux, apple]
 ---
 Be aware that the title is nothing but provocatory: it's not really about what's best between the two opponent, but they've some stuff similar to each other, and the former follows a better path. Let's see what's all about...
 
