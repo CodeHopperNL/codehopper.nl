@@ -531,6 +531,9 @@ canvas {
     color: lighten($black, 28%);
     font-size: 11px;
     text-transform: uppercase;
+    &:hover {
+      background: $green;
+    }
     > a {
       color: $white;
     }
@@ -607,6 +610,9 @@ canvas {
     border: 1px solid rgba($white, 0.4);
     color: $white;
     font-size: 15px;
+    &:hover {
+      background: $green;
+    }
   }
   .section-line {
     color: $green;
