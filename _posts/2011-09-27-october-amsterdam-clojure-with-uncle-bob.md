@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "October Amsterdam Clojure with Uncle Bob"
-categories: [clojure, meetup, amsterdam]
+tags: [clojure, meetup, amsterdam]
 ---
 
 I'm very excited to announce that we have finalized the details, and

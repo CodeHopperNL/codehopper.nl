@@ -2,7 +2,7 @@
 layout: post
 title: "Crampi alla lingua"
 primary_img: /img/post/twisted-tongue.jpg
-categories: [italian]
+tags: [italian]
 ---
 
 Per la prima volta mi trovo a scrivere in Italiano in questo blog. Contando che vorrei affrontare l'argomento della guerra, se cos&igrave; la si pu&ograve; chiamare, tra l'Italiano e l'Inglese, mi sembra anche appropriato.

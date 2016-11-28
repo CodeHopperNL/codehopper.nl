@@ -2,7 +2,7 @@
 title: H2 support 1.5 for Alfresco 4.1.1 Enterprise
 layout: post
 primary_img: /img/post/h2piechart.png
-categories: [alfresco, h2support, maven, sonatype]
+tags: [alfresco, h2support, maven, sonatype]
 meta-description: Alfresco H2 support module just reached version 1.5 to support Alfresco Enterprise 4.1.1
 ---
 

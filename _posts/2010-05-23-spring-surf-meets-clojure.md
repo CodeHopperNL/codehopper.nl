@@ -2,7 +2,7 @@
 layout: post
 title: "Spring Surf meets Clojure"
 primary_img: /img/post/clojure-surf.png
-categories: [clojure, alfresco]
+tags: [clojure, alfresco]
 ---
 
 For those who missed it, some time ago the <a href="http://www.alfresco.com/">Alfresco</a> guys <a href="http://www.alfresco.com/media/releases/2009/12/spring_surf/">donated</a> their <a href="http://wiki.alfresco.com/wiki/Surf_Platform">Surf Platform</a> to <a href="http://www.springsource.com/">SpringSource</a>, giving birth to the now-called <a href="http://www.springsource.org/extensions/se-surf">SpringSurf</a>, which is thereby described as:

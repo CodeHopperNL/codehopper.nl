@@ -2,7 +2,7 @@
 title: A svn post commit hook to comment on Jira
 layout: post
 primary_img: /img/post/jirasvn.png
-categories: [subversion, jira, development, software]
+tags: [subversion, jira, development, software]
 meta-description: Here I explain the Subversion post-commit hook I developed to integrate with Jira OnDemand
 ---
 

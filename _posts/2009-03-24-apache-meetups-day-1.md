@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Apache Meetups - Day #1"
-categories: [meetup]
+tags: [meetup]
 ---
 <a href="http://www.eu.apachecon.com/c/aceu2009/"><img title="ApacheCon 2009" src="http://us.apachecon.com/page_attachments/0000/0035/feather.gif" alt="ApacheCon 2009" width="356" height="107" /></a>
 

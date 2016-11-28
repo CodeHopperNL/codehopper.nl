@@ -2,7 +2,7 @@
 title: H2 support updated to the latest Alfresco versions
 layout: post
 primary_img: /img/post/h2-logo.png
-categories: [alfresco, alm, h2-support]
+tags: [alfresco, alm, h2-support]
 meta-description: H2 support released two new versions to back up Alfresco v4.0.1 and v4.0.2
 ---
 

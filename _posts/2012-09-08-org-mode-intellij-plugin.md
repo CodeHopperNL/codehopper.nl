@@ -2,7 +2,7 @@
 title: org4idea adds org-mode support to Intellij IDEA
 layout: post
 primary_img: /img/post/org4idea.png
-categories: [clojure, emacs, orgmode, intellij]
+tags: [clojure, emacs, orgmode, intellij]
 meta-description: Initial support for org-mode in IntelliJ IDEA
 ---
 

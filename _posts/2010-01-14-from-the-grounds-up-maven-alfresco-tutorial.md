@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "From the grounds up, your Maven powered Alfresco dev box"
-categories: [alm, alfresco]
+tags: [alm, alfresco]
 ---
 <img class="aligncenter size-full wp-image-240" title="mint alf mvn" src="/img/post/mint-alf.png" alt="mint alf mvn" width="437" height="311" />
 The target

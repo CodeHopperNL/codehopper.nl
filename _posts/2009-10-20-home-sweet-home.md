@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Home sweet home"
-categories: [blog]
+tags: [blog]
 ---
 <img class="aligncenter" title="unpacking the packages" src="/img/post/acq_imballaggi.jpg" alt="" width="362" height="232" />
 

@@ -2,7 +2,7 @@
 title: Legacy libraries for your maven build
 layout: post
 primary_img: /img/post/legacy.png
-categories: [alm, maven]
+tags: [alm, maven]
 meta-description: Integrate legacy libraries in your maven builds
 ---
 

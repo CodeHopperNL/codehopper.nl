@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "VirtualBox'ed Ubuntu with KDE4 on a MacbookPro"
-categories: [linux, apple]
+tags: [linux, apple]
 ---
 Today I decided to spend a little of my time on configuring an Ubuntu VBox on my MacbookPro. I was bugged by a "your system is not supported by us" error message while connecting to a remote service, which in turn stated Linux was actually supported. (Un)Fair enough, I love Linux much more than Macs too.
 Even if having a triple-boot mac(hine) is already planned, I had no time to spend giving BootCamp the first try, so I decided for a quicker way: install VirtualBox, grab an already installed&amp;configured Ubuntu VBox an work with it. It's a really easy and straightforward job:

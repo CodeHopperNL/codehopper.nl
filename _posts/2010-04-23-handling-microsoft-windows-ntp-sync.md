@@ -2,7 +2,7 @@
 layout: post
 title: "Handling Microsoft Windows NTP sync"
 primary_img: /img/post/gear-clock-win.jpg
-categories: [windows]
+tags: [windows]
 ---
 
 This post should raise some eyebrows around, as I'm advocating Linux since ages and I'm not at all into Microsoft stuff for the 99.99% of my time. This story comes out of that (usually negligible) 0.01%.

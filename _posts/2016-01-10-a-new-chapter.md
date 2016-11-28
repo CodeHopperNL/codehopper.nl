@@ -2,7 +2,7 @@
 title: Dear future me
 layout: post
 primary_img: /img/post/time-machine.png
-categories: [real life, sytac]
+tags: [real life, sytac]
 meta-description: After two years of service, it's time to move on. No longer a CTO, I glance at the world as my oyster, but as my memory is proverbially awful it's best to keep notes of why I'm doing this.
 keywords: [career, startup, sytac]
 ---

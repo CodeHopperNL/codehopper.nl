@@ -2,7 +2,7 @@
 title: Debug your build with the plan maven plugin
 layout: post
 primary_img: /img/post/yunotbuild.png
-categories: [alm, maven]
+tags: [alm, maven]
 meta-description: Debug your build with the Plan Maven Plugin
 ---
 

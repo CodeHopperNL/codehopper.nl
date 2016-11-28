@@ -2,7 +2,7 @@
 layout: post
 title: "Multiple Eclipse instances, a smart way"
 primary_img: /img/post/eclipse-logo.png
-categories: [eclipse]
+tags: [eclipse]
 ---
 
 I'm one of the many Java devs around the world that chose Eclipse as IDE platform. It happens to me that when I reuse the same Eclipse instance across various projects I almost always end up transforming my IDE in a fat elephant with a broken leg, with tons of plugins and extensions that have to cope with the different workspaces and projects I'm currently running. As a result, I had to wait ages for a lot of operations within the IDE, like startup, update of plugins and installation of new ones from an update site.

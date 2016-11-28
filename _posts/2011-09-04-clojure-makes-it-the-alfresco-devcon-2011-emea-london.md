@@ -2,7 +2,7 @@
 layout: post
 title: "Clojure makes it to the Alfresco DevCon2011"
 primary_img: /img/post/devcon-2011-logo.png
-categories: [clojure, alfresco]
+tags: [clojure, alfresco]
 ---
 
 If you're a bit into Alfresco, you surerly know what the <a href="http://www.amiando.com/alfresco-devcon-london-2011.html">DevCon</a> is. 

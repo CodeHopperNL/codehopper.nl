@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "SproutCore encoding gotchas"
-categories: [javascript]
+tags: [javascript]
 primary_img: /img/post/sproutcore.png
 ---
 

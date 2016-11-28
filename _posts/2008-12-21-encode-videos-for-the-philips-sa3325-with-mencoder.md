@@ -2,7 +2,7 @@
 layout: post
 title: "Encode videos for the Philips SA3325 with mencoder"
 primary_img: /img/post/philips-ipod.jpg
-categories: [linux, apple]
+tags: [linux, apple]
 ---
 
 I got it!! It took me a while to figure out how the hell to make it work but it definitely was worth it.

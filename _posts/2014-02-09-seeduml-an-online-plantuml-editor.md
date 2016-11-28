@@ -2,7 +2,7 @@
 title: SeedUML, an online PlantUML editor
 layout: post
 primary_img: /img/post/seeduml.png
-categories: [seeduml, uml, design, software]
+tags: [seeduml, uml, design, software]
 meta-description: SeedUML is an online editor for PlantUML diagrams
 ---
 

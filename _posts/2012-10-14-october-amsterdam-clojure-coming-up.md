@@ -2,7 +2,7 @@
 title: October Amsterdam Clojure 2012 is coming up!
 layout: post
 primary_img: /img/post/OctAmsClj12.png
-categories: [clojure, amsterdam, meetup]
+tags: [clojure, amsterdam, meetup]
 meta-description: The biggest Clojure FREE event in the Netherlands, now at its third edition
 ---
 

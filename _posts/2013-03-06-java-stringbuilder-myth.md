@@ -2,7 +2,7 @@
 title: Java StringBuilder myth debunked
 layout: post
 primary_img: /img/post/joint.png
-categories: [java, performance, development]
+tags: [java, performance, development]
 meta-description: Spurious post
 ---
 

@@ -2,7 +2,7 @@
 layout: post
 title: "Alfresco ACL on WCM WebForms, an howto"
 primary_img: /img/post/fingerprint.png
-categories: [alfresco]
+tags: [alfresco]
 ---
 
 When it comes to setting up an Alfresco WebProjects, you configure it to make use of a set of WebForms already available on the Alfresco repository. From that moment on, every user with write rights on the web project will be able to pick one web form and push some content through it into the AVM repository. But what if you want to forbid some users to actually make use of some web forms? The default Alfresco doesn't present any GUI control that allows you to define web forms level ACLs, but in facts there's a way to define them in an easy way, without the need of any real customization. Let's see how to do that on the Alfresco WCM we setup in the previous chapters of this series.

@@ -2,7 +2,7 @@
 title: "Legacy artifacts repository update: going remote"
 layout: post
 primary_img: /img/post/legacy-remote.png
-categories: [alm, maven]
+tags: [alm, maven]
 meta-description: Use Github as a remote repository
 ---
 

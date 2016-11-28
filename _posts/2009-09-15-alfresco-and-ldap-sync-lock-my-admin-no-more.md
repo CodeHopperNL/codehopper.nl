@@ -2,7 +2,7 @@
 layout: post
 title: "Alfresco and LDAP sync lock my Admin no more!"
 primary_img: /img/post/baby-ninja.jpg
-categories: [alfresco]
+tags: [alfresco]
 ---
 
 On the custom <a href="http://www.alfresco.com">Alfresco Enterprise</a> project I'm working we use LDAP sync to import users from a Novell eDirectory server[<a href="#note-1">1</a>]. Now, it happened from time to time that the user Alfresco binds itself with, i.e. the LDAP admin user, got locked in eDirectory as a "Intrusion prevention" mechanism or something like that.

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Alfresco ECM moving forward on the Maven path"
-categories: [alfresco, alm]
+tags: [alfresco, alm]
 ---
 <img class="aligncenter size-full wp-image-219" title="mavenalfresco" src="/img/post/mavenalfresco.jpg" alt="mavenalfresco" width="462" height="106" />
 

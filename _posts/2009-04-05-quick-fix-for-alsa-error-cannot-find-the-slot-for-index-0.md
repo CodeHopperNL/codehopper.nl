@@ -2,7 +2,7 @@
 layout: post
 title: "Quick fix for ALSA error: cannot find the slot for index 0"
 primary_img: /img/post/console-snapshot.png
-categories: [linux]
+tags: [linux]
 ---
 
 Since the last kernel upgrade (now running a slightly customized 2.6.28) I started to experience a nasty issue with my audio configuration. I haven't had the time to look at it since today, and it actually took a bit to figure out what was going wrong. Actually, my integrated audio card was no more visible on the system, i.e.:

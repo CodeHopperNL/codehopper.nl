@@ -2,7 +2,7 @@
 title: Slides from Dispatch in Clojure
 layout: post
 primary_img: /img/post/newflag.png
-categories: [meetup, clojure, presentation, slides]
+tags: [meetup, clojure, presentation, slides]
 meta-description: Slides from the Dispatch in Clojure presentation I gave at the Amsterdam Clojurians August 2012 meetup
 ---
 

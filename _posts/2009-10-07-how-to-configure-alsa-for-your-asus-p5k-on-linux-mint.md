@@ -2,7 +2,7 @@
 layout: post
 title: "(how to configure Alsa for your Asus P5K on) Linux Mint"
 primary_img: /img/post/gomit.jpg
-categories: [linux]
+tags: [linux]
 ---
 
 As I proudly (by now, at least) announced <a href="http://twitter.com/skuro/status/4689227551">on twitter</a>, I've installed <a href="http://www.linuxmint.com">Linux Mint</a> on my home desktop. I was having some troubles with my old and poorly mantained <a href="http://www.mepis.org/">Mepis</a>, and Mint seemed promising. For the records, I'll probably never, <strong>NEVER</strong> use a non-deb based distro on my personal computers. Let's say I'm religious about this :-)

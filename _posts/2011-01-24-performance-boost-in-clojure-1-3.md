@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Performance boost in Clojure 1.3 (alpha4)"
-categories: [clojure]
+tags: [clojure]
 ---
 
 As release 1.3 of Clojure is <a href="http://www.assembla.com/spaces/clojure/milestones/238781-release-next">on its way</a>, I decided to give the currently available alpha4 a try and see some of the good stuff it brings. First thing first, I wanted to experiment myself with the performance gain that the extended support for native types would bring. I ran into an old <a title="old post, but inspirational" href="http://hughw.blogspot.com/2009/01/clojure-vs-javafx-script-only-5x-slower.html">post</a> from which I got the inspiration for the specific test to run: the <a title="Takeuchi function on Wikipedia" href="http://en.wikipedia.org/wiki/Tak_(function)">Takeuchi function</a>.

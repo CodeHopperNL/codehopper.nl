@@ -2,7 +2,7 @@
 layout: post
 title: "Amsterdam Clojurians meeting #4 - Dojo style"
 primary_img: /img/post/ams-clj.png
-categories: [amsterdam, clojure, meetup]
+tags: [amsterdam, clojure, meetup]
 ---
 
 Today the fourth meeting of the Amsterdam Clojure user group was held at the now usual <a href="http://www.sourcesense.com">Sourcesense</a> offices venue in Amsterdam.

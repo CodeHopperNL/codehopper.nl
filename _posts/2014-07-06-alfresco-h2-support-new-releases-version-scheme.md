@@ -2,7 +2,7 @@
 title: Alfresco H2 support releases and versioning scheme
 layout: post
 primary_img: /img/post/alfresco-h2.png
-categories: [alfresco, alm, h2-support, maven]
+tags: [alfresco, alm, h2-support, maven]
 meta-description: Alfresco H2 support got new releases and a new versioning scheme
 keywords: [alfresco, h2, github, database, maven]
 ---

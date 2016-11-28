@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Are you good at Javascript? #1"
-categories: [javascript]
+tags: [javascript]
 ---
 <img class="aligncenter size-full wp-image-224" title="javascript" src="/img/post/javascript.jpg" alt="javascript" width="627" height="126" />
 

@@ -2,7 +2,7 @@
 layout: post
 title: "Tutorial: Vodafone UMTS modem on a Debian lenny"
 primary_img: /img/post/vodafone-umts.jpg
-categories: [linux]
+tags: [linux]
 ---
 
 Today I finally had the time to give it a try to have my Vodafone UMTS modem running on my [not so] old Debian lenny/SID which is actually powering my desktop  PC.

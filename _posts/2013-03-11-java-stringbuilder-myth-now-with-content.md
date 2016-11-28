@@ -2,7 +2,7 @@
 title: Java StringBuilder myth debunked -- now with content!
 layout: post
 primary_img: /img/post/joint.png
-categories: [java, performance, development]
+tags: [java, performance, development]
 meta-description: It's common wisdom that String concatenation with '+' is a poor performing bad practice, but is it really the case?
 ---
 

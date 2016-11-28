@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Slides from Alfresco the Clojure way"
-categories: [clojure, alfresco]
+tags: [clojure, alfresco]
 ---
 
 I just gave a talk at the Alfresco DevCon 2011 in London, and I published the slides at slideshare:

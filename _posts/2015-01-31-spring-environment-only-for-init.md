@@ -2,7 +2,7 @@
 title: Spring Environment is for initialization code only
 layout: post
 primary_img: /img/post/spring-by-pivotal.png
-categories: [java, performance]
+tags: [java, performance]
 meta-description: Spring Environment is a handy interface towards your configuration, but as it introduces a performance hit it should be only used for initialization code
 keywords: [java, performance, spring, benchmark, jmh]
 ---

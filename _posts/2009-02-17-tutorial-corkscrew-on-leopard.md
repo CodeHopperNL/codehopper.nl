@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Tutorial: Corkscrew on Leopard"
-categories: [apple]
+tags: [apple]
 primary_img: /img/post/corkscrewvsmac.jpg
 ---
 

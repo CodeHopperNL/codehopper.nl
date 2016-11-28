@@ -2,7 +2,7 @@
 title: The best keyboard layout for Clojurists
 layout: post
 primary_img: /img/post/keyboard_alien.jpg
-categories: [clojure, keyboard, colemak]
+tags: [clojure, keyboard, colemak]
 meta-description: If you're a programmer, you spend most of your working life on your keyboard, and a good keyboard layout can make the difference between touch typing and carpal syndrome. In this post some preliminary (and intentionally teasing) results for electing the best keyboard layout for Clojure programmers.
 keywords: [clojure, programming, colemak, keyboard]
 ---

@@ -1,7 +1,7 @@
 ---
 title: Jekyll, Github and Emacs
 layout: post
-categories: [blog, emacs]
+tags: [blog, emacs]
 primary_img: http://skuro.tk/img/post/emacs-txt-logo.png
 meta-description: Hosting a personal [Wordpress](http://wordpress.org/) was not the best option I had. I happily moved to a static Jekyll site hosted on Github, and I explain here why.
 ---

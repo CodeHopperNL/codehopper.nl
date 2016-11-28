@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Tales from an Icelandic volcano victim"
-categories: [italian]
+tags: [italian]
 ---
 
 Last weekend <a href="http://en.wikipedia.org/wiki/Eyjafjallaj%C3%B6kull">Eyjafjallaj&ouml;kull</a> decided my long-planned trip to visit my dear family in Italy had to be exhausting. On Friday, April 16th at 2pm my flight to Milan, scheduled to leave Amsterdam <a href="http://www.schiphol.nl/">Schiphol</a> at 8pm, was eventually cancelled. It had to be the first step of a longer journey, which was planned to be as follows:

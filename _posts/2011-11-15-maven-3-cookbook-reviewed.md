@@ -2,7 +2,7 @@
 layout: post
 title: "Maven 3 Cookbook reviewed"
 primary_img: /img/post/Apache-Maven-3-Cookbook.png
-categories: [alm]
+tags: [alm]
 ---
 
 Better late than ever, here you can find my review on the Packt
