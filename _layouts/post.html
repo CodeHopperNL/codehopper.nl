@@ -42,8 +42,8 @@ layout: compress
         <div class="date-highlight">{% if page.date %}{{ page.date | date: '%d %b %Y' }}{% else %}&#x2756;{% endif %}</div>
         {{ content }}
         <br>
-        {% include share.html %}
         {% include page-pagination.html %}
+        {% include share.html %}
         <br />
         {% include disqus.html  %}
       </div>
