@@ -22,6 +22,9 @@ It eventually ended up in beer[3], having some fun with the aforementioned Carlo
 
 It was cool, smart, geek and there were beers!
 
-[1] no, not the FF <a title="Ubiquity on Mozilla Labs" href="https://wiki.mozilla.org/Labs/Ubiquity">plugin</a> :P
-[2] today it's Release Day(TM) for my team, so once again let's hope Wendy will be proven to be right. Cannot uncross my fingers, anyway...
-[3] it always does, thanks God(TM)
+
+> [1] no, not the FF <a title="Ubiquity on Mozilla Labs" href="https://wiki.mozilla.org/Labs/Ubiquity">plugin</a> :P
+
+> [2] today it's Release Day(TM) for my team, so once again let's hope Wendy will be proven to be right. Cannot uncross my fingers, anyway...
+
+> [3] it always does, thanks God(TM)
