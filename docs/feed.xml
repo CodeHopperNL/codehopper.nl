@@ -1,15 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.1.2">Jekyll</generator><link href="//codehopper.nl/feed.xml" rel="self" type="application/atom+xml" /><link href="//codehopper.nl/" rel="alternate" type="text/html" /><updated>2016-11-30T23:18:23+01:00</updated><id>//codehopper.nl/</id><title>CodeHopper</title><subtitle>Software and technology done right</subtitle><entry><title>Dear future me</title><link href="//codehopper.nl/2016/01/10/a-new-chapter/" rel="alternate" type="text/html" title="Dear future me" /><published>2016-01-10T00:00:00+01:00</published><updated>2016-01-10T00:00:00+01:00</updated><id>//codehopper.nl/2016/01/10/a-new-chapter</id><content type="html" xml:base="//codehopper.nl/2016/01/10/a-new-chapter/">&lt;blockquote&gt;
-  &lt;p&gt;What’s the most important thing you can possibly work on now? And why are you not doing it?&lt;/p&gt;
-
-  &lt;p&gt;&lt;em&gt;Anonymous&lt;/em&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.1.2">Jekyll</generator><link href="//codehopper.nl/feed.xml" rel="self" type="application/atom+xml" /><link href="//codehopper.nl/" rel="alternate" type="text/html" /><updated>2016-11-30T23:22:57+01:00</updated><id>//codehopper.nl/</id><title>CodeHopper</title><subtitle>Software and technology done right</subtitle><entry><title>Dear future me</title><link href="//codehopper.nl/2016/01/10/a-new-chapter/" rel="alternate" type="text/html" title="Dear future me" /><published>2016-01-10T00:00:00+01:00</published><updated>2016-01-10T00:00:00+01:00</updated><id>//codehopper.nl/2016/01/10/a-new-chapter</id><content type="html" xml:base="//codehopper.nl/2016/01/10/a-new-chapter/">&lt;blockquote&gt;
+  &lt;p&gt;NOTE: these are the words that I wrote to myself on October 31st 2016, the day
+in which I left my then-current company. The piece was written with the intent
+of being published, in case people who regard my opinion (future me hopefully included)
+on working things can
+have a look at how I reflect on my own decisions. Happy reading!&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;p&gt;&lt;em&gt;NOTE: these are the words that I wrote to myself on October 31st 2016, the day
-in which I left my then-current company. The piece was written with the intent
-of being published, in case people who regard my opinion on working things can
-have a look at how I reflect on my own decisions. Happy reading!&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Dear future me&lt;/strong&gt;,&lt;/p&gt;
 
-&lt;p&gt;Dear future me, here’s you at the very end of your experience at Sytac.&lt;/p&gt;
+&lt;p&gt;here’s you at the very end of your experience at Sytac.&lt;/p&gt;
 
 &lt;p&gt;Yes, you multiple personalities weirdo.&lt;/p&gt;
 
@@ -90,9 +89,11 @@ than me.&lt;/p&gt;
 
 &lt;p&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/Eternal_return&quot;&gt;Or do you?&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;A si biri in bon’ora.&lt;/p&gt;</content><category term="real life" /><category term="sytac" /><summary>What’s the most important thing you can possibly work on now? And why are you not doing it?
-
-  Anonymous</summary></entry><entry><title>The best keyboard layout for Clojurists</title><link href="//codehopper.nl/2015/03/01/colemak-best-keyboard-for-clojurists/" rel="alternate" type="text/html" title="The best keyboard layout for Clojurists" /><published>2015-03-01T00:00:00+01:00</published><updated>2015-03-01T00:00:00+01:00</updated><id>//codehopper.nl/2015/03/01/colemak-best-keyboard-for-clojurists</id><content type="html" xml:base="//codehopper.nl/2015/03/01/colemak-best-keyboard-for-clojurists/">&lt;h1 id=&quot;keyboards-oh-my&quot;&gt;Keyboards, oh my!&lt;/h1&gt;
+&lt;p&gt;A si biri in bon’ora.&lt;/p&gt;</content><category term="real life" /><category term="sytac" /><summary>NOTE: these are the words that I wrote to myself on October 31st 2016, the day
+in which I left my then-current company. The piece was written with the intent
+of being published, in case people who regard my opinion (future me hopefully included)
+on working things can
+have a look at how I reflect on my own decisions. Happy reading!</summary></entry><entry><title>The best keyboard layout for Clojurists</title><link href="//codehopper.nl/2015/03/01/colemak-best-keyboard-for-clojurists/" rel="alternate" type="text/html" title="The best keyboard layout for Clojurists" /><published>2015-03-01T00:00:00+01:00</published><updated>2015-03-01T00:00:00+01:00</updated><id>//codehopper.nl/2015/03/01/colemak-best-keyboard-for-clojurists</id><content type="html" xml:base="//codehopper.nl/2015/03/01/colemak-best-keyboard-for-clojurists/">&lt;h1 id=&quot;keyboards-oh-my&quot;&gt;Keyboards, oh my!&lt;/h1&gt;
 
 &lt;p&gt;If you’re a programmer, you spend most of your working life on your keyboard, and a good keyboard layout can make the difference between touch typing and carpal syndrome.&lt;/p&gt;
 

@@ -7,17 +7,16 @@ meta-description: After two years of service, it's time to move on. No longer a 
 keywords: [career, startup, sytac]
 ---
 
-> What's the most important thing you can possibly work on now? And why are you not doing it?
->
-> *Anonymous*
+> NOTE: these are the words that I wrote to myself on October 31st 2016, the day
+> in which I left my then-current company. The piece was written with the intent
+> of being published, in case people who regard my opinion (future me hopefully included)
+> on working things can
+> have a look at how I reflect on my own decisions. Happy reading!
 
 
-*NOTE: these are the words that I wrote to myself on October 31st 2016, the day
-in which I left my then-current company. The piece was written with the intent
-of being published, in case people who regard my opinion on working things can
-have a look at how I reflect on my own decisions. Happy reading!*
+**Dear future me**,
 
-Dear future me, here's you at the very end of your experience at Sytac.
+here's you at the very end of your experience at Sytac.
 
 Yes, you multiple personalities weirdo.
 
