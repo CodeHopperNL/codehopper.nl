@@ -11,9 +11,16 @@ keywords: [career, startup, sytac]
 >
 > *Anonymous*
 
+
+*NOTE: these are the words that I wrote to myself on October 31st 2016, the day
+in which I left my then-current company. The piece was written with the intent
+of being published, in case people who regard my opinion on working things can
+have a look at how I reflect on my own decisions. Happy reading!*
+
 Dear future me, here's you at the very end of your experience at Sytac.
 
 Yes, you multiple personalities weirdo.
+
 As of today you are not anymore on office as the CTO of [Sytac](http://www.sytac.nl),
 the IT consulting company you've part of in the last two years. As your memory is proverbially
 awful, I hope these notes will give you a better perspective on how you feel
@@ -21,7 +28,9 @@ at the moment, surely a better one than what you *think* you had.
 
 # On leaving
 
-Yes, you quitter. It's not the first time you leave colleagues you loved behind,
+Yes, you quitter.
+
+It's not the first time you leave colleagues you loved behind,
 and you firmly believe that either you are part of the solution, or you are part
 of the problem. Yet to leave is like declaring to the general public that you
 believe to be part of the problem, so what's up with that?
@@ -41,7 +50,9 @@ chasing windmills.
 
 # On career
 
-Yes, your ego. As pretty much everyone that ever wrote some software, you have a big
+Yes, your ego.
+
+As pretty much everyone that ever wrote some software, you have a big
 thirst for the alpha-nerd recognition. You did prove yourself here, so much that
 you earned the C level. That was a morality booster for you, wasn't it?
 
@@ -61,7 +72,9 @@ open your tail like a <pavone>.
 
 # On having guts
 
-Yes, you sissy. Despite your quite evident issue of *logorroico*, you missed many
+Yes, you sissy.
+
+Despite your quite evident issue of logorrhea, you missed many
 occasions in which you could open your damn mouth when it really mattered. You
 saw potential and you didn't fight to realize it. And you know why? You didn't
 think you could win it. And maybe you could not, but that's beside the point.
@@ -72,7 +85,7 @@ option for everyone involved.
 
 # On closing
 
-Yes, you blatant fool, time to close this letter.
+Yes, you blatant fool, time to close this psycho letter.
 
 The past two years have been an interesting journey, and you did grow personally
 and professionally and you [did things](http://amsterdam2016.codemotionworld.com)
@@ -83,6 +96,6 @@ Brace yourself, for the journey and keep your focus sharp on things that really
 matter to you. But as you who read this is me in the future, you know that better
 than me.
 
-[Or do you?](*eterno ritorno*)
+[Or do you?](https://en.wikipedia.org/wiki/Eternal_return)
 
 A si biri in bon'ora.
