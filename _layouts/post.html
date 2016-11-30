@@ -38,6 +38,7 @@ layout: compress
         <span></span>
       </a -->
       <div class="inner-post content">
+        {% include page-pagination.html %}
         <div class="date-highlight">{% if page.date %}{{ page.date | date: '%d %b %Y' }}{% else %}&#x2756;{% endif %}</div>
         {{ content }}
         <br>
