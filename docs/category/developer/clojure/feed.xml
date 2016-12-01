@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
     <title type="text" xml:lang="en">CodeHopper -- Software done right</title>
-    <link type="application/atom+xml" href="https://codehopper.nl/category/developer/clojure/feed" rel="self"/>
+    <link type="application/atom+xml" href="https:https://codehopper.nl/category/developer/clojure/feed" rel="self"/>
     <link type="text" href="http://skuro.tk/category/developer/clojure/feed" rel="alternate"/>
-    <updated>2016-11-30T23:22:57+01:00</updated>
-    <id>https://codehopper.nl</id>
+    <updated>2016-12-01T08:38:40+01:00</updated>
+    <id>https:https://codehopper.nl</id>
     <author>
         <name>Carlo Sciolla</name>
     </author>
@@ -12,9 +12,9 @@
     
 <entry>
   <title>The best keyboard layout for Clojurists</title>
-  <link href="https://codehopper.nl/2015/03/01/colemak-best-keyboard-for-clojurists//"/>
+  <link href="https:https://codehopper.nl/2015/03/01/colemak-best-keyboard-for-clojurists//"/>
   <updated>2015-03-01T00:00:00+01:00</updated>
-  <id>https://codehopper.nl/2015/03/01/colemak-best-keyboard-for-clojurists//</id>
+  <id>https:https://codehopper.nl/2015/03/01/colemak-best-keyboard-for-clojurists//</id>
   <summary type="html">&lt;h1 id=&quot;keyboards-oh-my&quot;&gt;Keyboards, oh my!&lt;/h1&gt;
 
 &lt;p&gt;If you’re a programmer, you spend most of your working life on your keyboard, and a good keyboard layout can make the difference between touch typing and carpal syndrome.&lt;/p&gt;
@@ -50,9 +50,9 @@
 
 <entry>
   <title>October Amsterdam Clojure 2012 is coming up!</title>
-  <link href="https://codehopper.nl/2012/10/14/october-amsterdam-clojure-coming-up//"/>
+  <link href="https:https://codehopper.nl/2012/10/14/october-amsterdam-clojure-coming-up//"/>
   <updated>2012-10-14T00:00:00+02:00</updated>
-  <id>https://codehopper.nl/2012/10/14/october-amsterdam-clojure-coming-up//</id>
+  <id>https:https://codehopper.nl/2012/10/14/october-amsterdam-clojure-coming-up//</id>
   <summary type="html">&lt;p&gt;Saturday, October 27th. Less than two weeks. That’s the time when
 October Amsterdam Clojure, the biggest Clojure free event in the
 Netherlands, will be up on stage. I’m so incredibly excited about it,
@@ -122,9 +122,9 @@ need:&lt;/p&gt;
 
 <entry>
   <title>org4idea adds org-mode support to Intellij IDEA</title>
-  <link href="https://codehopper.nl/2012/09/08/org-mode-intellij-plugin//"/>
+  <link href="https:https://codehopper.nl/2012/09/08/org-mode-intellij-plugin//"/>
   <updated>2012-09-08T00:00:00+02:00</updated>
-  <id>https://codehopper.nl/2012/09/08/org-mode-intellij-plugin//</id>
+  <id>https:https://codehopper.nl/2012/09/08/org-mode-intellij-plugin//</id>
   <summary type="html">&lt;p&gt;&lt;em&gt;tl;dr:&lt;/em&gt; &lt;a href=&quot;https://github.com/skuro/org4idea&quot;&gt;org4idea&lt;/a&gt; is a brand new
  project to add &lt;a href=&quot;http://orgmode.org&quot;&gt;org-mode&lt;/a&gt; support to &lt;a href=&quot;http://www.jetbrains.com/idea/&quot;&gt;IntelliJ IDEA&lt;/a&gt;&lt;/p&gt;
 
@@ -174,9 +174,9 @@ dialog.&lt;/p&gt;
 
 <entry>
   <title>Slides from Dispatch in Clojure</title>
-  <link href="https://codehopper.nl/2012/08/31/dispatch-in-clojure-presentation-slides//"/>
+  <link href="https:https://codehopper.nl/2012/08/31/dispatch-in-clojure-presentation-slides//"/>
   <updated>2012-08-31T00:00:00+02:00</updated>
-  <id>https://codehopper.nl/2012/08/31/dispatch-in-clojure-presentation-slides//</id>
+  <id>https:https://codehopper.nl/2012/08/31/dispatch-in-clojure-presentation-slides//</id>
   <summary type="html">&lt;h2 id=&quot;presentation-slides&quot;&gt;Presentation slides&lt;/h2&gt;
 
 &lt;p&gt;A bit late, and already announced
@@ -231,9 +231,9 @@ awesome Dutch Clojure nights!&lt;/p&gt;
 
 <entry>
   <title>Slides from Alfresco the Clojure way</title>
-  <link href="https://codehopper.nl/2011/11/10/slides-from-alfresco-the-clojure-way//"/>
+  <link href="https:https://codehopper.nl/2011/11/10/slides-from-alfresco-the-clojure-way//"/>
   <updated>2011-11-10T00:00:00+01:00</updated>
-  <id>https://codehopper.nl/2011/11/10/slides-from-alfresco-the-clojure-way//</id>
+  <id>https:https://codehopper.nl/2011/11/10/slides-from-alfresco-the-clojure-way//</id>
   <summary type="html">&lt;p&gt;I just gave a talk at the Alfresco DevCon 2011 in London, and I published the slides at slideshare:&lt;/p&gt;
 
 &lt;div style=&quot;width:425px; padding-left: 10%&quot; id=&quot;__ss_10104981&quot;&gt;
@@ -249,9 +249,9 @@ awesome Dutch Clojure nights!&lt;/p&gt;
 
 <entry>
   <title>October Amsterdam Clojure with Uncle Bob</title>
-  <link href="https://codehopper.nl/2011/09/27/october-amsterdam-clojure-with-uncle-bob//"/>
+  <link href="https:https://codehopper.nl/2011/09/27/october-amsterdam-clojure-with-uncle-bob//"/>
   <updated>2011-09-27T00:00:00+02:00</updated>
-  <id>https://codehopper.nl/2011/09/27/october-amsterdam-clojure-with-uncle-bob//</id>
+  <id>https:https://codehopper.nl/2011/09/27/october-amsterdam-clojure-with-uncle-bob//</id>
   <summary type="html">&lt;p&gt;I’m very excited to announce that we have finalized the details, and
 Wednesday, October 12th we’re going to have a great &lt;a href=&quot;http://bit.ly/ams-clj&quot;&gt;Amsterdam Clojure meetup&lt;/a&gt;”, with great talks and an awesome guest speaker: &lt;a href=&quot;http://twitter.com/#!/unclebobmartin&quot;&gt;“Uncle” Bob Martin&lt;/a&gt; from &lt;a href=&quot;http://www.objectmentor.com/&quot;&gt;Object Mentor&lt;/a&gt; and of &lt;a href=&quot;http://www.cleancoders.com/&quot;&gt;Clean Coders&lt;/a&gt; fame.&lt;/p&gt;
 
@@ -266,9 +266,9 @@ Wednesday, October 12th we’re going to have a great &lt;a href=&quot;http://bi
 
 <entry>
   <title>Clojure makes it to the Alfresco DevCon2011</title>
-  <link href="https://codehopper.nl/2011/09/04/clojure-makes-it-the-alfresco-devcon-2011-emea-london//"/>
+  <link href="https:https://codehopper.nl/2011/09/04/clojure-makes-it-the-alfresco-devcon-2011-emea-london//"/>
   <updated>2011-09-04T00:00:00+02:00</updated>
-  <id>https://codehopper.nl/2011/09/04/clojure-makes-it-the-alfresco-devcon-2011-emea-london//</id>
+  <id>https:https://codehopper.nl/2011/09/04/clojure-makes-it-the-alfresco-devcon-2011-emea-london//</id>
   <summary type="html">&lt;p&gt;If you’re a bit into Alfresco, you surerly know what the &lt;a href=&quot;http://www.amiando.com/alfresco-devcon-london-2011.html&quot;&gt;DevCon&lt;/a&gt; is.&lt;/p&gt;
 
 &lt;p&gt;To use the same words from &lt;a href=&quot;http://blogs.alfresco.com/wp/devcon/2011/08/04/save-the-date-alfresco-devcon-san-diego-london/&quot;&gt;Jeff Potts&lt;/a&gt;:
@@ -298,9 +298,9 @@ Wednesday, October 12th we’re going to have a great &lt;a href=&quot;http://bi
 
 <entry>
   <title>More Clojure for Spring Surf</title>
-  <link href="https://codehopper.nl/2011/05/10/more-clojure-for-spring-surf//"/>
+  <link href="https:https://codehopper.nl/2011/05/10/more-clojure-for-spring-surf//"/>
   <updated>2011-05-10T00:00:00+02:00</updated>
-  <id>https://codehopper.nl/2011/05/10/more-clojure-for-spring-surf//</id>
+  <id>https:https://codehopper.nl/2011/05/10/more-clojure-for-spring-surf//</id>
   <summary type="html">&lt;p&gt;After some time from my &lt;a href=&quot;http://www.skuro.tk/2010/05/23/spring-surf-meets-clojure&quot;&gt;initial announcement&lt;/a&gt;, I’ve started again working on my &lt;a href=&quot;https://github.com/skuro/spring-webscripts-addon-clojure&quot;&gt;Clojure addon for Spring Surf&lt;/a&gt;. While it’s still a rudimentary piece of glue code, it’s now getting better and better, so much that I decided it’s good enough now to release an alpha version on &lt;a href=&quot;http://clojars.org/it.sk.spring.surf.clojure/spring-webscripts-addon-clojure&quot;&gt;clojars&lt;/a&gt;. Here’s what this library currently provides:&lt;/p&gt;
 &lt;ul&gt;
 	&lt;li&gt;a &lt;a href=&quot;https://github.com/skuro/spring-webscripts-addon-clojure/blob/master/src/main/java/org/springframework/extensions/webscripts/processor/ClojureScriptProcessor.java&quot;&gt;ScriptProcessor&lt;/a&gt; that allows webscript controllers to be written in Clojure&lt;/li&gt;
@@ -324,9 +324,9 @@ Wednesday, October 12th we’re going to have a great &lt;a href=&quot;http://bi
 
 <entry>
   <title>Performance boost in Clojure 1.3 (alpha4)</title>
-  <link href="https://codehopper.nl/2011/01/24/performance-boost-in-clojure-1-3//"/>
+  <link href="https:https://codehopper.nl/2011/01/24/performance-boost-in-clojure-1-3//"/>
   <updated>2011-01-24T00:00:00+01:00</updated>
-  <id>https://codehopper.nl/2011/01/24/performance-boost-in-clojure-1-3//</id>
+  <id>https:https://codehopper.nl/2011/01/24/performance-boost-in-clojure-1-3//</id>
   <summary type="html">&lt;p&gt;As release 1.3 of Clojure is &lt;a href=&quot;http://www.assembla.com/spaces/clojure/milestones/238781-release-next&quot;&gt;on its way&lt;/a&gt;, I decided to give the currently available alpha4 a try and see some of the good stuff it brings. First thing first, I wanted to experiment myself with the performance gain that the extended support for native types would bring. I ran into an old &lt;a href=&quot;http://hughw.blogspot.com/2009/01/clojure-vs-javafx-script-only-5x-slower.html&quot;&gt;post&lt;/a&gt; from which I got the inspiration for the specific test to run: the &lt;a href=&quot;http://en.wikipedia.org/wiki/Tak_(function)&quot;&gt;Takeuchi function&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;/img/post/clj-triple.jpg&quot; alt=&quot;Full disclosure: I own a Triumph Street Triple and I love Clojure&quot; /&gt;&lt;/p&gt;
@@ -364,9 +364,9 @@ Wednesday, October 12th we’re going to have a great &lt;a href=&quot;http://bi
 
 <entry>
   <title>Spring Surf meets Clojure</title>
-  <link href="https://codehopper.nl/2010/05/23/spring-surf-meets-clojure//"/>
+  <link href="https:https://codehopper.nl/2010/05/23/spring-surf-meets-clojure//"/>
   <updated>2010-05-23T00:00:00+02:00</updated>
-  <id>https://codehopper.nl/2010/05/23/spring-surf-meets-clojure//</id>
+  <id>https:https://codehopper.nl/2010/05/23/spring-surf-meets-clojure//</id>
   <summary type="html">&lt;p&gt;For those who missed it, some time ago the &lt;a href=&quot;http://www.alfresco.com/&quot;&gt;Alfresco&lt;/a&gt; guys &lt;a href=&quot;http://www.alfresco.com/media/releases/2009/12/spring_surf/&quot;&gt;donated&lt;/a&gt; their &lt;a href=&quot;http://wiki.alfresco.com/wiki/Surf_Platform&quot;&gt;Surf Platform&lt;/a&gt; to &lt;a href=&quot;http://www.springsource.com/&quot;&gt;SpringSource&lt;/a&gt;, giving birth to the now-called &lt;a href=&quot;http://www.springsource.org/extensions/se-surf&quot;&gt;SpringSurf&lt;/a&gt;, which is thereby described as:&lt;/p&gt;
 &lt;blockquote&gt;a view composition framework for Spring MVC that plugs into your existing Spring applications. It provides a scriptable and content-centric approach to building web applications.&lt;/blockquote&gt;
 &lt;p&gt;I’m not going to introduce you how to use this yet-another MVC framework, but Michael Uzquiano provided an &lt;a href=&quot;http://blogs.alfresco.com/wp/uzi/2009/11/03/using-surf-in-your-spring-apps/&quot;&gt;awesome blogpost&lt;/a&gt;, in case you were interested into learning more about it.&lt;/p&gt;
@@ -400,9 +400,9 @@ Wednesday, October 12th we’re going to have a great &lt;a href=&quot;http://bi
 
 <entry>
   <title>Amsterdam Clojurians meeting #4 - Dojo style</title>
-  <link href="https://codehopper.nl/2010/04/14/amsterdam-clojurians-meeting-4-dojo-style//"/>
+  <link href="https:https://codehopper.nl/2010/04/14/amsterdam-clojurians-meeting-4-dojo-style//"/>
   <updated>2010-04-14T00:00:00+02:00</updated>
-  <id>https://codehopper.nl/2010/04/14/amsterdam-clojurians-meeting-4-dojo-style//</id>
+  <id>https:https://codehopper.nl/2010/04/14/amsterdam-clojurians-meeting-4-dojo-style//</id>
   <summary type="html">&lt;p&gt;Today the fourth meeting of the Amsterdam Clojure user group was held at the now usual &lt;a href=&quot;http://www.sourcesense.com&quot;&gt;Sourcesense&lt;/a&gt; offices venue in Amsterdam.&lt;/p&gt;
 
 &lt;p&gt;It has been probably the most successful one until now: thanks to some newcomers we had the most participated event ever with 10 nerdy, awesome geeks sitting together to discuss about nerdy, awesome stuff with lots of parenthesis.&lt;/p&gt;
