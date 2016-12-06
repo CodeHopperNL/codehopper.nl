@@ -1,4 +1,52 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.1.2">Jekyll</generator><link href="https://codehopper.nl/feed.xml" rel="self" type="application/atom+xml" /><link href="https://codehopper.nl/" rel="alternate" type="text/html" /><updated>2016-12-01T08:38:40+01:00</updated><id>https://codehopper.nl/</id><title>CodeHopper</title><subtitle>Software and technology done right</subtitle><entry><title>Dear future me</title><link href="https://codehopper.nl/2016/01/10/a-new-chapter/" rel="alternate" type="text/html" title="Dear future me" /><published>2016-01-10T00:00:00+01:00</published><updated>2016-01-10T00:00:00+01:00</updated><id>https://codehopper.nl/2016/01/10/a-new-chapter</id><content type="html" xml:base="https://codehopper.nl/2016/01/10/a-new-chapter/">&lt;blockquote&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.1.2">Jekyll</generator><link href="https://codehopper.nl/feed.xml" rel="self" type="application/atom+xml" /><link href="https://codehopper.nl/" rel="alternate" type="text/html" /><updated>2016-12-06T17:51:14+01:00</updated><id>https://codehopper.nl/</id><title>CodeHopper</title><subtitle>Software and technology done right</subtitle><entry><title>Yet another agile is dead post</title><link href="https://codehopper.nl/2016/12/05/yet-another-agile-is-dead-post/" rel="alternate" type="text/html" title="Yet another agile is dead post" /><published>2016-12-05T00:00:00+01:00</published><updated>2016-12-05T00:00:00+01:00</updated><id>https://codehopper.nl/2016/12/05/yet-another-agile-is-dead-post</id><content type="html" xml:base="https://codehopper.nl/2016/12/05/yet-another-agile-is-dead-post/">&lt;p&gt;Say you are in the software business for a while, and you worked with many different
+organizations on software projects. Say all of them adopted an agile process,
+and you had more than your fair share of standups, burndowns, sprints, release
+trains and stuff. Now, say someone asks you to draw a picture of &lt;strong&gt;#agile&lt;/strong&gt;,
+will that be like this?&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/post/wheel.png&quot; alt=&quot;simple agile&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;No. Effing. Way.&lt;/p&gt;
+
+&lt;h2 id=&quot;agile-is-dead&quot;&gt;Agile is dead&lt;/h2&gt;
+
+&lt;p&gt;I’m by far not the first one on the &lt;a href=&quot;https://www.google.nl/search?q=agile%20is%20dead&quot;&gt;agile is dead bangwagon&lt;/a&gt;.
+There is a practically infinite corpus citing how agile is broken, whether because
+it lends itself to &lt;a href=&quot;https://effectivesoftwaredesign.com/2014/03/17/the-end-of-agile-death-by-over-simplification/&quot;&gt;oversimplifying our profession&lt;/a&gt; or because it’s
+just a &lt;a href=&quot;https://en.wikipedia.org/wiki/Hype_cycle&quot;&gt;hype come to its end&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Set aside all the good intentions
+and &lt;a href=&quot;http://agilemanifesto.org/&quot;&gt;compelling ethics&lt;/a&gt;, Agile became way too meta for it to be
+any good to anyone. In search for the exact science of process management, people
+thought it was in the best interest of everyone to create standards over standards
+of supposedly battle-proven methodologies.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;deloitte&quot;&gt;This&lt;/a&gt; is what we actually got:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/post/agile-landscape.jpg&quot; alt=&quot;real agile&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The author of this complex diagram was trying to shed some light on the current
+plethora of Agile methodologies that people have been implementing, and while
+the result is horrifying from anyone interested into Getting Things Done, it’s
+spot on the very issue we have at hand: there is no exact science of management.
+We, as a whole industry, should be get over it already.&lt;/p&gt;
+
+&lt;h2 id=&quot;long-live-agile&quot;&gt;Long live agile&lt;/h2&gt;
+
+&lt;p&gt;I believe we’re now at the Agile &lt;a href=&quot;https://en.wikipedia.org/wiki/Antithesis#Hegel_and_antithesis&quot;&gt;antithesis&lt;/a&gt;. The &lt;a href=&quot;https://en.wikipedia.org/wiki/Hype_cycle&quot;&gt;hype cycle&lt;/a&gt;
+is now at the end of the Disillusionment deep, and already getting into
+Productivity. The &lt;a href=&quot;http://agilemanifesto.org/&quot;&gt;gospel&lt;/a&gt; has been introspected and it’s
+simply not a thing to speak of agile anymore. We’re in the &lt;a href=&quot;https://www.google.nl/search?q=post%20agile&quot;&gt;post-agile&lt;/a&gt;
+era already, and we need our IT managers to truly understand what they role
+really is, we need them to do their job and understand where the agile script
+works, where it doesn’t and ultimately where it enables the whole organization
+to really work as it should.&lt;/p&gt;
+
+&lt;p&gt;Amen.&lt;/p&gt;</content><category term="agile" /><summary>Say you are in the software business for a while, and you worked with many different
+organizations on software projects. Say all of them adopted an agile process,
+and you had more than your fair share of standups, burndowns, sprints, release
+trains and stuff. Now, say someone asks you to draw a picture of #agile,
+will that be like this?</summary></entry><entry><title>Dear future me</title><link href="https://codehopper.nl/2016/01/10/a-new-chapter/" rel="alternate" type="text/html" title="Dear future me" /><published>2016-01-10T00:00:00+01:00</published><updated>2016-01-10T00:00:00+01:00</updated><id>https://codehopper.nl/2016/01/10/a-new-chapter</id><content type="html" xml:base="https://codehopper.nl/2016/01/10/a-new-chapter/">&lt;blockquote&gt;
   &lt;p&gt;NOTE: these are the words that I wrote to myself on October 31st 2016, the day
 in which I left my then-current company. The piece was written with the intent
 of being published, in case people who regard my opinion (future me hopefully included)
@@ -527,42 +575,4 @@ cascading changes on objects, or just to propagate events through a series of pr
 fashion.&lt;/p&gt;
 
 &lt;p&gt;The code here is just a proof of concept, not a library which is intended for production use. The concepts and the
-implementation are easy enough to be applied in your Spring application without any need for depending on this code.&lt;/p&gt;</content><category term="java" /><category term="spring" /><category term="patterns" /><summary>Observers in Spring</summary></entry><entry><title>Java StringBuilder myth debunked</title><link href="https://codehopper.nl/2013/03/06/java-stringbuilder-myth/" rel="alternate" type="text/html" title="Java StringBuilder myth debunked" /><published>2013-03-06T00:00:00+01:00</published><updated>2013-03-06T00:00:00+01:00</updated><id>https://codehopper.nl/2013/03/06/java-stringbuilder-myth</id><content type="html" xml:base="https://codehopper.nl/2013/03/06/java-stringbuilder-myth/">&lt;p&gt;&lt;em&gt;NOTE: this post was published before it was ready, the real content can now be found &lt;a href=&quot;2013/03/11/java-stringbuilder-myth-now-with-content/&quot;&gt;here&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;</content><category term="java" /><category term="performance" /><category term="development" /><summary>NOTE: this post was published before it was ready, the real content can now be found here</summary></entry><entry><title>A svn post commit hook to comment on Jira</title><link href="https://codehopper.nl/2013/02/18/svn-postcommit-hook-jira-comments/" rel="alternate" type="text/html" title="A svn post commit hook to comment on Jira" /><published>2013-02-18T00:00:00+01:00</published><updated>2013-02-18T00:00:00+01:00</updated><id>https://codehopper.nl/2013/02/18/svn-postcommit-hook-jira-comments</id><content type="html" xml:base="https://codehopper.nl/2013/02/18/svn-postcommit-hook-jira-comments/">&lt;p&gt;If I had to pick a single thing that really bothers me of &lt;a href=&quot;https://confluence.atlassian.com/display/AOD/JIRA+OnDemand&quot;&gt;Jira OnDemand&lt;/a&gt;
-is that it &lt;a href=&quot;https://jira.atlassian.com/browse/AOD-710&quot;&gt;doesn’t support our hosted svn&lt;/a&gt; in any
-possible way.&lt;/p&gt;
-
-&lt;p&gt;The biggest pain developers like me have without any basic integration between the VCS and the ticketing system is that any time you have to
-test an issue, perform some code reviews, sort out some merging or simply digging the history of a given piece of code, it wastes your time to
-switch between all of your unconnected tools to accomplish your task. As an example, at &lt;a href=&quot;http://www.backbase.com&quot;&gt;Backbase&lt;/a&gt; we use
-&lt;a href=&quot;http://trac.edgewall.org/&quot;&gt;Trac&lt;/a&gt; to look at our code on a browser, and we end up having to type URLs by hand to switch on and off Jira.&lt;/p&gt;
-
-&lt;p&gt;How hard could it be to simply &lt;em&gt;link&lt;/em&gt; Jira to our commits?&lt;/p&gt;
-
-&lt;h2 id=&quot;a-hint-to-the-solution&quot;&gt;A hint to the solution&lt;/h2&gt;
-
-&lt;p&gt;Looking at a way to fix this issue, I first had an intuition: what our Jira &lt;em&gt;does&lt;/em&gt; support are web links to an issue. Trac is
-just another web site, why can’t we use application links instead of listing the commit messages as Jira comments? After all,
-there’s a &lt;a href=&quot;https://developer.atlassian.com/display/JIRADEV/JIRA+REST+API+for+Remote+Issue+Links&quot;&gt;rich API&lt;/a&gt; that I can use to
-script the hell out of our commits! It literally took me 40 minutes to come up with the following:&lt;/p&gt;
-
-&lt;script src=&quot;https://gist.github.com/skuro/4981464.js&quot;&gt;&lt;/script&gt;
-
-&lt;p&gt;It currently features:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;creates a &lt;em&gt;Related commits&lt;/em&gt; link on each Jira issue mentioned in your commit comment&lt;/li&gt;
-  &lt;li&gt;multiple Jira keys in the same commit message supported&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;That’s it. Not an impressive list of features, but enough for 40m hacking on bash scripts. When we’ll have this hook installed
-in our svn server, we can easily go from the Jira issue to all the diffs associated with it.&lt;/p&gt;
-
-&lt;p&gt;This facilitates code reviews and
-issue verification or analysis at a later stage, enormously simplifying the life of every developer by providing that dead-simple
-integration that Atlassian doesn’t want to provide out of the box.&lt;/p&gt;
-
-&lt;p&gt;I understand the performance reasons behind avoid fully integrating
-on-premise svn with OnDemand instances. Still, they could do much, much better than say they’re sorry and live their customers
-lives being miserable because of it.&lt;/p&gt;</content><category term="subversion" /><category term="jira" /><category term="development" /><category term="software" /><summary>If I had to pick a single thing that really bothers me of Jira OnDemand
-is that it doesn’t support our hosted svn in any
-possible way.</summary></entry></feed>
+implementation are easy enough to be applied in your Spring application without any need for depending on this code.&lt;/p&gt;</content><category term="java" /><category term="spring" /><category term="patterns" /><summary>Observers in Spring</summary></entry><entry><title>Java StringBuilder myth debunked</title><link href="https://codehopper.nl/2013/03/06/java-stringbuilder-myth/" rel="alternate" type="text/html" title="Java StringBuilder myth debunked" /><published>2013-03-06T00:00:00+01:00</published><updated>2013-03-06T00:00:00+01:00</updated><id>https://codehopper.nl/2013/03/06/java-stringbuilder-myth</id><content type="html" xml:base="https://codehopper.nl/2013/03/06/java-stringbuilder-myth/">&lt;p&gt;&lt;em&gt;NOTE: this post was published before it was ready, the real content can now be found &lt;a href=&quot;2013/03/11/java-stringbuilder-myth-now-with-content/&quot;&gt;here&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;</content><category term="java" /><category term="performance" /><category term="development" /><summary>NOTE: this post was published before it was ready, the real content can now be found here</summary></entry></feed>

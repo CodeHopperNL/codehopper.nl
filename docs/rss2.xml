@@ -3,13 +3,68 @@
     <title type="text" xml:lang="en">CodeHopper -- Software done right</title>
     <link type="application/atom+xml" href="https:https://codehopper.nl/rss2.xml" rel="self"/>
     <link type="text" href="http://skuro.tk/rss2.xml" rel="alternate"/>
-    <updated>2016-12-01T08:38:40+01:00</updated>
+    <updated>2016-12-06T17:51:14+01:00</updated>
     <id>https:https://codehopper.nl</id>
     <author>
         <name>Carlo Sciolla</name>
     </author>
     <rights>Copyright (c) 2010-2017 Carlo Sciolla</rights>
     
+<entry>
+  <title>Yet another agile is dead post</title>
+  <link href="https:https://codehopper.nl/2016/12/05/yet-another-agile-is-dead-post//"/>
+  <updated>2016-12-05T00:00:00+01:00</updated>
+  <id>https:https://codehopper.nl/2016/12/05/yet-another-agile-is-dead-post//</id>
+  <summary type="html">&lt;p&gt;Say you are in the software business for a while, and you worked with many different
+organizations on software projects. Say all of them adopted an agile process,
+and you had more than your fair share of standups, burndowns, sprints, release
+trains and stuff. Now, say someone asks you to draw a picture of &lt;strong&gt;#agile&lt;/strong&gt;,
+will that be like this?&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/post/wheel.png&quot; alt=&quot;simple agile&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;No. Effing. Way.&lt;/p&gt;
+
+&lt;h2 id=&quot;agile-is-dead&quot;&gt;Agile is dead&lt;/h2&gt;
+
+&lt;p&gt;I’m by far not the first one on the &lt;a href=&quot;https://www.google.nl/search?q=agile%20is%20dead&quot;&gt;agile is dead bangwagon&lt;/a&gt;.
+There is a practically infinite corpus citing how agile is broken, whether because
+it lends itself to &lt;a href=&quot;https://effectivesoftwaredesign.com/2014/03/17/the-end-of-agile-death-by-over-simplification/&quot;&gt;oversimplifying our profession&lt;/a&gt; or because it’s
+just a &lt;a href=&quot;https://en.wikipedia.org/wiki/Hype_cycle&quot;&gt;hype come to its end&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Set aside all the good intentions
+and &lt;a href=&quot;http://agilemanifesto.org/&quot;&gt;compelling ethics&lt;/a&gt;, Agile became way too meta for it to be
+any good to anyone. In search for the exact science of process management, people
+thought it was in the best interest of everyone to create standards over standards
+of supposedly battle-proven methodologies.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;deloitte&quot;&gt;This&lt;/a&gt; is what we actually got:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/post/agile-landscape.jpg&quot; alt=&quot;real agile&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The author of this complex diagram was trying to shed some light on the current
+plethora of Agile methodologies that people have been implementing, and while
+the result is horrifying from anyone interested into Getting Things Done, it’s
+spot on the very issue we have at hand: there is no exact science of management.
+We, as a whole industry, should be get over it already.&lt;/p&gt;
+
+&lt;h2 id=&quot;long-live-agile&quot;&gt;Long live agile&lt;/h2&gt;
+
+&lt;p&gt;I believe we’re now at the Agile &lt;a href=&quot;https://en.wikipedia.org/wiki/Antithesis#Hegel_and_antithesis&quot;&gt;antithesis&lt;/a&gt;. The &lt;a href=&quot;https://en.wikipedia.org/wiki/Hype_cycle&quot;&gt;hype cycle&lt;/a&gt;
+is now at the end of the Disillusionment deep, and already getting into
+Productivity. The &lt;a href=&quot;http://agilemanifesto.org/&quot;&gt;gospel&lt;/a&gt; has been introspected and it’s
+simply not a thing to speak of agile anymore. We’re in the &lt;a href=&quot;https://www.google.nl/search?q=post%20agile&quot;&gt;post-agile&lt;/a&gt;
+era already, and we need our IT managers to truly understand what they role
+really is, we need them to do their job and understand where the agile script
+works, where it doesn’t and ultimately where it enables the whole organization
+to really work as it should.&lt;/p&gt;
+
+&lt;p&gt;Amen.&lt;/p&gt;
+
+</summary>
+</entry>
+
+
 <entry>
   <title>Dear future me</title>
   <link href="https:https://codehopper.nl/2016/01/10/a-new-chapter//"/>
@@ -1165,40 +1220,6 @@ you need &lt;code class=&quot;highlighter-rouge&quot;&gt;h2-support&lt;/code&gt;
 you won’t need to add a &lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;repository&amp;gt;&lt;/code&gt; to your POM ever again.&lt;/p&gt;
 
 &lt;p&gt;Thanks &lt;a href=&quot;http://www.sonatype.com&quot;&gt;Sonatype&lt;/a&gt; for the awesome service!&lt;/p&gt;
-</summary>
-</entry>
-
-
-<entry>
-  <title>H2 support updated for Alfresco 4.x</title>
-  <link href="https:https://codehopper.nl/2011/12/14/h2-support-for-alfresco-4x//"/>
-  <updated>2011-12-14T00:00:00+01:00</updated>
-  <id>https:https://codehopper.nl/2011/12/14/h2-support-for-alfresco-4x//</id>
-  <summary type="html">&lt;h2 id=&quot;h2-support-reloaded&quot;&gt;H2 Support reloaded&lt;/h2&gt;
-
-&lt;p&gt;Some time ago I &lt;a href=&quot;/2011/08/03/h2-embedded-db-and-alfresco-3-4/&quot;&gt;announced&lt;/a&gt; a &lt;a href=&quot;https://github.com/skuro/alfresco-h2-support&quot;&gt;module&lt;/a&gt; to enhance &lt;a href=&quot;http://www.alfresco.com&quot;&gt;Alfresco&lt;/a&gt; in order to support H2 as its persistent data storage. While it was successfully tested against Alfresco v3.4 and v3.5, &lt;a href=&quot;http://www.mindthegab.com&quot;&gt;@mindthegab&lt;/a&gt; pointed me out that Alfresco v4.x wasn’t even starting when using the H2 module.&lt;/p&gt;
-
-&lt;p&gt;A quick look at the PostgreSQL scripts and configuration of Alfresco 4 revealed that they were indeed radically changed in the new release, so that an update was necessary.&lt;/p&gt;
-
-&lt;h2 id=&quot;matching-versions&quot;&gt;Matching versions&lt;/h2&gt;
-
-&lt;p&gt;Since 3.4+ and 4.x version series have quite different configuration, you need to use a different version of the h2 module depending on the Alfresco version you’re running, namely:&lt;/p&gt;
-
-&lt;table&gt;
-    &lt;tr&gt;
-      &lt;th&gt;H2 module&lt;/th&gt;&lt;th&gt;Alfresco versions supported&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;1.1&lt;/td&gt;&lt;td&gt;3.4+&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;1.2&lt;/td&gt;&lt;td&gt;4.x&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;The artifacts for both versions are available on &lt;a href=&quot;http://clojars.org&quot;&gt;clojars&lt;/a&gt;, please refer to the official documentation for the usage guide.&lt;/p&gt;
 </summary>
 </entry>
 
