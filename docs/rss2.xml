@@ -3,7 +3,7 @@
     <title type="text" xml:lang="en">CodeHopper -- Software done right</title>
     <link type="application/atom+xml" href="https:https://codehopper.nl/rss2.xml" rel="self"/>
     <link type="text" href="http://skuro.tk/rss2.xml" rel="alternate"/>
-    <updated>2016-12-06T17:51:14+01:00</updated>
+    <updated>2016-12-06T17:57:56+01:00</updated>
     <id>https:https://codehopper.nl</id>
     <author>
         <name>Carlo Sciolla</name>
@@ -38,7 +38,7 @@ any good to anyone. In search for the exact science of process management, peopl
 thought it was in the best interest of everyone to create standards over standards
 of supposedly battle-proven methodologies.&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&quot;deloitte&quot;&gt;This&lt;/a&gt; is what we actually got:&lt;/p&gt;
+&lt;p&gt;This is what we actually got (&lt;a href=&quot;http://blog.deloitte.com.au/agile/2016/03/07/navigating-the-agile-landscape/#.WEbfLqIrLdQ&quot;&gt;&lt;em&gt;image courtesy of Deloitte&lt;/em&gt;&lt;/a&gt;):&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;/img/post/agile-landscape.jpg&quot; alt=&quot;real agile&quot; /&gt;&lt;/p&gt;
 
@@ -53,7 +53,9 @@ We, as a whole industry, should be get over it already.&lt;/p&gt;
 &lt;p&gt;I believe we’re now at the Agile &lt;a href=&quot;https://en.wikipedia.org/wiki/Antithesis#Hegel_and_antithesis&quot;&gt;antithesis&lt;/a&gt;. The &lt;a href=&quot;https://en.wikipedia.org/wiki/Hype_cycle&quot;&gt;hype cycle&lt;/a&gt;
 is now at the end of the Disillusionment deep, and already getting into
 Productivity. The &lt;a href=&quot;http://agilemanifesto.org/&quot;&gt;gospel&lt;/a&gt; has been introspected and it’s
-simply not a thing to speak of agile anymore. We’re in the &lt;a href=&quot;https://www.google.nl/search?q=post%20agile&quot;&gt;post-agile&lt;/a&gt;
+simply not a thing to speak of agile anymore.&lt;/p&gt;
+
+&lt;p&gt;Eventually, we’re in the &lt;a href=&quot;https://www.google.nl/search?q=post%20agile&quot;&gt;post-agile&lt;/a&gt;
 era already, and we need our IT managers to truly understand what they role
 really is, we need them to do their job and understand where the agile script
 works, where it doesn’t and ultimately where it enables the whole organization

@@ -30,7 +30,7 @@ any good to anyone. In search for the exact science of process management, peopl
 thought it was in the best interest of everyone to create standards over standards
 of supposedly battle-proven methodologies.
 
-[This](deloitte) is what we actually got:
+This is what we actually got ([*image courtesy of Deloitte*][deloitte]):
 
 ![real agile](/img/post/agile-landscape.jpg)
 
@@ -45,7 +45,9 @@ We, as a whole industry, should be get over it already.
 I believe we're now at the Agile [antithesis][antithesis]. The [hype cycle][hype-cycle]
 is now at the end of the Disillusionment deep, and already getting into
 Productivity. The [gospel][agile-manifesto] has been introspected and it's
-simply not a thing to speak of agile anymore. We're in the [post-agile][post-agile]
+simply not a thing to speak of agile anymore.
+
+Eventually, we're in the [post-agile][post-agile]
 era already, and we need our IT managers to truly understand what they role
 really is, we need them to do their job and understand where the agile script
 works, where it doesn't and ultimately where it enables the whole organization
