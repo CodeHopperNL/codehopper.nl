@@ -1,580 +1,757 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.1.2">Jekyll</generator><link href="https://codehopper.nl/feed.xml" rel="self" type="application/atom+xml" /><link href="https://codehopper.nl/" rel="alternate" type="text/html" /><updated>2016-12-06T17:57:56+01:00</updated><id>https://codehopper.nl/</id><title>CodeHopper</title><subtitle>Software and technology done right</subtitle><entry><title>Yet another agile is dead post</title><link href="https://codehopper.nl/2016/12/05/yet-another-agile-is-dead-post/" rel="alternate" type="text/html" title="Yet another agile is dead post" /><published>2016-12-05T00:00:00+01:00</published><updated>2016-12-05T00:00:00+01:00</updated><id>https://codehopper.nl/2016/12/05/yet-another-agile-is-dead-post</id><content type="html" xml:base="https://codehopper.nl/2016/12/05/yet-another-agile-is-dead-post/">&lt;p&gt;Say you are in the software business for a while, and you worked with many different
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.1.2">Jekyll</generator><link href="https://codehopper.nl/feed.xml" rel="self" type="application/atom+xml" /><link href="https://codehopper.nl/" rel="alternate" type="text/html" /><updated>2017-05-21T22:01:12+02:00</updated><id>https://codehopper.nl/</id><title>CodeHopper</title><subtitle>Software and technology done right</subtitle><entry><title>Void methods as behavior black holes</title><link href="https://codehopper.nl/2017/01/24/void-methods-as-behavior-black-holes/" rel="alternate" type="text/html" title="Void methods as behavior black holes" /><published>2017-01-24T00:00:00+01:00</published><updated>2017-01-24T00:00:00+01:00</updated><id>https://codehopper.nl/2017/01/24/void-methods-as-behavior-black-holes</id><content type="html" xml:base="https://codehopper.nl/2017/01/24/void-methods-as-behavior-black-holes/">&gt; This post could have been titled &#39;Void methods considered harmful&#39;,
+&gt; if &#39;considered harmful&#39; essays weren&#39;t
+&gt; [considered harmful themselves][considered harmful]. Oh welp.
+
+Void methods are ubiquitous in most Object Oriented codebases. A
+direct consequence of mutable state or I/O somewhere in your runtime,
+you can wrap any behavior that functional programming zealots would
+call [impure][impure], which in principle has no meaningful return
+value. One common example is during application bootstrap, e.g. in
+Java:
+
+```java
+@Resource MyClass implements Runnable {
+
+// ...
+
+@PostConstruct
+public void init() {
+    if(this.enabled) {
+        this.executorService.scheduleAtFixedRate(
+            this,
+            0,
+            500,
+            TimeOut.MILLISECONDS);
+    }
+}
+
+// ...
+}
+```
+
+The above is supposedly fine, but public void methods, and especially
+a proliferation of them in a given codebase, are an evident code
+smell. Even when coding in Object Oriented style.
+
+# Your `public` interface
+
+Public methods are meant for your class [collaborators][CRC] to
+consume, they are the gateway to your class functionality. As such,
+they should be as clear as concise as possible, offering the minimal
+surface area needed to enable your class behaviors. One major,
+self-documenting part of any function definition is naturally its
+return type.
+
+Lets start from the previous example:
+
+```java
+@Resource MyClass implements Runnable {
+
+// ...
+
+@PostConstruct
+public void init() {
+    if(this.enabled) {
+        this.executorService.scheduleAtFixedRate(
+            this,
+            0,
+            500,
+            TimeOut.MILLISECONDS);
+    }
+}
+
+// ...
+}
+```
+
+Our class is likely receiving some sort of `executorService` instance
+at construction time, possibly obtained from some
+[dependency injection][magic] glue code, after which a worker schedule
+is started. The likelihood of client code needing to explicitly call
+`init()` is typically very low. This suggests that our
+`@PostConstruct` method should probably have a more restrictive
+visibility, maybe `private` or `protected`, and that would be the end
+of it.
+
+But, is it really?
+
+# Testability
+
+Let&#39;s say we want to actually test the shutdown
+behavior of our worker threads, typically a tricky thing to do. What
+you want to do is something along the lines of:
+
+``` java
+
+// changed code from the original MyClass file:
+@PostConstruct
+public ScheduledFuture&lt;T&gt; init() {
+    if(this.enabled) {
+        return this.executorService.scheduleAtFixedRate(
+            this,
+            0,
+            500,
+            TimeOut.MILLISECONDS);
+    }
+}
+
+
+public testExecutorShutdown(){
+    ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
+    MyClass c = new MyClass(service, true); // executorService, enabled
+    ScheduledFuture&lt;T&gt; scheduled = c.init();
+    executorService.shutdown();
+    scheduled.get(1, TimeUnit.SECONDS); // throws exception
+}
+```
+
+The above test code tests that the scheduled action terminates within
+1 second (or two scheduled iterations) from the executor
+shutdown. Such a test relies on accessing the future object returned
+by the init method.
+
+# Self documenting
+
+&gt; it is Human perception that is sealed off behind their current consciousness horizon
+&gt;
+&gt; -- *Elia Wise*
+
+The change we made to the `init()` method enabled the behavioral test,
+but introduced an important side effect: the `ScheduledFuture` object
+is now part of `MyClass` public interface, meaning that now any client
+code is able to interact with it. Whether this is a desirable property
+really depends on the use case `MyClass` is designed to support, and
+probably you want to encapsulate the `ScheduledFuture` in a more
+friendly class that e.g. only exposes something like `bool
+isDone()`.
+
+In any case, keeping the above `init` method void would always end up
+in your client code (or developer glancing at the `init` signature
+using his/her IDE) being oblivious of what `MyClass.init()` is really
+doing. Just look at the different signatures, and think of yourself
+coding against each of them:
+
+``` java
+public void init()
+public ScheduledFuture&lt;T&gt; init()
+```
+
+the latter one will save you a brain cycle every time you need to use
+it, as it clearly states its produced effects without having to look
+at the code or at a deeper level of documentation.
+
+# Do one thing and do it well
+
+Sticking to the idea that your function returns a single value to
+explicitly states its behavior is obviously impossible when your
+function does more than one thing at a time. Fortunately, that by
+itself is a [code smell][single responsibility], and by treating your
+return type as the existential purpose of your functions you make it
+one step weirder to violate the principle.
+
+# Conclusions
+
+Be nice to your future self and in general to all developers using
+your code and never hide such a valuable piece of information like
+your return value in your public API, never again.
+
+Hugs &amp; kisses,
+c.
+
+[impure]: https://en.wikipedia.org/wiki/Pure_function#Impure_functions_in_pure_expressions
+[magic]: http://imgur.com/iZcUNxH
+[considered harmful]: http://meyerweb.com/eric/comment/chech.html
+[CRC]: https://en.wikipedia.org/wiki/Class-responsibility-collaboration_card
+[single responsibility]: https://en.wikipedia.org/wiki/Single_responsibility_principle</content><category term="java" /><category term="clojure" /><category term="clean code" /><summary>This post could have been titled ‘Void methods considered harmful’,
+if ‘considered harmful’ essays weren’t
+considered harmful themselves. Oh welp.</summary></entry><entry><title>Yet another agile is dead post</title><link href="https://codehopper.nl/2016/12/05/yet-another-agile-is-dead-post/" rel="alternate" type="text/html" title="Yet another agile is dead post" /><published>2016-12-05T00:00:00+01:00</published><updated>2016-12-05T00:00:00+01:00</updated><id>https://codehopper.nl/2016/12/05/yet-another-agile-is-dead-post</id><content type="html" xml:base="https://codehopper.nl/2016/12/05/yet-another-agile-is-dead-post/">Say you are in the software business for a while, and you worked with many different
 organizations on software projects. Say all of them adopted an agile process,
 and you had more than your fair share of standups, burndowns, sprints, release
-trains and stuff. Now, say someone asks you to draw a picture of &lt;strong&gt;#agile&lt;/strong&gt;,
-will that be like this?&lt;/p&gt;
+trains and stuff. Now, say someone asks you to draw a picture of **#agile**,
+will that be like this?
 
-&lt;p&gt;&lt;img src=&quot;/img/post/wheel.png&quot; alt=&quot;simple agile&quot; /&gt;&lt;/p&gt;
+![simple agile](/img/post/wheel.png)
 
-&lt;p&gt;No. Effing. Way.&lt;/p&gt;
+No. Effing. Way.
 
-&lt;h2 id=&quot;agile-is-dead&quot;&gt;Agile is dead&lt;/h2&gt;
+## Agile is dead
 
-&lt;p&gt;I’m by far not the first one on the &lt;a href=&quot;https://www.google.nl/search?q=agile%20is%20dead&quot;&gt;agile is dead bangwagon&lt;/a&gt;.
+I&#39;m by far not the first one on the [agile is dead bangwagon][agile-is-dead].
 There is a practically infinite corpus citing how agile is broken, whether because
-it lends itself to &lt;a href=&quot;https://effectivesoftwaredesign.com/2014/03/17/the-end-of-agile-death-by-over-simplification/&quot;&gt;oversimplifying our profession&lt;/a&gt; or because it’s
-just a &lt;a href=&quot;https://en.wikipedia.org/wiki/Hype_cycle&quot;&gt;hype come to its end&lt;/a&gt;.&lt;/p&gt;
+it lends itself to [oversimplifying our profession][overly-simple] or because it&#39;s
+just a [hype come to its end][hype-cycle].
 
-&lt;p&gt;Set aside all the good intentions
-and &lt;a href=&quot;http://agilemanifesto.org/&quot;&gt;compelling ethics&lt;/a&gt;, Agile became way too meta for it to be
+Set aside all the good intentions
+and [compelling ethics][agile-manifesto], Agile became way too meta for it to be
 any good to anyone. In search for the exact science of process management, people
 thought it was in the best interest of everyone to create standards over standards
-of supposedly battle-proven methodologies.&lt;/p&gt;
+of supposedly battle-proven methodologies.
 
-&lt;p&gt;This is what we actually got (&lt;a href=&quot;http://blog.deloitte.com.au/agile/2016/03/07/navigating-the-agile-landscape/#.WEbfLqIrLdQ&quot;&gt;&lt;em&gt;image courtesy of Deloitte&lt;/em&gt;&lt;/a&gt;):&lt;/p&gt;
+This is what we actually got ([*image courtesy of Deloitte*][deloitte]):
 
-&lt;p&gt;&lt;img src=&quot;/img/post/agile-landscape.jpg&quot; alt=&quot;real agile&quot; /&gt;&lt;/p&gt;
+![real agile](/img/post/agile-landscape.jpg)
 
-&lt;p&gt;The author of this complex diagram was trying to shed some light on the current
+The author of this complex diagram was trying to shed some light on the current
 plethora of Agile methodologies that people have been implementing, and while
-the result is horrifying from anyone interested into Getting Things Done, it’s
+the result is horrifying from anyone interested into Getting Things Done, it&#39;s
 spot on the very issue we have at hand: there is no exact science of management.
-We, as a whole industry, should be get over it already.&lt;/p&gt;
+We, as a whole industry, should be get over it already.
 
-&lt;h2 id=&quot;long-live-agile&quot;&gt;Long live agile&lt;/h2&gt;
+## Long live agile
 
-&lt;p&gt;I believe we’re now at the Agile &lt;a href=&quot;https://en.wikipedia.org/wiki/Antithesis#Hegel_and_antithesis&quot;&gt;antithesis&lt;/a&gt;. The &lt;a href=&quot;https://en.wikipedia.org/wiki/Hype_cycle&quot;&gt;hype cycle&lt;/a&gt;
+I believe we&#39;re now at the Agile [antithesis][antithesis]. The [hype cycle][hype-cycle]
 is now at the end of the Disillusionment deep, and already getting into
-Productivity. The &lt;a href=&quot;http://agilemanifesto.org/&quot;&gt;gospel&lt;/a&gt; has been introspected and it’s
-simply not a thing to speak of agile anymore.&lt;/p&gt;
+Productivity. The [gospel][agile-manifesto] has been introspected and it&#39;s
+simply not a thing to speak of agile anymore.
 
-&lt;p&gt;Eventually, we’re in the &lt;a href=&quot;https://www.google.nl/search?q=post%20agile&quot;&gt;post-agile&lt;/a&gt;
+Eventually, we&#39;re in the [post-agile][post-agile]
 era already, and we need our IT managers to truly understand what they role
 really is, we need them to do their job and understand where the agile script
-works, where it doesn’t and ultimately where it enables the whole organization
-to really work as it should.&lt;/p&gt;
+works, where it doesn&#39;t and ultimately where it enables the whole organization
+to really work as it should.
 
-&lt;p&gt;Amen.&lt;/p&gt;</content><category term="agile" /><summary>Say you are in the software business for a while, and you worked with many different
+Amen.
+
+
+[deloitte]: http://blog.deloitte.com.au/agile/2016/03/07/navigating-the-agile-landscape/#.WEbfLqIrLdQ
+[agile-is-dead]: https://www.google.nl/search?q=agile%20is%20dead
+[overly-simple]: https://effectivesoftwaredesign.com/2014/03/17/the-end-of-agile-death-by-over-simplification/
+[hype-cycle]: https://www.linkedin.com/pulse/agile-hype-cycle-matthew-kern-msea-cea-pmp-itil-cissp-issap?trk=mp-reader-card
+[agile-manifesto]: http://agilemanifesto.org/
+[antithesis]: https://en.wikipedia.org/wiki/Antithesis#Hegel_and_antithesis
+[hype-cycle]: https://en.wikipedia.org/wiki/Hype_cycle
+[post-agile]: https://www.google.nl/search?q=post%20agile</content><category term="agile" /><summary>Say you are in the software business for a while, and you worked with many different
 organizations on software projects. Say all of them adopted an agile process,
 and you had more than your fair share of standups, burndowns, sprints, release
 trains and stuff. Now, say someone asks you to draw a picture of #agile,
-will that be like this?</summary></entry><entry><title>Dear future me</title><link href="https://codehopper.nl/2016/01/10/a-new-chapter/" rel="alternate" type="text/html" title="Dear future me" /><published>2016-01-10T00:00:00+01:00</published><updated>2016-01-10T00:00:00+01:00</updated><id>https://codehopper.nl/2016/01/10/a-new-chapter</id><content type="html" xml:base="https://codehopper.nl/2016/01/10/a-new-chapter/">&lt;blockquote&gt;
-  &lt;p&gt;NOTE: these are the words that I wrote to myself on October 31st 2016, the day
-in which I left my then-current company. The piece was written with the intent
-of being published, in case people who regard my opinion (future me hopefully included)
-on working things can
-have a look at how I reflect on my own decisions. Happy reading!&lt;/p&gt;
-&lt;/blockquote&gt;
+will that be like this?</summary></entry><entry><title>Dear future me</title><link href="https://codehopper.nl/2016/01/10/a-new-chapter/" rel="alternate" type="text/html" title="Dear future me" /><published>2016-01-10T00:00:00+01:00</published><updated>2016-01-10T00:00:00+01:00</updated><id>https://codehopper.nl/2016/01/10/a-new-chapter</id><content type="html" xml:base="https://codehopper.nl/2016/01/10/a-new-chapter/">&gt; NOTE: these are the words that I wrote to myself on October 31st 2016, the day
+&gt; in which I left my then-current company. The piece was written with the intent
+&gt; of being published, in case people who regard my opinion (future me hopefully included)
+&gt; on working things can
+&gt; have a look at how I reflect on my own decisions. Happy reading!
 
-&lt;p&gt;&lt;strong&gt;Dear future me&lt;/strong&gt;,&lt;/p&gt;
 
-&lt;p&gt;here’s you at the very end of your experience at Sytac.&lt;/p&gt;
+**Dear future me**,
 
-&lt;p&gt;Yes, you multiple personalities weirdo.&lt;/p&gt;
+here&#39;s you at the very end of your experience at Sytac.
 
-&lt;p&gt;As of today you are not anymore on office as the CTO of &lt;a href=&quot;http://www.sytac.nl&quot;&gt;Sytac&lt;/a&gt;,
-the IT consulting company you’ve part of in the last two years. As your memory is proverbially
+Yes, you multiple personalities weirdo.
+
+As of today you are not anymore on office as the CTO of [Sytac](http://www.sytac.nl),
+the IT consulting company you&#39;ve part of in the last two years. As your memory is proverbially
 awful, I hope these notes will give you a better perspective on how you feel
-at the moment, surely a better one than what you &lt;em&gt;think&lt;/em&gt; you had.&lt;/p&gt;
+at the moment, surely a better one than what you *think* you had.
 
-&lt;h1 id=&quot;on-leaving&quot;&gt;On leaving&lt;/h1&gt;
+# On leaving
 
-&lt;p&gt;Yes, you quitter.&lt;/p&gt;
+Yes, you quitter.
 
-&lt;p&gt;It’s not the first time you leave colleagues you loved behind,
+It&#39;s not the first time you leave colleagues you loved behind,
 and you firmly believe that either you are part of the solution, or you are part
 of the problem. Yet to leave is like declaring to the general public that you
-believe to be part of the problem, so what’s up with that?&lt;/p&gt;
+believe to be part of the problem, so what&#39;s up with that?
 
-&lt;p&gt;Well, that’s true. With all your ideas and suggestions and big mouth and stuff,
-you weren’t able to fix the problems that always bothered you, making you 100%
+Well, that&#39;s true. With all your ideas and suggestions and big mouth and stuff,
+you weren&#39;t able to fix the problems that always bothered you, making you 100%
 part of the problem, certified. Deep inside you almost always knew that you
 were not cut for leading Sytac to revolutionize itself on your terms, and maybe
-that was even a foolish thing to hope for in the first place.&lt;/p&gt;
+that was even a foolish thing to hope for in the first place.
 
-&lt;p&gt;Yet, you wanted to believe and ran circles &lt;em&gt;around&lt;/em&gt; the main issues without facing the
-biggest obstacles first. You feared you would have crushed on them anyway.&lt;/p&gt;
+Yet, you wanted to believe and ran circles *around* the main issues without facing the
+biggest obstacles first. You feared you would have crushed on them anyway.
 
-&lt;p&gt;So yes, better leave and give way to the new. But remember: next time, face the
+So yes, better leave and give way to the new. But remember: next time, face the
 biggest issues first, or else you might find yourself wasting precious time
-chasing windmills.&lt;/p&gt;
+chasing windmills.
 
-&lt;h1 id=&quot;on-career&quot;&gt;On career&lt;/h1&gt;
+# On career
 
-&lt;p&gt;Yes, your ego.&lt;/p&gt;
+Yes, your ego.
 
-&lt;p&gt;As pretty much everyone that ever wrote some software, you have a big
+As pretty much everyone that ever wrote some software, you have a big
 thirst for the alpha-nerd recognition. You did prove yourself here, so much that
-you earned the C level. That was a morality booster for you, wasn’t it?&lt;/p&gt;
+you earned the C level. That was a morality booster for you, wasn&#39;t it?
 
-&lt;p&gt;The thing is, for you the most important part of getting up the ladder is to
+The thing is, for you the most important part of getting up the ladder is to
 prove yourself that you are capable of handling the bigger headaches that any
 new accomplishment comes with. One step up, and you take due note that ok, that
-is something you can do if you want. You fed your ego enough, time to move on.&lt;/p&gt;
+is something you can do if you want. You fed your ego enough, time to move on.
 
-&lt;p&gt;At this point you have evolved from an insecure, awkward nerd into an accomplished
+At this point you have evolved from an insecure, awkward nerd into an accomplished
 professional who craves stage time and public attention. Your ego has inflated
 enough, and at the moment you look at that CTO thingy more as an uncomfortable
-position: if you are the top dog, who will you learn from?&lt;/p&gt;
+position: if you are the top dog, who will you learn from?
 
-&lt;p&gt;But by now you know it all too well, that you care almost nothing for what step of
-the ladder you occupy: do something great and do it good, that’s what makes you
-open your tail like a &lt;pavone&gt;.&lt;/pavone&gt;&lt;/p&gt;
+But by now you know it all too well, that you care almost nothing for what step of
+the ladder you occupy: do something great and do it good, that&#39;s what makes you
+open your tail like a &lt;pavone&gt;.
 
-&lt;h1 id=&quot;on-having-guts&quot;&gt;On having guts&lt;/h1&gt;
+# On having guts
 
-&lt;p&gt;Yes, you sissy.&lt;/p&gt;
+Yes, you sissy.
 
-&lt;p&gt;Despite your quite evident issue of logorrhea, you missed many
+Despite your quite evident issue of logorrhea, you missed many
 occasions in which you could open your damn mouth when it really mattered. You
-saw potential and you didn’t fight to realize it. And you know why? You didn’t
-think you could win it. And maybe you could not, but that’s beside the point.&lt;/p&gt;
+saw potential and you didn&#39;t fight to realize it. And you know why? You didn&#39;t
+think you could win it. And maybe you could not, but that&#39;s beside the point.
 
-&lt;p&gt;Make sure you always try your best, and if you think that’s not enough then be
+Make sure you always try your best, and if you think that&#39;s not enough then be
 open and admit failure. In software as in life, fail fast is always the best
-option for everyone involved.&lt;/p&gt;
+option for everyone involved.
 
-&lt;h1 id=&quot;on-closing&quot;&gt;On closing&lt;/h1&gt;
+# On closing
 
-&lt;p&gt;Yes, you blatant fool, time to close this psycho letter.&lt;/p&gt;
+Yes, you blatant fool, time to close this psycho letter.
 
-&lt;p&gt;The past two years have been an interesting journey, and you did grow personally
-and professionally and you &lt;a href=&quot;http://amsterdam2016.codemotionworld.com&quot;&gt;did things&lt;/a&gt;
+The past two years have been an interesting journey, and you did grow personally
+and professionally and you [did things](http://amsterdam2016.codemotionworld.com)
 you never dreamt you could handle. And as you know yourself good enough, that can
-only mean that bigger challenges are ahead.&lt;/p&gt;
+only mean that bigger challenges are ahead.
 
-&lt;p&gt;Brace yourself, for the journey and keep your focus sharp on things that really
+Brace yourself, for the journey and keep your focus sharp on things that really
 matter to you. But as you who read this is me in the future, you know that better
-than me.&lt;/p&gt;
+than me.
 
-&lt;p&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/Eternal_return&quot;&gt;Or do you?&lt;/a&gt;&lt;/p&gt;
+[Or do you?](https://en.wikipedia.org/wiki/Eternal_return)
 
-&lt;p&gt;A si biri in bon’ora.&lt;/p&gt;</content><category term="real life" /><category term="sytac" /><summary>NOTE: these are the words that I wrote to myself on October 31st 2016, the day
+A si biri in bon&#39;ora.</content><category term="real life" /><category term="sytac" /><summary>NOTE: these are the words that I wrote to myself on October 31st 2016, the day
 in which I left my then-current company. The piece was written with the intent
 of being published, in case people who regard my opinion (future me hopefully included)
 on working things can
-have a look at how I reflect on my own decisions. Happy reading!</summary></entry><entry><title>The best keyboard layout for Clojurists</title><link href="https://codehopper.nl/2015/03/01/colemak-best-keyboard-for-clojurists/" rel="alternate" type="text/html" title="The best keyboard layout for Clojurists" /><published>2015-03-01T00:00:00+01:00</published><updated>2015-03-01T00:00:00+01:00</updated><id>https://codehopper.nl/2015/03/01/colemak-best-keyboard-for-clojurists</id><content type="html" xml:base="https://codehopper.nl/2015/03/01/colemak-best-keyboard-for-clojurists/">&lt;h1 id=&quot;keyboards-oh-my&quot;&gt;Keyboards, oh my!&lt;/h1&gt;
+have a look at how I reflect on my own decisions. Happy reading!</summary></entry><entry><title>The best keyboard layout for Clojurists</title><link href="https://codehopper.nl/2015/03/01/colemak-best-keyboard-for-clojurists/" rel="alternate" type="text/html" title="The best keyboard layout for Clojurists" /><published>2015-03-01T00:00:00+01:00</published><updated>2015-03-01T00:00:00+01:00</updated><id>https://codehopper.nl/2015/03/01/colemak-best-keyboard-for-clojurists</id><content type="html" xml:base="https://codehopper.nl/2015/03/01/colemak-best-keyboard-for-clojurists/">Keyboards, oh my!
+=================
 
-&lt;p&gt;If you’re a programmer, you spend most of your working life on your keyboard, and a good keyboard layout can make the difference between touch typing and carpal syndrome.&lt;/p&gt;
+If you&#39;re a programmer, you spend most of your working life on your keyboard, and a good keyboard layout can make the difference between touch typing and carpal syndrome.
 
-&lt;p&gt;That, and an irresistible drive for being the alpha nerd around, pushed me to teach myself &lt;a href=&quot;http://colemak.com/&quot;&gt;Colemak&lt;/a&gt;.&lt;/p&gt;
+That, and an irresistible drive for being the alpha nerd around, pushed me to teach myself [Colemak](http://colemak.com/).
 
-&lt;p&gt;It was painful and frustrating at the beginning, when I saw my typing speed precipitating from a respectable 80 words per minute to a horrific 20wpm. But now, now that touch typing has no mysteries for me on this mystical keyboard, now I got beyond my past self, recently crushing the 90wpm milestone. Hooray!&lt;/p&gt;
+It was painful and frustrating at the beginning, when I saw my typing speed precipitating from a respectable 80 words per minute to a horrific 20wpm. But now, now that touch typing has no mysteries for me on this mystical keyboard, now I got beyond my past self, recently crushing the 90wpm milestone. Hooray!
 
-&lt;h1 id=&quot;def-best&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;(def best)&lt;/code&gt;&lt;/h1&gt;
+`(def best)`
+============
 
-&lt;p&gt;In this data driven world, we constantly need to verify whether the decisions we make are still valid, and therefore the question: would Colemak be the best keyboard for me? Am I losing by sticking with the wrong choice? And would I be even willing to switch again keyboard layout in the foreseeable future?&lt;/p&gt;
+In this data driven world, we constantly need to verify whether the decisions we make are still valid, and therefore the question: would Colemak be the best keyboard for me? Am I losing by sticking with the wrong choice? And would I be even willing to switch again keyboard layout in the foreseeable future?
 
-&lt;p&gt;While the answer to the last question is a roaring &lt;a href=&quot;http://images.sodahead.com/polls/003657975/125779928_Noooooooooooooooo_answer_1_xlarge.Peg&quot;&gt;“NO!”&lt;/a&gt;, I needed to know. I needed data. But how?&lt;/p&gt;
+While the answer to the last question is a roaring [&quot;NO!&quot;](http://images.sodahead.com/polls/003657975/125779928_Noooooooooooooooo_answer_1_xlarge.Peg), I needed to know. I needed data. But how?
 
-&lt;p&gt;Well, first things first, I type lots of &lt;a href=&quot;http://groovy.codehaus.org/&quot;&gt;Groovy&lt;/a&gt; and &lt;a href=&quot;http://clojure.org/&quot;&gt;Clojure&lt;/a&gt; these days. But I don’t care for the former language, my heart is really about my dear lispy friend. I just had to find a way to produce an automatic comparison, surely enough, here it is: the &lt;a href=&quot;http://patorjk.com/keyboard-layout-analyzer/&quot;&gt;Keyboard Layout Analyzer&lt;/a&gt;, courtesy of &lt;a href=&quot;http://patorjk.com/&quot;&gt;Patrick Gillespie&lt;/a&gt;.&lt;/p&gt;
+Well, first things first, I type lots of [Groovy](http://groovy.codehaus.org/) and [Clojure](http://clojure.org/) these days. But I don&#39;t care for the former language, my heart is really about my dear lispy friend. I just had to find a way to produce an automatic comparison, surely enough, here it is: the [Keyboard Layout Analyzer](http://patorjk.com/keyboard-layout-analyzer/), courtesy of [Patrick Gillespie](http://patorjk.com/).
 
-&lt;p&gt;I love the Internet.&lt;/p&gt;
+I love the Internet.
 
-&lt;h1 id=&quot;the-winner-is&quot;&gt;The winner is..&lt;/h1&gt;
+The winner is..
+===============
 
-&lt;p&gt;Aaaaand here it is: a comparative analysis of what keyboard is the best for Clojure Developers™, after feeding the analyzer with &lt;a href=&quot;https://github.com/clojure/clojure/blob/master/src/clj/clojure/core.clj&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;clojure/core.clj&lt;/code&gt;&lt;/a&gt;, with its impressive 7447 lines of code:&lt;/p&gt;
+Aaaaand here it is: a comparative analysis of what keyboard is the best for Clojure Developers&amp;#8482;, after feeding the analyzer with [`clojure/core.clj`](https://github.com/clojure/clojure/blob/master/src/clj/clojure/core.clj), with its impressive 7447 lines of code:
 
-&lt;p&gt;&lt;img src=&quot;/img/post/colemak_clj.png&quot; alt=&quot;Test results&quot; /&gt;&lt;/p&gt;
+![Test results](/img/post/colemak_clj.png)
 
-&lt;p&gt;Now you know. Now it’s official.&lt;/p&gt;
+Now you know. Now it&#39;s official.
 
-&lt;p&gt;Happy touch typing, everyone!&lt;/p&gt;
+Happy touch typing, everyone!
 
-&lt;p&gt;p.s.: you can read the details of the comparison &lt;a href=&quot;http://patorjk.com/keyboard-layout-analyzer/#/load/D40PQ0hB&quot;&gt;here&lt;/a&gt;&lt;/p&gt;</content><category term="clojure" /><category term="keyboard" /><category term="colemak" /><summary>Keyboards, oh my!</summary></entry><entry><title>Spring Environment is for initialization code only</title><link href="https://codehopper.nl/2015/01/31/spring-environment-only-for-init/" rel="alternate" type="text/html" title="Spring Environment is for initialization code only" /><published>2015-01-31T00:00:00+01:00</published><updated>2015-01-31T00:00:00+01:00</updated><id>https://codehopper.nl/2015/01/31/spring-environment-only-for-init</id><content type="html" xml:base="https://codehopper.nl/2015/01/31/spring-environment-only-for-init/">&lt;p&gt;Since version 3.1, the &lt;a href=&quot;https://spring.io/&quot;&gt;Spring framework&lt;/a&gt; offers an abstraction towards several different
-sources through which you can easily configure your application: the &lt;a href=&quot;http://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/core/env/Environment.html&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Environment&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
+p.s.: you can read the details of the comparison [here](http://patorjk.com/keyboard-layout-analyzer/#/load/D40PQ0hB)</content><category term="clojure" /><category term="keyboard" /><category term="colemak" /><summary>Keyboards, oh my!</summary></entry><entry><title>Spring Environment is for initialization code only</title><link href="https://codehopper.nl/2015/01/31/spring-environment-only-for-init/" rel="alternate" type="text/html" title="Spring Environment is for initialization code only" /><published>2015-01-31T00:00:00+01:00</published><updated>2015-01-31T00:00:00+01:00</updated><id>https://codehopper.nl/2015/01/31/spring-environment-only-for-init</id><content type="html" xml:base="https://codehopper.nl/2015/01/31/spring-environment-only-for-init/">Since version 3.1, the [Spring framework](https://spring.io/) offers an abstraction towards several different
+sources through which you can easily configure your application: the [``Environment``](http://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/core/env/Environment.html).
 
-&lt;p&gt;In this post I describe a micro benchmark that I ran to prove that, while it’s a convenient API if you’re
+In this post I describe a micro benchmark that I ran to prove that, while it&#39;s a convenient API if you&#39;re
 using Spring in your application, it might introduce a performance penalty for which you should not use it
-outside of your initialization code.&lt;/p&gt;
+outside of your initialization code.
 
-&lt;h1 id=&quot;how-it-works&quot;&gt;How it works&lt;/h1&gt;
+How it works
+============
 
-&lt;p&gt;Before getting into the numbers, a quick digression on the internals of the &lt;code class=&quot;highlighter-rouge&quot;&gt;Environment&lt;/code&gt; that are important
-to this post.&lt;/p&gt;
+Before getting into the numbers, a quick digression on the internals of the ``Environment`` that are important
+to this post.
 
-&lt;p&gt;From the documentation:&lt;/p&gt;
+From the documentation:
 
-&lt;blockquote&gt;
-  &lt;blockquote&gt;
-    &lt;p&gt;&lt;em&gt;Properties play an important role in almost all applications, and may originate from a variety of sources: properties files, JVM system properties, system environment variables, JNDI, servlet context parameters, ad-hoc Properties objects, Maps, and so on. The role of the environment object with relation to properties is to provide the user with a convenient service interface for configuring property sources and resolving properties from them.&lt;/em&gt;&lt;/p&gt;
-  &lt;/blockquote&gt;
-&lt;/blockquote&gt;
+&gt;&gt; _Properties play an important role in almost all applications, and may originate from a variety of sources: properties files, JVM system properties, system environment variables, JNDI, servlet context parameters, ad-hoc Properties objects, Maps, and so on. The role of the environment object with relation to properties is to provide the user with a convenient service interface for configuring property sources and resolving properties from them._
 
-&lt;p&gt;So, you can use the &lt;code class=&quot;highlighter-rouge&quot;&gt;Environment&lt;/code&gt; to have a common interface to properties provided with different strategies, using
-a simple &lt;code class=&quot;highlighter-rouge&quot;&gt;getProperty&lt;/code&gt; call to access the required value. Look at the following Groovy code:&lt;/p&gt;
+So, you can use the ``Environment`` to have a common interface to properties provided with different strategies, using
+a simple ``getProperty`` call to access the required value. Look at the following Groovy code:
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    &lt;span class=&quot;nd&quot;&gt;@Component&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Greeter&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+```java
+    @Component
+    public class Greeter {
 
-        &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Environment&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;environment&lt;/span&gt;
+        private Environment environment
 
-        &lt;span class=&quot;nd&quot;&gt;@Autowired&lt;/span&gt;
-        &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Greeter&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;greeter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Environment&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;environment&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;){&lt;/span&gt;
-            &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;environment&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;environment&lt;/span&gt;
-        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+        @Autowired
+        public Greeter greeter(Environment environment){
+            this.environment = environment
+        }
 
-        &lt;span class=&quot;n&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nickName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-            &lt;span class=&quot;n&quot;&gt;environment&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getProperty&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;user&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// here be magic&lt;/span&gt;
-        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+        def nickName(user) {
+            environment.getProperty(&quot;user&quot;) // here be magic
+        }
 
-        &lt;span class=&quot;n&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;greet&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-            &lt;span class=&quot;n&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nick&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nickName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-            &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;println&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;Hi, ${user}!&quot;&lt;/span&gt;
-                         &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;println&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;Hi, ${nick}!&quot;&lt;/span&gt;
-        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+        def greet(user) {
+            def nick = nickName(user)
+            if (name == null) println &quot;Hi, ${user}!&quot;
+                         else println &quot;Hi, ${nick}!&quot;
+        }
 
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+    }
+```
 
-&lt;p&gt;Now, I can specify nicknames in a properties file so that I can greet know users with a more familiar nick name,
-still being able to salute also users which are not given a nickname. Neat, but how about performance?&lt;/p&gt;
+Now, I can specify nicknames in a properties file so that I can greet know users with a more familiar nick name,
+still being able to salute also users which are not given a nickname. Neat, but how about performance?
 
-&lt;h1 id=&quot;the-hidden-exception&quot;&gt;The hidden Exception&lt;/h1&gt;
+The hidden Exception
+====================
 
-&lt;p&gt;I got into this exercise while debugging a couple of slow pages in the website I’m working on: the
-&lt;a href=&quot;http://www.klm.com/destinations/nl/en/search&quot;&gt;destinations pages&lt;/a&gt; of the KLM main site. While performance is generally
-satisfactory, two pages were constantly giving above second response times. Definitely &lt;a href=&quot;http://www.vm.ibm.com/devpages/jelliott/evrrt.html&quot;&gt;too much&lt;/a&gt;.&lt;/p&gt;
+I got into this exercise while debugging a couple of slow pages in the website I&#39;m working on: the
+[destinations pages](http://www.klm.com/destinations/nl/en/search) of the KLM main site. While performance is generally
+satisfactory, two pages were constantly giving above second response times. Definitely [too much](http://www.vm.ibm.com/devpages/jelliott/evrrt.html).
 
-&lt;p&gt;In our code, we were translating some country names into queriable keys for an external services. We also needed to override
+In our code, we were translating some country names into queriable keys for an external services. We also needed to override
 an otherwise straightforward translation algorithm with very specific exceptions to the rule. The actual code was pretty much
-like the above &lt;code class=&quot;highlighter-rouge&quot;&gt;Greeter.greet(user)&lt;/code&gt;, and a &lt;a href=&quot;http://docs.oracle.com/javacomponents/jmc-5-4/jfr-runtime-guide/run.htm&quot;&gt;Flight Recorder&lt;/a&gt; session
-eventually provided us with the performance bottleneck (click to open):&lt;/p&gt;
+like the above ``Greeter.greet(user)``, and a [Flight Recorder](http://docs.oracle.com/javacomponents/jmc-5-4/jfr-runtime-guide/run.htm) session
+eventually provided us with the performance bottleneck (click to open):
 
-&lt;p&gt;&lt;a href=&quot;/img/post/exceptions.png&quot;&gt;&lt;img style=&quot;width: 500px&quot; src=&quot;/img/post/exceptions.png&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;a href=&quot;/img/post/exceptions.png&quot;&gt;&lt;img style=&quot;width: 500px&quot; src=&quot;/img/post/exceptions.png&quot; /&gt;&lt;/a&gt;
 
-&lt;p&gt;For 12 page refreshes we were silently throwing 140k+ exceptions. And exceptions are
-&lt;a href=&quot;http://java-performance.info/throwing-an-exception-in-java-is-very-slow/&quot;&gt;sloooooow&lt;/a&gt;, even if you just create them.&lt;/p&gt;
+For 12 page refreshes we were silently throwing 140k+ exceptions. And exceptions are
+[sloooooow](http://java-performance.info/throwing-an-exception-in-java-is-very-slow/), even if you just create them.
 
-&lt;p&gt;Looking at the top thrown exception, it was actually pretty
-easy to understand what’s going on: the &lt;code class=&quot;highlighter-rouge&quot;&gt;Environment&lt;/code&gt; checks whether the requested property is defined in the current JNDI context. But, if the
-name is not found, a &lt;a href=&quot;http://docs.oracle.com/javase/8/docs/api/javax/naming/NameNotFoundException.html&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;NameNotFoundException&lt;/code&gt;&lt;/a&gt; is thrown. In our specific case we were using property lookup for &lt;em&gt;exceptional&lt;/em&gt; cases,
-which means the vast majority of cases resulted in an exception being thrown.&lt;/p&gt;
+Looking at the top thrown exception, it was actually pretty
+easy to understand what&#39;s going on: the ``Environment`` checks whether the requested property is defined in the current JNDI context. But, if the
+name is not found, a [``NameNotFoundException``](http://docs.oracle.com/javase/8/docs/api/javax/naming/NameNotFoundException.html) is thrown. In our specific case we were using property lookup for *exceptional* cases,
+which means the vast majority of cases resulted in an exception being thrown.
 
-&lt;h1 id=&quot;micro-benchmark&quot;&gt;Micro benchmark&lt;/h1&gt;
+Micro benchmark
+===============
 
-&lt;p&gt;I put together a &lt;a href=&quot;https://gist.github.com/skuro/648cf1d871d203a73a0c&quot;&gt;micro benchmark&lt;/a&gt; to evaluate the potential performance gain
+I put together a [micro benchmark](https://gist.github.com/skuro/648cf1d871d203a73a0c) to evaluate the potential performance gain
 of the original property lookup strategy versus a simpler one where relevant properties are loaded up at class construction time. I used the
-&lt;a href=&quot;http://openjdk.java.net/projects/code-tools/jmh/&quot;&gt;Java Microbenchmark Harness&lt;/a&gt;, which does an incredible job at making micro benchmarks
+[Java Microbenchmark Harness](http://openjdk.java.net/projects/code-tools/jmh/), which does an incredible job at making micro benchmarks
 easy on the JVM: JIT, warm up, class loading, all is taken care of for you and you can just go ahead and put your code under test. Here the results
-(higher numbers better):&lt;/p&gt;
+(higher numbers better):
 
-&lt;blockquote&gt;
-  &lt;blockquote&gt;
-    &lt;p&gt;[Property lookup per invocation]&lt;/p&gt;
+&gt;&gt; [Property lookup per invocation]
+&gt;&gt;
+&gt;&gt; Result: 28917.876 ?(99.9%) 183.630 ops/s [Average] &lt;br /&gt;
+&gt;&gt; Statistics: (min, avg, max) = (25688.067, 28917.876, 30976.876), stdev = 777.500 &lt;br /&gt;
+&gt;&gt; **Confidence interval (99.9%): [28734.246, 29101.505]**
 
-    &lt;p&gt;Result: 28917.876 ?(99.9%) 183.630 ops/s [Average] &lt;br /&gt;
-Statistics: (min, avg, max) = (25688.067, 28917.876, 30976.876), stdev = 777.500 &lt;br /&gt;
-&lt;strong&gt;Confidence interval (99.9%): [28734.246, 29101.505]&lt;/strong&gt;&lt;/p&gt;
-  &lt;/blockquote&gt;
-&lt;/blockquote&gt;
+----
 
-&lt;hr /&gt;
+&gt;&gt; [Property loading at class construction]
+&gt;&gt;
+&gt;&gt; Result: 159062.900 ?(99.9%) 1013.309 ops/s [Average] &lt;br /&gt;
+&gt;&gt; Statistics: (min, avg, max) = (138707.926, 159062.900, 177183.549), stdev = 4290.413 &lt;br /&gt;
+&gt;&gt; **Confidence interval (99.9%): [158049.591, 160076.209]**
 
-&lt;blockquote&gt;
-  &lt;blockquote&gt;
-    &lt;p&gt;[Property loading at class construction]&lt;/p&gt;
+As expected, five times as fast.
 
-    &lt;p&gt;Result: 159062.900 ?(99.9%) 1013.309 ops/s [Average] &lt;br /&gt;
-Statistics: (min, avg, max) = (138707.926, 159062.900, 177183.549), stdev = 4290.413 &lt;br /&gt;
-&lt;strong&gt;Confidence interval (99.9%): [158049.591, 160076.209]&lt;/strong&gt;&lt;/p&gt;
-  &lt;/blockquote&gt;
-&lt;/blockquote&gt;
+Conclusions
+===========
 
-&lt;p&gt;As expected, five times as fast.&lt;/p&gt;
+I&#39;m not a big fan of Spring, but if you&#39;re using it the ``Environment`` class is a dead easy interface to your application configuration. But,
+unless you&#39;re using JNDI as your main store of configuration  properties,
+its performance characteristics make it a great tool only if you&#39;re using it in your initialization code, and not during on-line processing of
+requests.</content><category term="java" /><category term="performance" /><summary>Since version 3.1, the Spring framework offers an abstraction towards several different
+sources through which you can easily configure your application: the Environment.</summary></entry><entry><title>Alfresco H2 support releases and versioning scheme</title><link href="https://codehopper.nl/2014/07/06/alfresco-h2-support-new-releases-version-scheme/" rel="alternate" type="text/html" title="Alfresco H2 support releases and versioning scheme" /><published>2014-07-06T00:00:00+02:00</published><updated>2014-07-06T00:00:00+02:00</updated><id>https://codehopper.nl/2014/07/06/alfresco-h2-support-new-releases-version-scheme</id><content type="html" xml:base="https://codehopper.nl/2014/07/06/alfresco-h2-support-new-releases-version-scheme/">Some time has passed since the [last releases](/2013/03/27/h2-support-for-alfresco-3-4-12-and-maven/), and all the merits go once again to our dear [John Evans](http://springyweb.com/) from [Ixxus](http://www.ixxus.com/). Let&#39;s see what&#39;s new in the project.
 
-&lt;h1 id=&quot;conclusions&quot;&gt;Conclusions&lt;/h1&gt;
+Lots of releases, now with a new version scheme!
+================================================
 
-&lt;p&gt;I’m not a big fan of Spring, but if you’re using it the &lt;code class=&quot;highlighter-rouge&quot;&gt;Environment&lt;/code&gt; class is a dead easy interface to your application configuration. But,
-unless you’re using JNDI as your main store of configuration  properties,
-its performance characteristics make it a great tool only if you’re using it in your initialization code, and not during on-line processing of
-requests.&lt;/p&gt;</content><category term="java" /><category term="performance" /><summary>Since version 3.1, the Spring framework offers an abstraction towards several different
-sources through which you can easily configure your application: the Environment.</summary></entry><entry><title>Alfresco H2 support releases and versioning scheme</title><link href="https://codehopper.nl/2014/07/06/alfresco-h2-support-new-releases-version-scheme/" rel="alternate" type="text/html" title="Alfresco H2 support releases and versioning scheme" /><published>2014-07-06T00:00:00+02:00</published><updated>2014-07-06T00:00:00+02:00</updated><id>https://codehopper.nl/2014/07/06/alfresco-h2-support-new-releases-version-scheme</id><content type="html" xml:base="https://codehopper.nl/2014/07/06/alfresco-h2-support-new-releases-version-scheme/">&lt;p&gt;Some time has passed since the &lt;a href=&quot;/2013/03/27/h2-support-for-alfresco-3-4-12-and-maven/&quot;&gt;last releases&lt;/a&gt;, and all the merits go once again to our dear &lt;a href=&quot;http://springyweb.com/&quot;&gt;John Evans&lt;/a&gt; from &lt;a href=&quot;http://www.ixxus.com/&quot;&gt;Ixxus&lt;/a&gt;. Let’s see what’s new in the project.&lt;/p&gt;
+We were lagging behind Alfresco releases quite a bit, so you now have quite some [new releases](https://github.com/skuro/alfresco-h2-support/wiki/H2-Database-support-for-Alfresco) to look at. Most importantly, starting with Alfresco 4.2.0 we decided to align H2 Support with the official Alfresco versioning. So, while H2 Support v1.7 and v1.8 are the ones to be used respectively with Alfresco Enterprise 4.1.5 and 4.1.6, you will easily guess what versions of Alfresco Enterprise will have to use H2 Support v4.2.0 and v4.2.1.
 
-&lt;h1 id=&quot;lots-of-releases-now-with-a-new-version-scheme&quot;&gt;Lots of releases, now with a new version scheme!&lt;/h1&gt;
+Say your Alfresco v4.2.0 project is based on the [maven archetypes](https://code.google.com/p/maven-alfresco-archetypes/) (and shame on you if it&#39;s not), then you could simply override the following ``&lt;property&gt;`` in your pom:
 
-&lt;p&gt;We were lagging behind Alfresco releases quite a bit, so you now have quite some &lt;a href=&quot;https://github.com/skuro/alfresco-h2-support/wiki/H2-Database-support-for-Alfresco&quot;&gt;new releases&lt;/a&gt; to look at. Most importantly, starting with Alfresco 4.2.0 we decided to align H2 Support with the official Alfresco versioning. So, while H2 Support v1.7 and v1.8 are the ones to be used respectively with Alfresco Enterprise 4.1.5 and 4.1.6, you will easily guess what versions of Alfresco Enterprise will have to use H2 Support v4.2.0 and v4.2.1.&lt;/p&gt;
 
-&lt;p&gt;Say your Alfresco v4.2.0 project is based on the &lt;a href=&quot;https://code.google.com/p/maven-alfresco-archetypes/&quot;&gt;maven archetypes&lt;/a&gt; (and shame on you if it’s not), then you could simply override the following &lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;property&amp;gt;&lt;/code&gt; in your pom:&lt;/p&gt;
+{% highlight xml %}
+    &lt;h2-support.version&gt;${alfresco.version}&lt;/h2-support.version&gt; &lt;!-- WARN WARN WARN!! --&gt;
+{% endhighlight %}
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-xml&quot; data-lang=&quot;xml&quot;&gt;    &lt;span class=&quot;nt&quot;&gt;&amp;lt;h2-support.version&amp;gt;&lt;/span&gt;${alfresco.version}&lt;span class=&quot;nt&quot;&gt;&amp;lt;/h2-support.version&amp;gt;&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;&amp;lt;!-- WARN WARN WARN!! --&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+Neah huh? But there&#39;s a big ``WARN`` sign in there, why&#39;s that?
 
-&lt;p&gt;Neah huh? But there’s a big &lt;code class=&quot;highlighter-rouge&quot;&gt;WARN&lt;/code&gt; sign in there, why’s that?&lt;/p&gt;
+Say the release of H2 Support is broken in any way (in theory it should never happen, but in practice it might happen). Then it might be a bit unfortunate if your poms rely on H2 Support and Alfresco to have exactly the same version. So, while the above should work in most cases, the preferred way to include H2 Support in your project is still as follows:
 
-&lt;p&gt;Say the release of H2 Support is broken in any way (in theory it should never happen, but in practice it might happen). Then it might be a bit unfortunate if your poms rely on H2 Support and Alfresco to have exactly the same version. So, while the above should work in most cases, the preferred way to include H2 Support in your project is still as follows:&lt;/p&gt;
+{% highlight xml %}
+    &lt;h2-support.version&gt;4.2.0&lt;/h2-support.version&gt; &lt;!-- much better! --&gt;
+{% endhighlight %}
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-xml&quot; data-lang=&quot;xml&quot;&gt;    &lt;span class=&quot;nt&quot;&gt;&amp;lt;h2-support.version&amp;gt;&lt;/span&gt;4.2.0&lt;span class=&quot;nt&quot;&gt;&amp;lt;/h2-support.version&amp;gt;&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;&amp;lt;!-- much better! --&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+Plans for the future
+====================
 
-&lt;h1 id=&quot;plans-for-the-future&quot;&gt;Plans for the future&lt;/h1&gt;
+In the future we plan to have a different strategy to bring H2 Support for Alfresco. Currently, we simply copy all the PostgreSQL in an H2 friendly package, so that the internal Alfresco machinery will automatically find them. Then, H2 compatibility mode is used to make the PostgreSQL dialect understood by the H2 driver. That&#39;s obviously suboptimal, and we will research methods to skip shuffling files around, but rather override the Alfresco SQL files locator strategy. The new strategy should provide a better integration with any Alfresco release, and we might very well need not new H2 Support releases per Alfresco version.
 
-&lt;p&gt;In the future we plan to have a different strategy to bring H2 Support for Alfresco. Currently, we simply copy all the PostgreSQL in an H2 friendly package, so that the internal Alfresco machinery will automatically find them. Then, H2 compatibility mode is used to make the PostgreSQL dialect understood by the H2 driver. That’s obviously suboptimal, and we will research methods to skip shuffling files around, but rather override the Alfresco SQL files locator strategy. The new strategy should provide a better integration with any Alfresco release, and we might very well need not new H2 Support releases per Alfresco version.&lt;/p&gt;
+If you&#39;d like to help us realizing this integration sweet spot, you&#39;re so much welcome to joink the H2 Support crew!</content><category term="alfresco" /><category term="alm" /><category term="h2-support" /><category term="maven" /><summary>Some time has passed since the last releases, and all the merits go once again to our dear John Evans from Ixxus. Let’s see what’s new in the project.</summary></entry><entry><title>SeedUML, an online PlantUML editor</title><link href="https://codehopper.nl/2014/02/09/seeduml-an-online-plantuml-editor/" rel="alternate" type="text/html" title="SeedUML, an online PlantUML editor" /><published>2014-02-09T00:00:00+01:00</published><updated>2014-02-09T00:00:00+01:00</updated><id>https://codehopper.nl/2014/02/09/seeduml-an-online-plantuml-editor</id><content type="html" xml:base="https://codehopper.nl/2014/02/09/seeduml-an-online-plantuml-editor/">Finally online
+==============
 
-&lt;p&gt;If you’d like to help us realizing this integration sweet spot, you’re so much welcome to joink the H2 Support crew!&lt;/p&gt;</content><category term="alfresco" /><category term="alm" /><category term="h2-support" /><category term="maven" /><summary>Some time has passed since the last releases, and all the merits go once again to our dear John Evans from Ixxus. Let’s see what’s new in the project.</summary></entry><entry><title>SeedUML, an online PlantUML editor</title><link href="https://codehopper.nl/2014/02/09/seeduml-an-online-plantuml-editor/" rel="alternate" type="text/html" title="SeedUML, an online PlantUML editor" /><published>2014-02-09T00:00:00+01:00</published><updated>2014-02-09T00:00:00+01:00</updated><id>https://codehopper.nl/2014/02/09/seeduml-an-online-plantuml-editor</id><content type="html" xml:base="https://codehopper.nl/2014/02/09/seeduml-an-online-plantuml-editor/">&lt;h1 id=&quot;finally-online&quot;&gt;Finally online&lt;/h1&gt;
+It&#39;s my pleasure to announce the availability of [SeedUML](http://seeduml.com), the online editor for UML diagrams based on the great [PlantUML language](http://plantuml.sourceforge.net/).
 
-&lt;p&gt;It’s my pleasure to announce the availability of &lt;a href=&quot;http://seeduml.com&quot;&gt;SeedUML&lt;/a&gt;, the online editor for UML diagrams based on the great &lt;a href=&quot;http://plantuml.sourceforge.net/&quot;&gt;PlantUML language&lt;/a&gt;.&lt;/p&gt;
+As it&#39;s in its early beta stages, I&#39;m sure you&#39;ll find some rough edges here and there, but there&#39;s some great and useful features I&#39;m sure you&#39;ll love. Especially if you&#39;re new to PlantUML, you&#39;ll find a damn easy way to create all sorts of UML diagrams, like [state](http://seeduml.com/GBK3c), [sequence](http://seeduml.com/Nmr0D), [class](http://seeduml.com/Jgfv9), etc, all with a crystal clear plain text description. The diagram updates as you type, and you can save the image for later use, or simply link it wherever you need it to show up.
 
-&lt;p&gt;As it’s in its early beta stages, I’m sure you’ll find some rough edges here and there, but there’s some great and useful features I’m sure you’ll love. Especially if you’re new to PlantUML, you’ll find a damn easy way to create all sorts of UML diagrams, like &lt;a href=&quot;http://seeduml.com/GBK3c&quot;&gt;state&lt;/a&gt;, &lt;a href=&quot;http://seeduml.com/Nmr0D&quot;&gt;sequence&lt;/a&gt;, &lt;a href=&quot;http://seeduml.com/Jgfv9&quot;&gt;class&lt;/a&gt;, etc, all with a crystal clear plain text description. The diagram updates as you type, and you can save the image for later use, or simply link it wherever you need it to show up.&lt;/p&gt;
+Quick user guide
+================
 
-&lt;h1 id=&quot;quick-user-guide&quot;&gt;Quick user guide&lt;/h1&gt;
+If you need an user guide, the site is itself not easy enough to use. But let&#39;s give a couple of pointers to start with:
 
-&lt;p&gt;If you need an user guide, the site is itself not easy enough to use. But let’s give a couple of pointers to start with:&lt;/p&gt;
+- you need to start a new diagram, you go to [http://seeduml.com](http://seeduml.com)
+- a random diagram ID is generated, and you&#39;ll be redirected to such diagram page (eg: [http://seeduml.com/GBK3c](http://seeduml.com/GBK3c))
+- remember to bookmark the URL if the diagram is important, as there&#39;s no user save
+- you follow PlantUML docs and create beautiful diagram
+- whenever you need to edit the doc again, you go back to the same URL (you bookmarked it, right?)
 
-&lt;ul&gt;
-  &lt;li&gt;you need to start a new diagram, you go to &lt;a href=&quot;http://seeduml.com&quot;&gt;http://seeduml.com&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;a random diagram ID is generated, and you’ll be redirected to such diagram page (eg: &lt;a href=&quot;http://seeduml.com/GBK3c&quot;&gt;http://seeduml.com/GBK3c&lt;/a&gt;)&lt;/li&gt;
-  &lt;li&gt;remember to bookmark the URL if the diagram is important, as there’s no user save&lt;/li&gt;
-  &lt;li&gt;you follow PlantUML docs and create beautiful diagram&lt;/li&gt;
-  &lt;li&gt;whenever you need to edit the doc again, you go back to the same URL (you bookmarked it, right?)&lt;/li&gt;
-&lt;/ul&gt;
+Done. Easy, huh?
 
-&lt;p&gt;Done. Easy, huh?&lt;/p&gt;
+Disclaimer
+==========
 
-&lt;h1 id=&quot;disclaimer&quot;&gt;Disclaimer&lt;/h1&gt;
+This is an **early beta**, use at your own risk (and pleasure, hopefully). Especially, don&#39;t expect to
 
-&lt;p&gt;This is an &lt;strong&gt;early beta&lt;/strong&gt;, use at your own risk (and pleasure, hopefully). Especially, don’t expect to&lt;/p&gt;
+- be guaranteed that your diagrams will stay there forever
+- the service will be up and running at all times
+- be able to save hidden diagrams
+- have a rock solid syntax highlight
+- etc etc etc
 
-&lt;ul&gt;
-  &lt;li&gt;be guaranteed that your diagrams will stay there forever&lt;/li&gt;
-  &lt;li&gt;the service will be up and running at all times&lt;/li&gt;
-  &lt;li&gt;be able to save hidden diagrams&lt;/li&gt;
-  &lt;li&gt;have a rock solid syntax highlight&lt;/li&gt;
-  &lt;li&gt;etc etc etc&lt;/li&gt;
-&lt;/ul&gt;
+I will share some of the juicy technical details of that site later on on these pages, but for now, have fun and happy diagram authoring!</content><category term="seeduml" /><category term="uml" /><category term="design" /><category term="software" /><summary>Finally online</summary></entry><entry><title>H2 support 1.1.1 for Alfresco 3.4.12 Enterprise with Maven</title><link href="https://codehopper.nl/2013/03/27/h2-support-for-alfresco-3-4-12-and-maven/" rel="alternate" type="text/html" title="H2 support 1.1.1 for Alfresco 3.4.12 Enterprise with Maven" /><published>2013-03-27T00:00:00+01:00</published><updated>2013-03-27T00:00:00+01:00</updated><id>https://codehopper.nl/2013/03/27/h2-support-for-alfresco-3-4-12-and-maven</id><content type="html" xml:base="https://codehopper.nl/2013/03/27/h2-support-for-alfresco-3-4-12-and-maven/">Just a quick update on the [H2 support](https://github.com/skuro/alfresco-h2-support)
+project, today I released the `1.1.1` maintenance version which targets
+Alfresco v3.4.12 Enterprise.
 
-&lt;p&gt;I will share some of the juicy technical details of that site later on on these pages, but for now, have fun and happy diagram authoring!&lt;/p&gt;</content><category term="seeduml" /><category term="uml" /><category term="design" /><category term="software" /><summary>Finally online</summary></entry><entry><title>H2 support 1.1.1 for Alfresco 3.4.12 Enterprise with Maven</title><link href="https://codehopper.nl/2013/03/27/h2-support-for-alfresco-3-4-12-and-maven/" rel="alternate" type="text/html" title="H2 support 1.1.1 for Alfresco 3.4.12 Enterprise with Maven" /><published>2013-03-27T00:00:00+01:00</published><updated>2013-03-27T00:00:00+01:00</updated><id>https://codehopper.nl/2013/03/27/h2-support-for-alfresco-3-4-12-and-maven</id><content type="html" xml:base="https://codehopper.nl/2013/03/27/h2-support-for-alfresco-3-4-12-and-maven/">&lt;p&gt;Just a quick update on the &lt;a href=&quot;https://github.com/skuro/alfresco-h2-support&quot;&gt;H2 support&lt;/a&gt;
-project, today I released the &lt;code class=&quot;highlighter-rouge&quot;&gt;1.1.1&lt;/code&gt; maintenance version which targets
-Alfresco v3.4.12 Enterprise.&lt;/p&gt;
+Please make sure you always double check the [official documentation](https://github.com/skuro/alfresco-h2-support/wiki/H2-Database-support-for-Alfresco)
+to pick and choose the right version to use in your Alfresco project.
 
-&lt;p&gt;Please make sure you always double check the &lt;a href=&quot;https://github.com/skuro/alfresco-h2-support/wiki/H2-Database-support-for-Alfresco&quot;&gt;official documentation&lt;/a&gt;
-to pick and choose the right version to use in your Alfresco project.&lt;/p&gt;
+H2 and Maven
+============
 
-&lt;h1 id=&quot;h2-and-maven&quot;&gt;H2 and Maven&lt;/h1&gt;
+For ~~the sane~~ those among you that use the [Maven SDK](https://artifacts.alfresco.com/nexus/content/repositories/alfresco-docs/alfresco-lifecycle-aggregator/latest/index.html),
+you should know that `H2 support` is used to quickly boot the Alfresco repository
+webapp during your development cycles.
 
-&lt;p&gt;For &lt;del&gt;the sane&lt;/del&gt; those among you that use the &lt;a href=&quot;https://artifacts.alfresco.com/nexus/content/repositories/alfresco-docs/alfresco-lifecycle-aggregator/latest/index.html&quot;&gt;Maven SDK&lt;/a&gt;,
-you should know that &lt;code class=&quot;highlighter-rouge&quot;&gt;H2 support&lt;/code&gt; is used to quickly boot the Alfresco repository
-webapp during your development cycles.&lt;/p&gt;
-
-&lt;p&gt;If you’re using a version of Alfresco other than the default 4.x that’s assumed
+If you&#39;re using a version of Alfresco other than the default 4.x that&#39;s assumed
 by the SDK, you must also adapt your H2 support version to be able to start up
-Alfresco. It’s as easy as overriding the following maven property:&lt;/p&gt;
+Alfresco. It&#39;s as easy as overriding the following maven property:
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;h2-support.version&amp;gt;1.1.1&amp;lt;/h2-support.version&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+    &lt;h2-support.version&gt;1.1.1&lt;/h2-support.version&gt;
 
-&lt;p&gt;Happy development!&lt;/p&gt;</content><category term="alfresco" /><category term="h2support" /><category term="maven" /><category term="sonatype" /><summary>Just a quick update on the H2 support
+Happy development!</content><category term="alfresco" /><category term="h2support" /><category term="maven" /><category term="sonatype" /><summary>Just a quick update on the H2 support
 project, today I released the 1.1.1 maintenance version which targets
-Alfresco v3.4.12 Enterprise.</summary></entry><entry><title>Java StringBuilder myth debunked – now with content!</title><link href="https://codehopper.nl/2013/03/11/java-stringbuilder-myth-now-with-content/" rel="alternate" type="text/html" title="Java StringBuilder myth debunked -- now with content!" /><published>2013-03-11T00:00:00+01:00</published><updated>2013-03-11T00:00:00+01:00</updated><id>https://codehopper.nl/2013/03/11/java-stringbuilder-myth-now-with-content</id><content type="html" xml:base="https://codehopper.nl/2013/03/11/java-stringbuilder-myth-now-with-content/">&lt;h1 id=&quot;the-myth&quot;&gt;The myth&lt;/h1&gt;
+Alfresco v3.4.12 Enterprise.</summary></entry><entry><title>Java StringBuilder myth debunked – now with content!</title><link href="https://codehopper.nl/2013/03/11/java-stringbuilder-myth-now-with-content/" rel="alternate" type="text/html" title="Java StringBuilder myth debunked -- now with content!" /><published>2013-03-11T00:00:00+01:00</published><updated>2013-03-11T00:00:00+01:00</updated><id>https://codehopper.nl/2013/03/11/java-stringbuilder-myth-now-with-content</id><content type="html" xml:base="https://codehopper.nl/2013/03/11/java-stringbuilder-myth-now-with-content/">The myth
+========
 
-&lt;blockquote&gt;
-  &lt;p&gt;Concatenating two Strings with the plus operator is the source of all evil&lt;/p&gt;
+&gt; Concatenating two Strings with the plus operator is the source of all evil
+&gt;
+&gt; -- Anonymous Java dev
 
-  &lt;p&gt;– Anonymous Java dev&lt;/p&gt;
-&lt;/blockquote&gt;
+***NOTE**: The source code for the tests discussed here can be found on [Github][github]*
 
-&lt;p&gt;&lt;em&gt;&lt;strong&gt;NOTE&lt;/strong&gt;: The source code for the tests discussed here can be found on &lt;a href=&quot;https://github.com/skuro/stringbuilder&quot;&gt;Github&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;It’s from university time that I learned to regard &lt;code class=&quot;highlighter-rouge&quot;&gt;String&lt;/code&gt; concatenation in Java
-using the ‘+’ plus operator as a deadly performance sin. Recently there has been
-an internal review at &lt;a href=&quot;http://www.backbase.com&quot;&gt;Backbase R&amp;amp;D&lt;/a&gt; where such recurring
-mantra was dismissed as a myth due to &lt;code class=&quot;highlighter-rouge&quot;&gt;javac&lt;/code&gt; using &lt;code class=&quot;highlighter-rouge&quot;&gt;StringBuilder&lt;/code&gt; under the hood
+It&#39;s from university time that I learned to regard `String` concatenation in Java
+using the &#39;+&#39; plus operator as a deadly performance sin. Recently there has been
+an internal review at [Backbase R&amp;D](http://www.backbase.com) where such recurring
+mantra was dismissed as a myth due to `javac` using `StringBuilder` under the hood
 any time you use the plus operator to join Strings. I set myself up to prove
-such a point and verify the reality under different environments.&lt;/p&gt;
+such a point and verify the reality under different environments.
 
-&lt;h1 id=&quot;the-test&quot;&gt;The test&lt;/h1&gt;
+The test
+========
 
-&lt;p&gt;Relying on your compiler to optimize your &lt;code class=&quot;highlighter-rouge&quot;&gt;String&lt;/code&gt; concatenation means that things
+Relying on your compiler to optimize your `String` concatenation means that things
 might change heavily depending on the JDK vendor you adopt. As far as platform
-support goes for my daily job, three main vendors should be considered:&lt;/p&gt;
+support goes for my daily job, three main vendors should be considered:
 
-&lt;ul&gt;
-  &lt;li&gt;Oracle JDK&lt;/li&gt;
-  &lt;li&gt;IBM JDK&lt;/li&gt;
-  &lt;li&gt;ECJ – for developers only&lt;/li&gt;
-&lt;/ul&gt;
+* Oracle JDK
+* IBM JDK
+* ECJ -- for developers only
 
-&lt;p&gt;Moreover, while we officially support Java 5 through 6, we are also looking into
+Moreover, while we officially support Java 5 through 6, we are also looking into
 supporting Java 7 for our products, adding another three-folded level of indirection on top of
-the three vendors. For the sake of &lt;del&gt;lazyness&lt;/del&gt; simplicity, the &lt;code class=&quot;highlighter-rouge&quot;&gt;ecj&lt;/code&gt; compiled
-bytecode will be run with a single JDK, namely Oracle JDK7.&lt;/p&gt;
+the three vendors. For the sake of &lt;del&gt;lazyness&lt;/del&gt; simplicity, the `ecj` compiled
+bytecode will be run with a single JDK, namely Oracle JDK7.
 
-&lt;p&gt;I prepared a &lt;a href=&quot;https://www.virtualbox.org/&quot;&gt;Virtualbox&lt;/a&gt; VM with all the above JDK
+I prepared a [Virtualbox](https://www.virtualbox.org/) VM with all the above JDK
 installed, then I developed some classes to express three different concatenation
 methods, amounting to three to four concatenations per method invocaiton,
-depending on the specific test case.&lt;/p&gt;
+depending on the specific test case.
 
-&lt;p&gt;The test classes are run a thousands times for each test round, with a total of
+The test classes are run a thousands times for each test round, with a total of
 100 rounds each test case. The same VM is used to run all the rounds for the same
-test case, and it’s restarted across different test cases, all to let the Java
+test case, and it&#39;s restarted across different test cases, all to let the Java
 runtime perform all the optimizations it can, without affecting the other test
-cases in any way. The default options were used to start all JVMs.&lt;/p&gt;
+cases in any way. The default options were used to start all JVMs.
 
-&lt;p&gt;More details can be found in the benchmark runner &lt;a href=&quot;https://github.com/skuro/stringbuilder/blob/master/bench.sh&quot;&gt;script&lt;/a&gt;.&lt;/p&gt;
+More details can be found in the benchmark runner [script](https://github.com/skuro/stringbuilder/blob/master/bench.sh).
 
-&lt;h1 id=&quot;the-code&quot;&gt;The code&lt;/h1&gt;
+The code
+========
 
-&lt;p&gt;Full code for both test cases and the test suite is available on &lt;a href=&quot;https://github.com/skuro/stringbuilder&quot;&gt;Github&lt;/a&gt;.&lt;/p&gt;
+Full code for both test cases and the test suite is available on [Github][github].
 
-&lt;p&gt;The following different test cases were produced to measure performance
+The following different test cases were produced to measure performance
 differences of the String concatenation with plus against the direct use of a
-&lt;code class=&quot;highlighter-rouge&quot;&gt;StringBuilder&lt;/code&gt;:&lt;/p&gt;
+`StringBuilder`:
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;// String concat with plus
-String result = &quot;const1&quot; + base;
-result = result + &quot;const2&quot;;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+    // String concat with plus
+    String result = &quot;const1&quot; + base;
+    result = result + &quot;const2&quot;;
 
-&lt;hr /&gt;
+----
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;// String concat with a StringBuilder
-new StringBuilder()
-              .append(&quot;const1&quot;)
-              .append(base)
-              .append(&quot;const2&quot;)
-              .append(append)
-              .toString();
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+    // String concat with a StringBuilder
+    new StringBuilder()
+                  .append(&quot;const1&quot;)
+                  .append(base)
+                  .append(&quot;const2&quot;)
+                  .append(append)
+                  .toString();
+    }
 
-&lt;hr /&gt;
+----
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;//String concat with an initialized StringBuilder
-new StringBuilder(&quot;const1&quot;)
-              .append(base)
-              .append(&quot;const2&quot;)
-              .append(append)
-              .toString();
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+    //String concat with an initialized StringBuilder
+    new StringBuilder(&quot;const1&quot;)
+                  .append(base)
+                  .append(&quot;const2&quot;)
+                  .append(append)
+                  .toString();
 
-&lt;p&gt;The general idea is to provide a concatenation both at the head and at the tail
-of constant &lt;code class=&quot;highlighter-rouge&quot;&gt;String&lt;/code&gt;s over a variable. The difference between the last two cases,
-both making explicit use of &lt;code class=&quot;highlighter-rouge&quot;&gt;StringBuilder&lt;/code&gt;, is in the latter using the 1-arg
-constructor which initializes the builder with the initial part of the result.&lt;/p&gt;
+The general idea is to provide a concatenation both at the head and at the tail
+of constant `String`s over a variable. The difference between the last two cases,
+both making explicit use of `StringBuilder`, is in the latter using the 1-arg
+constructor which initializes the builder with the initial part of the result.
 
-&lt;h1 id=&quot;the-results&quot;&gt;The results&lt;/h1&gt;
+The results
+===========
 
-&lt;p&gt;Enough talking, down below here you can have a look at the generated graphs, where
+Enough talking, down below here you can have a look at the generated graphs, where
 each data point corresponds to a single test round (e.g. 1000 executions of the same
-test class).&lt;/p&gt;
+test class).
 
-&lt;p&gt;The discussion of the results and some more juicy details will follow.&lt;/p&gt;
+The discussion of the results and some more juicy details will follow.
 
-&lt;h2 id=&quot;concatenation-with-pluscatplus&quot;&gt;&lt;img src=&quot;/img/post/catplus.png&quot; alt=&quot;Concatenation with plus&quot; title=&quot;Concatenation with plus&quot; /&gt;&lt;/h2&gt;
-&lt;p&gt;&lt;img src=&quot;/img/post/catsb.png&quot; alt=&quot;Concatenation with StringBuilder&quot; title=&quot;Concatenation with StringBuilder&quot; /&gt;
-—-
-&lt;img src=&quot;/img/post/catsb2.png&quot; alt=&quot;Concatenation with initialized StringBuilder&quot; title=&quot;Concatenation with initalized StringBuilder&quot; /&gt;&lt;/p&gt;
+![Concatenation with plus][catplus]
+----
+![Concatenation with StringBuilder][catsb]
+----
+![Concatenation with initialized StringBuilder][catsb2]
 
-&lt;h1 id=&quot;the-discussion&quot;&gt;The discussion&lt;/h1&gt;
+The discussion
+==============
 
-&lt;p&gt;Oracle JKD5 is the clear loser here, appearing to be in a B league when compared
-to the others. But that’s not really the scope of this exercise, and thus we’ll
-gloss over it for the time being.&lt;/p&gt;
+Oracle JKD5 is the clear loser here, appearing to be in a B league when compared
+to the others. But that&#39;s not really the scope of this exercise, and thus we&#39;ll
+gloss over it for the time being.
 
-&lt;p&gt;That said, there are two other interesting bits I observe in the above graph. The first is that indeed
+That said, there are two other interesting bits I observe in the above graph. The first is that indeed
 there is generally quite a difference between the use of the plus operator vs an explicit
-&lt;code class=&quot;highlighter-rouge&quot;&gt;StringBuilder&lt;/code&gt;, &lt;em&gt;especially&lt;/em&gt; if you’re using Oracle Java5 which performs tree
-times worse the the rest of the crew.&lt;/p&gt;
+`StringBuilder`, *especially* if you&#39;re using Oracle Java5 which performs tree
+times worse the the rest of the crew.
 
-&lt;p&gt;The second observation is that while it generally holds for most of the JDKs that
-an explicit &lt;code class=&quot;highlighter-rouge&quot;&gt;StringBuilder&lt;/code&gt; will offer up to twice the speed as the regular plus
-operator, &lt;strong&gt;IBM JDK6 seems not to suffer&lt;/strong&gt; from any performance loss, always averaging
-25ms to complete the task in all test cases.&lt;/p&gt;
+The second observation is that while it generally holds for most of the JDKs that
+an explicit `StringBuilder` will offer up to twice the speed as the regular plus
+operator, **IBM JDK6 seems not to suffer** from any performance loss, always averaging
+25ms to complete the task in all test cases.
 
-&lt;p&gt;A closer look at the generated bytecode reveals some interesting details&lt;/p&gt;
+A closer look at the generated bytecode reveals some interesting details
 
-&lt;h1 id=&quot;the-bytecode&quot;&gt;The bytecode&lt;/h1&gt;
+The bytecode
+============
 
-&lt;p&gt;&lt;em&gt;&lt;strong&gt;NOTE:&lt;/strong&gt; the decompiled classes are also available on &lt;a href=&quot;https://github.com/skuro/stringbuilder&quot;&gt;Github&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+***NOTE:** the decompiled classes are also available on [Github][github]*
 
-&lt;p&gt;Across all possible JDKs &lt;code class=&quot;highlighter-rouge&quot;&gt;StringBuilders&lt;/code&gt; are &lt;strong&gt;always&lt;/strong&gt; used to implement &lt;code class=&quot;highlighter-rouge&quot;&gt;String&lt;/code&gt;
+Across all possible JDKs `StringBuilders` are **always** used to implement `String`
 concatenation even in presence of a plus sign.
-Moreover, across all vendors and versions, &lt;strong&gt;there is almost no difference at all&lt;/strong&gt;
-for the same test case. The only one that stands a bit apart is &lt;a href=&quot;https://github.com/skuro/stringbuilder/blob/master/ecj/CatPlus.class.txt&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;ecj&lt;/code&gt;&lt;/a&gt;,
-which is the only one to cleverly optimize the &lt;code class=&quot;highlighter-rouge&quot;&gt;CatPlus&lt;/code&gt; test case to invoke
-the 1-arg constructor of the &lt;code class=&quot;highlighter-rouge&quot;&gt;StringBuilder&lt;/code&gt; instead of the 0-arg version.&lt;/p&gt;
+Moreover, across all vendors and versions, **there is almost no difference at all**
+for the same test case. The only one that stands a bit apart is [`ecj`][ecjplus],
+which is the only one to cleverly optimize the `CatPlus` test case to invoke
+the 1-arg constructor of the `StringBuilder` instead of the 0-arg version.
 
-&lt;p&gt;Comparing the resulting bytecode exposes what could affect performance in the
-different scnarios:&lt;/p&gt;
+Comparing the resulting bytecode exposes what could affect performance in the
+different scnarios:
 
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;when concatenating with plus, &lt;em&gt;new instances of &lt;code class=&quot;highlighter-rouge&quot;&gt;StringBuilder&lt;/code&gt;&lt;/em&gt; are created
+* when concatenating with plus, *new instances of `StringBuilder`* are created
 any time a concatenation happens. This can easily result in a performance
 degradation due to useless invocation of the constructor plus more stress on
-the garbage collector due to throw away instances&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;compilers will take you literally and only initalize &lt;code class=&quot;highlighter-rouge&quot;&gt;StringBuilder&lt;/code&gt; with its
+the garbage collector due to throw away instances
+
+* compilers will take you literally and only initalize `StringBuilder` with its
 1-arg constructor if and only if you write it that way in the original code. This
-results in respectively four and three invocations of &lt;code class=&quot;highlighter-rouge&quot;&gt;StringBuilder.append&lt;/code&gt; for
-&lt;a href=&quot;https://github.com/skuro/stringbuilder/blob/master/ecj/CatSB.class.txt&quot;&gt;CatSB&lt;/a&gt; and &lt;a href=&quot;https://github.com/skuro/stringbuilder/blob/master/ecj/CatSB2.class.txt&quot;&gt;CatSB2&lt;/a&gt;.&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
+results in respectively four and three invocations of `StringBuilder.append` for
+[CatSB][catsbp] and [CatSB2][catsb2p].
 
-&lt;h1 id=&quot;the-conclusion&quot;&gt;The conclusion&lt;/h1&gt;
+The conclusion
+==============
 
-&lt;p&gt;Bytecode analysis offers the final answer to the original question.&lt;/p&gt;
+Bytecode analysis offers the final answer to the original question.
 
-&lt;blockquote&gt;
-  &lt;p&gt;Do you need to explicitly use a &lt;code class=&quot;highlighter-rouge&quot;&gt;StringBuilder&lt;/code&gt; to improve performance? &lt;strong&gt;Yes&lt;/strong&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
+&gt; Do you need to explicitly use a `StringBuilder` to improve performance? **Yes**
 
-&lt;p&gt;The above graphs clearly show that, unless you’re using IBM JDK6 runtime, you will
-loss 50% performance when using the plus operator, although it’s the one to perform
-slightly worse across the candidates when expliciting &lt;code class=&quot;highlighter-rouge&quot;&gt;StringBuilder&lt;/code&gt;s.&lt;/p&gt;
+The above graphs clearly show that, unless you&#39;re using IBM JDK6 runtime, you will
+loss 50% performance when using the plus operator, although it&#39;s the one to perform
+slightly worse across the candidates when expliciting `StringBuilder`s.
 
-&lt;p&gt;Also, it’s quite interesting to see how &lt;em&gt;JIT optimizations&lt;/em&gt; impact the overall
+Also, it&#39;s quite interesting to see how *JIT optimizations* impact the overall
 performance: for instance, even in presence of different bytecode between the two
-explicit &lt;code class=&quot;highlighter-rouge&quot;&gt;StringBuilder&lt;/code&gt; test cases, the end result is absolutely the same in the
-long run.&lt;/p&gt;
+explicit `StringBuilder` test cases, the end result is absolutely the same in the
+long run.
 
-&lt;p&gt;&lt;img src=&quot;/img/post/myth-confirmed.jpg&quot; alt=&quot;Myth confirmed&quot; /&gt;&lt;/p&gt;</content><category term="java" /><category term="performance" /><category term="development" /><summary>The myth</summary></entry><entry><title>The Observer Pattern in Spring</title><link href="https://codehopper.nl/2013/03/10/observer-pattern-spring-framework/" rel="alternate" type="text/html" title="The Observer Pattern in Spring" /><published>2013-03-10T00:00:00+01:00</published><updated>2013-03-10T00:00:00+01:00</updated><id>https://codehopper.nl/2013/03/10/observer-pattern-spring-framework</id><content type="html" xml:base="https://codehopper.nl/2013/03/10/observer-pattern-spring-framework/">&lt;h1 id=&quot;observers-in-spring&quot;&gt;Observers in Spring&lt;/h1&gt;
+![Myth confirmed][myth]
 
-&lt;blockquote&gt;
-  &lt;p&gt;To the man-in-the-street, who, I’m sorry to say,&lt;br /&gt;
-Is a keen observer of life,&lt;br /&gt;
-The word “Intellectual” suggests straight away&lt;br /&gt;
-A man who’s untrue to his wife.&lt;/p&gt;
+[catplus]: /img/post/catplus.png &quot;Concatenation with plus&quot;
+[catsb]: /img/post/catsb.png &quot;Concatenation with StringBuilder&quot;
+[catsb2]: /img/post/catsb2.png &quot;Concatenation with initalized StringBuilder&quot;
+[github]: https://github.com/skuro/stringbuilder
+[ecjplus]: https://github.com/skuro/stringbuilder/blob/master/ecj/CatPlus.class.txt
+[catsbp]: https://github.com/skuro/stringbuilder/blob/master/ecj/CatSB.class.txt
+[catsb2p]: https://github.com/skuro/stringbuilder/blob/master/ecj/CatSB2.class.txt
+[myth]: /img/post/myth-confirmed.jpg</content><category term="java" /><category term="performance" /><category term="development" /><summary>The myth</summary></entry><entry><title>The Observer Pattern in Spring</title><link href="https://codehopper.nl/2013/03/10/observer-pattern-spring-framework/" rel="alternate" type="text/html" title="The Observer Pattern in Spring" /><published>2013-03-10T00:00:00+01:00</published><updated>2013-03-10T00:00:00+01:00</updated><id>https://codehopper.nl/2013/03/10/observer-pattern-spring-framework</id><content type="html" xml:base="https://codehopper.nl/2013/03/10/observer-pattern-spring-framework/">Observers in Spring
+===================
 
-  &lt;p&gt;– W.H. Auden&lt;/p&gt;
-&lt;/blockquote&gt;
+&gt; To the man-in-the-street, who, I&#39;m sorry to say,  
+&gt; Is a keen observer of life,  
+&gt; The word &quot;Intellectual&quot; suggests straight away  
+&gt; A man who&#39;s untrue to his wife.  
+&gt;
+&gt; -- W.H. Auden
 
-&lt;p&gt;The Observer pattern is a very basic one out of the GoF bible which is unbelivably easy to implement and still quote
+The Observer pattern is a very basic one out of the GoF bible which is unbelivably easy to implement and still quote
 powerful so use. Here I present my take on it using the Spring observer pattern which I found quite helpful in designing
-extension points for my software.&lt;/p&gt;
+extension points for my software.
 
-&lt;h1 id=&quot;core-classes&quot;&gt;Core classes&lt;/h1&gt;
+Core classes
+============
 
-&lt;p&gt;Pushing back the little NIH devil whispering in my ears, I started by reusing the standard building blocks for the
-Observer pattern: &lt;code class=&quot;highlighter-rouge&quot;&gt;java.util.Observable&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;java.util.Observer&lt;/code&gt;. The Observable class provides the logic to handle a
+Pushing back the little NIH devil whispering in my ears, I started by reusing the standard building blocks for the
+Observer pattern: `java.util.Observable` and `java.util.Observer`. The Observable class provides the logic to handle a
 registry of Observers, and to propagate updates (I prefer to think more of in terms of events) to all of the registered
-Observers.&lt;/p&gt;
+Observers.
 
-&lt;p&gt;In the context of a Spring container, there will be beans to configure and hook together, and it’s key to this exercise
-to find a flexible and handy way to connect things together.&lt;/p&gt;
+In the context of a Spring container, there will be beans to configure and hook together, and it&#39;s key to this exercise
+to find a flexible and handy way to connect things together.
 
-&lt;h1 id=&quot;automatic-registration&quot;&gt;Automatic registration&lt;/h1&gt;
+Automatic registration
+=====================
 
-&lt;p&gt;Supporting code for this blog post can be found on &lt;a href=&quot;https://github.com/skuro/spring-observer&quot;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;
+Supporting code for this blog post can be found on [GitHub](https://github.com/skuro/spring-observer).
 
-&lt;p&gt;When developing a Spring application you’re always instantiating your classes as singletons within the Spring container.
+When developing a Spring application you&#39;re always instantiating your classes as singletons within the Spring container.
 Annotations or XML configurations will take care  of initialize instances of your classes, wiring them together in a
-connected graph of objects with loose dependencies on the specific concrete classes you adopt in your code.&lt;/p&gt;
+connected graph of objects with loose dependencies on the specific concrete classes you adopt in your code.
 
-&lt;p&gt;As you will always have to declare beans, it would be nice to let Spring wire obects for you in an Observer fashion,
+As you will always have to declare beans, it would be nice to let Spring wire obects for you in an Observer fashion,
 with a minimal coding effort required. The most minimalistic approach I could think of is to just require developers to
 declare their observer beans, and put in place enough machinery to automatically hook them to an Observable provided by
-the application. In this example I create a &lt;code class=&quot;highlighter-rouge&quot;&gt;ObserverBeanPostProcessor&lt;/code&gt; and a &lt;code class=&quot;highlighter-rouge&quot;&gt;SpringObserver&lt;/code&gt;
-tagging interface to identify which beans are actually declaring valid Observers, and register them automatically.&lt;/p&gt;
+the application. In this example I create a `ObserverBeanPostProcessor` and a `SpringObserver`
+tagging interface to identify which beans are actually declaring valid Observers, and register them automatically.
 
-&lt;p&gt;To complete the picture, the &lt;code class=&quot;highlighter-rouge&quot;&gt;SpringObservable&lt;/code&gt; interface declares which &lt;code class=&quot;highlighter-rouge&quot;&gt;Observer&lt;/code&gt; class it’s able to notify, thus
-leveraging the tagging interface and letting the &lt;code class=&quot;highlighter-rouge&quot;&gt;ObserverBeanPostProcessor&lt;/code&gt; know which beans to filter and registser.&lt;/p&gt;
+To complete the picture, the `SpringObservable` interface declares which `Observer` class it&#39;s able to notify, thus
+leveraging the tagging interface and letting the `ObserverBeanPostProcessor` know which beans to filter and registser.
 
-&lt;p&gt;This enables a software component to provide the desired &lt;code class=&quot;highlighter-rouge&quot;&gt;SpringObservable&lt;/code&gt; and the &lt;code class=&quot;highlighter-rouge&quot;&gt;ObserverBeanPostProcessor&lt;/code&gt; beans, where
-consumers of such API will be only required to instantiate their &lt;code class=&quot;highlighter-rouge&quot;&gt;Observer&lt;/code&gt; beans.&lt;/p&gt;
+This enables a software component to provide the desired `SpringObservable` and the `ObserverBeanPostProcessor` beans, where
+consumers of such API will be only required to instantiate their `Observer` beans.
 
-&lt;p&gt;Note that &lt;code class=&quot;highlighter-rouge&quot;&gt;Observers&lt;/code&gt; can be themselves &lt;code class=&quot;highlighter-rouge&quot;&gt;Observables&lt;/code&gt;, so that you can easily construct chains of beans in which events
-will be propagated. As long as you ensure not to form any cyclic graph, of course.&lt;/p&gt;
+Note that `Observers` can be themselves `Observables`, so that you can easily construct chains of beans in which events
+will be propagated. As long as you ensure not to form any cyclic graph, of course.
 
-&lt;h1 id=&quot;conclusions&quot;&gt;Conclusions&lt;/h1&gt;
+Conclusions
+===========
 
-&lt;p&gt;In object oriented languages such as Java, patterns are a powerful tool to apply. The Observer is a neat strategy for
+In object oriented languages such as Java, patterns are a powerful tool to apply. The Observer is a neat strategy for
 cascading changes on objects, or just to propagate events through a series of processors. All in a clean, loosly coupled
-fashion.&lt;/p&gt;
+fashion.
 
-&lt;p&gt;The code here is just a proof of concept, not a library which is intended for production use. The concepts and the
-implementation are easy enough to be applied in your Spring application without any need for depending on this code.&lt;/p&gt;</content><category term="java" /><category term="spring" /><category term="patterns" /><summary>Observers in Spring</summary></entry><entry><title>Java StringBuilder myth debunked</title><link href="https://codehopper.nl/2013/03/06/java-stringbuilder-myth/" rel="alternate" type="text/html" title="Java StringBuilder myth debunked" /><published>2013-03-06T00:00:00+01:00</published><updated>2013-03-06T00:00:00+01:00</updated><id>https://codehopper.nl/2013/03/06/java-stringbuilder-myth</id><content type="html" xml:base="https://codehopper.nl/2013/03/06/java-stringbuilder-myth/">&lt;p&gt;&lt;em&gt;NOTE: this post was published before it was ready, the real content can now be found &lt;a href=&quot;2013/03/11/java-stringbuilder-myth-now-with-content/&quot;&gt;here&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;</content><category term="java" /><category term="performance" /><category term="development" /><summary>NOTE: this post was published before it was ready, the real content can now be found here</summary></entry></feed>
+The code here is just a proof of concept, not a library which is intended for production use. The concepts and the
+implementation are easy enough to be applied in your Spring application without any need for depending on this code.</content><category term="java" /><category term="spring" /><category term="patterns" /><summary>Observers in Spring</summary></entry></feed>

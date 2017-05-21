@@ -14,12 +14,12 @@ release:
 ## Runs the Jekyll build and starts the server
 run:
 	@echo "Running CodeHopper.nl"
-	bundle exec jekyll serve --watch
+	bundle exec jekyll serve --watch --future
 
 ## Same as `make run`, but enables incremental builds in Jekyll
 irun:
 	@echo "Running CodeHopper.nl in incremental mode"
-	bundle exec jekyll serve --watch --incremental
+	bundle exec jekyll serve --watch --incremental --future
 
 
 ## Displays this help text

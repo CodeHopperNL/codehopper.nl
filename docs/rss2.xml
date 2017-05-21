@@ -3,13 +3,45 @@
     <title type="text" xml:lang="en">CodeHopper -- Software done right</title>
     <link type="application/atom+xml" href="https:https://codehopper.nl/rss2.xml" rel="self"/>
     <link type="text" href="http://skuro.tk/rss2.xml" rel="alternate"/>
-    <updated>2016-12-06T17:57:56+01:00</updated>
+    <updated>2017-05-21T20:51:01+02:00</updated>
     <id>https:https://codehopper.nl</id>
     <author>
         <name>Carlo Sciolla</name>
     </author>
     <rights>Copyright (c) 2010-2017 Carlo Sciolla</rights>
     
+<entry>
+  <title>Void methods as behavior black holes</title>
+  <link href="https:https://codehopper.nl/2017/01/24/void-methods-as-behavior-black-holes//"/>
+  <updated>2017-01-24T00:00:00+01:00</updated>
+  <id>https:https://codehopper.nl/2017/01/24/void-methods-as-behavior-black-holes//</id>
+  <summary type="html">&lt;blockquote&gt;
+  &lt;p&gt;This post could have been titled ‘Void methods considered harmful’, if ‘considered harmful’ essays weren’t &lt;a href=&quot;http://meyerweb.com/eric/comment/chech.html&quot;&gt;considered harmful themselves&lt;/a&gt;. Oh welp.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Void methods are ubiquitous in most Object Oriented codebases. A direct consequence of mutable state or I/O somewhere in your runtime, you can wrap any behavior that functional programming zealots would call &lt;a href=&quot;http://nowhere.com&quot;&gt;impure&lt;/a&gt;, which in principle has no meaningful return value. One common example is during application bootstrap, e.g. in Java:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nd&quot;&gt;@PostConstruct&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;init&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;database&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;startConnectionPool&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The above is supposedly fine, but public void methods, and especially a proliferation of them in a given codebase, are an evident code smell. Even when coding in Object Oriented style.&lt;/p&gt;
+
+&lt;h1 id=&quot;your-public-interface&quot;&gt;Your &lt;code class=&quot;highlighter-rouge&quot;&gt;public&lt;/code&gt; interface&lt;/h1&gt;
+
+&lt;p&gt;Public methods are meant for your class &lt;a href=&quot;https://en.wikipedia.org/wiki/Class-responsibility-collaboration_card&quot;&gt;collaborators&lt;/a&gt; to consume, they are the gateway to your class functionality. As such, they should be as clear as concise as possible, offering the minimal surface area needed to enable your class behaviors, with a clear signature that&lt;/p&gt;
+
+&lt;h1 id=&quot;testability&quot;&gt;Testability&lt;/h1&gt;
+
+&lt;p&gt;Among the worst properties of void methods is the very poor testability of a void method.&lt;/p&gt;
+
+</summary>
+</entry>
+
+
 <entry>
   <title>Yet another agile is dead post</title>
   <link href="https:https://codehopper.nl/2016/12/05/yet-another-agile-is-dead-post//"/>
@@ -1170,58 +1202,6 @@ awesome Dutch Clojure nights!&lt;/p&gt;
 &lt;/div&gt;
 
 &lt;p&gt;I still have a long way to go before I can bring my build to acceptable performance levels, but surely enough this will give me much more insights on what’s possibly going wrong. Enjoy!&lt;/p&gt;
-</summary>
-</entry>
-
-
-<entry>
-  <title>Spring surf Clojure and Alfresco H2 support now in Maven Central</title>
-  <link href="https:https://codehopper.nl/2012/03/06/spring-surf-clojure-and-alfresco-h2-support-now-in-maven-central//"/>
-  <updated>2012-03-06T00:00:00+01:00</updated>
-  <id>https:https://codehopper.nl/2012/03/06/spring-surf-clojure-and-alfresco-h2-support-now-in-maven-central//</id>
-  <summary type="html">&lt;p&gt;&lt;strong&gt;tl;dr:&lt;/strong&gt; I had to change the groupId of both
-  &lt;a href=&quot;https://github.com/skuro/alfresco-h2-support&quot;&gt;h2-support&lt;/a&gt; and
-  &lt;a href=&quot;https://github.com/skuro/spring-webscripts-addon-clojure&quot;&gt;spring-webscripts-addon-clojure&lt;/a&gt;. Good
-  news is, they’re now available on Maven Central!&lt;/p&gt;
-
-&lt;h2 id=&quot;build-management-dilemma&quot;&gt;Build management dilemma&lt;/h2&gt;
-
-&lt;p&gt;Part of &lt;a href=&quot;http://www.backbase.com&quot;&gt;my company&lt;/a&gt; offering is an Alfresco
-based CMS, which we build the 
-&lt;a href=&quot;code.google.com/p/maven-alfresco-archetypes/&quot;&gt;maven way&lt;/a&gt;. While this
-is already a nicely integrated build with the rest of the other
-products, I currently find it annoying to require a database to be
-installed wherever the project is built (ubiquitous MySQL installed
-locally on my laptop, on the CI server, etc.). As I’m maintaining an
-H2 &lt;a href=&quot;https://github.com/skuro/alfresco-h2-support&quot;&gt;compatibility module&lt;/a&gt; 
-for Alfresco it’s natural for me to integrate and use it.&lt;/p&gt;
-
-&lt;p&gt;There was only one thing blocking this process, and that’s the maven
-repository where such artifact were deployed.&lt;/p&gt;
-
-&lt;h2 id=&quot;deploy-on-central&quot;&gt;Deploy on Central&lt;/h2&gt;
-
-&lt;p&gt;As much as I love &lt;a href=&quot;http://clojars.org&quot;&gt;Clojars&lt;/a&gt;, it still requires to be manually configured
-when dealing with a pure Maven build. Since it’s not quite an option to add
-an artifacts repository for something as small as &lt;code class=&quot;highlighter-rouge&quot;&gt;h2-support&lt;/code&gt;, I
-decided to just follow the guidelines for Maven Central sync on 
-&lt;a href=&quot;https://docs.sonatype.org/display/Repository/Sonatype+OSS+Maven+Repository+Usage+Guide&quot;&gt;OSS Sonatype&lt;/a&gt; and
-rename the group ID to resabmle my personal web domain. This means I
-did dirty, dirty things that bought me an entire eternity in hell,
-such as retagging both
-&lt;a href=&quot;https://github.com/skuro/alfresco-h2-support/tree/v1.1&quot;&gt;v1.1&lt;/a&gt; and
-&lt;a href=&quot;https://github.com/skuro/alfresco-h2-support/tree/v1.2&quot;&gt;v1.2&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;But, as the only change in the POM is “non functional” such as
-description, developers and such, it’s not going to hurt much I
-believe.&lt;/p&gt;
-
-&lt;p&gt;This move is reflected also in the currently unreleased
-&lt;code class=&quot;highlighter-rouge&quot;&gt;spring-webscripts-addon-clojure&lt;/code&gt;, so if you’ll be using it or
-you need &lt;code class=&quot;highlighter-rouge&quot;&gt;h2-support&lt;/code&gt; remember to use the &lt;code class=&quot;highlighter-rouge&quot;&gt;tk.skuro.*&lt;/code&gt; group IDs, and
-you won’t need to add a &lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;repository&amp;gt;&lt;/code&gt; to your POM ever again.&lt;/p&gt;
-
-&lt;p&gt;Thanks &lt;a href=&quot;http://www.sonatype.com&quot;&gt;Sonatype&lt;/a&gt; for the awesome service!&lt;/p&gt;
 </summary>
 </entry>
 
