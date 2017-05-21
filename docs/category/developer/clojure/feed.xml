@@ -3,45 +3,13 @@
     <title type="text" xml:lang="en">CodeHopper -- Software done right</title>
     <link type="application/atom+xml" href="https:https://codehopper.nl/category/developer/clojure/feed" rel="self"/>
     <link type="text" href="http://skuro.tk/category/developer/clojure/feed" rel="alternate"/>
-    <updated>2017-05-21T20:51:01+02:00</updated>
+    <updated>2017-05-21T22:12:28+02:00</updated>
     <id>https:https://codehopper.nl</id>
     <author>
         <name>Carlo Sciolla</name>
     </author>
     <rights>Copyright (c) 2010-2017 Carlo Sciolla</rights>
     
-<entry>
-  <title>Void methods as behavior black holes</title>
-  <link href="https:https://codehopper.nl/2017/01/24/void-methods-as-behavior-black-holes//"/>
-  <updated>2017-01-24T00:00:00+01:00</updated>
-  <id>https:https://codehopper.nl/2017/01/24/void-methods-as-behavior-black-holes//</id>
-  <summary type="html">&lt;blockquote&gt;
-  &lt;p&gt;This post could have been titled ‘Void methods considered harmful’, if ‘considered harmful’ essays weren’t &lt;a href=&quot;http://meyerweb.com/eric/comment/chech.html&quot;&gt;considered harmful themselves&lt;/a&gt;. Oh welp.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;Void methods are ubiquitous in most Object Oriented codebases. A direct consequence of mutable state or I/O somewhere in your runtime, you can wrap any behavior that functional programming zealots would call &lt;a href=&quot;http://nowhere.com&quot;&gt;impure&lt;/a&gt;, which in principle has no meaningful return value. One common example is during application bootstrap, e.g. in Java:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nd&quot;&gt;@PostConstruct&lt;/span&gt;
-&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;init&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;database&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;startConnectionPool&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;The above is supposedly fine, but public void methods, and especially a proliferation of them in a given codebase, are an evident code smell. Even when coding in Object Oriented style.&lt;/p&gt;
-
-&lt;h1 id=&quot;your-public-interface&quot;&gt;Your &lt;code class=&quot;highlighter-rouge&quot;&gt;public&lt;/code&gt; interface&lt;/h1&gt;
-
-&lt;p&gt;Public methods are meant for your class &lt;a href=&quot;https://en.wikipedia.org/wiki/Class-responsibility-collaboration_card&quot;&gt;collaborators&lt;/a&gt; to consume, they are the gateway to your class functionality. As such, they should be as clear as concise as possible, offering the minimal surface area needed to enable your class behaviors, with a clear signature that&lt;/p&gt;
-
-&lt;h1 id=&quot;testability&quot;&gt;Testability&lt;/h1&gt;
-
-&lt;p&gt;Among the worst properties of void methods is the very poor testability of a void method.&lt;/p&gt;
-
-</summary>
-</entry>
-
-
 <entry>
   <title>The best keyboard layout for Clojurists</title>
   <link href="https:https://codehopper.nl/2015/03/01/colemak-best-keyboard-for-clojurists//"/>
