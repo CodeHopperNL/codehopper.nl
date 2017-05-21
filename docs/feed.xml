@@ -1,168 +1,166 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.1.2">Jekyll</generator><link href="https://codehopper.nl/feed.xml" rel="self" type="application/atom+xml" /><link href="https://codehopper.nl/" rel="alternate" type="text/html" /><updated>2017-05-21T22:05:53+02:00</updated><id>https://codehopper.nl/</id><title>CodeHopper</title><subtitle>Software and technology done right</subtitle><entry><title>Void methods as behavior black holes</title><link href="https://codehopper.nl/2017/01/24/void-methods-as-behavior-black-holes/" rel="alternate" type="text/html" title="Void methods as behavior black holes" /><published>2017-01-24T00:00:00+01:00</published><updated>2017-01-24T00:00:00+01:00</updated><id>https://codehopper.nl/2017/01/24/void-methods-as-behavior-black-holes</id><content type="html" xml:base="https://codehopper.nl/2017/01/24/void-methods-as-behavior-black-holes/">&gt; This post could have been titled &#39;Void methods considered harmful&#39;,
-&gt; if &#39;considered harmful&#39; essays weren&#39;t
-&gt; [considered harmful themselves][considered harmful]. Oh welp.
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.1.2">Jekyll</generator><link href="https://codehopper.nl/feed.xml" rel="self" type="application/atom+xml" /><link href="https://codehopper.nl/" rel="alternate" type="text/html" /><updated>2017-05-21T22:05:53+02:00</updated><id>https://codehopper.nl/</id><title>CodeHopper</title><subtitle>Software and technology done right</subtitle><entry><title>Void methods as behavior black holes</title><link href="https://codehopper.nl/2017/05/21/void-methods-as-behavior-black-holes/" rel="alternate" type="text/html" title="Void methods as behavior black holes" /><published>2017-05-21T00:00:00+02:00</published><updated>2017-05-21T00:00:00+02:00</updated><id>https://codehopper.nl/2017/05/21/void-methods-as-behavior-black-holes</id><content type="html" xml:base="https://codehopper.nl/2017/05/21/void-methods-as-behavior-black-holes/">&lt;blockquote&gt;
+  &lt;p&gt;This post could have been titled ‘Void methods considered harmful’,
+if ‘considered harmful’ essays weren’t
+&lt;a href=&quot;http://meyerweb.com/eric/comment/chech.html&quot;&gt;considered harmful themselves&lt;/a&gt;. Oh welp.&lt;/p&gt;
+&lt;/blockquote&gt;
 
-Void methods are ubiquitous in most Object Oriented codebases. A
+&lt;p&gt;Void methods are ubiquitous in most Object Oriented codebases. A
 direct consequence of mutable state or I/O somewhere in your runtime,
 you can wrap any behavior that functional programming zealots would
-call [impure][impure], which in principle has no meaningful return
+call &lt;a href=&quot;https://en.wikipedia.org/wiki/Pure_function#Impure_functions_in_pure_expressions&quot;&gt;impure&lt;/a&gt;, which in principle has no meaningful return
 value. One common example is during application bootstrap, e.g. in
-Java:
+Java:&lt;/p&gt;
 
-```java
-@Resource MyClass implements Runnable {
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nd&quot;&gt;@Resource&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;MyClass&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;implements&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Runnable&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
 
-// ...
+&lt;span class=&quot;c1&quot;&gt;// ...&lt;/span&gt;
 
-@PostConstruct
-public void init() {
-    if(this.enabled) {
-        this.executorService.scheduleAtFixedRate(
-            this,
-            0,
-            500,
-            TimeOut.MILLISECONDS);
-    }
-}
+&lt;span class=&quot;nd&quot;&gt;@PostConstruct&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;init&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;enabled&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;executorService&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;scheduleAtFixedRate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;
+            &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;
+            &lt;span class=&quot;mi&quot;&gt;500&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;TimeOut&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;MILLISECONDS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
 
-// ...
-}
-```
+&lt;span class=&quot;c1&quot;&gt;// ...&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
-The above is supposedly fine, but public void methods, and especially
+&lt;p&gt;The above is supposedly fine, but public void methods, and especially
 a proliferation of them in a given codebase, are an evident code
-smell. Even when coding in Object Oriented style.
+smell. Even when coding in Object Oriented style.&lt;/p&gt;
 
-# Your `public` interface
+&lt;h1 id=&quot;your-public-interface&quot;&gt;Your &lt;code class=&quot;highlighter-rouge&quot;&gt;public&lt;/code&gt; interface&lt;/h1&gt;
 
-Public methods are meant for your class [collaborators][CRC] to
+&lt;p&gt;Public methods are meant for your class &lt;a href=&quot;https://en.wikipedia.org/wiki/Class-responsibility-collaboration_card&quot;&gt;collaborators&lt;/a&gt; to
 consume, they are the gateway to your class functionality. As such,
 they should be as clear as concise as possible, offering the minimal
 surface area needed to enable your class behaviors. One major,
 self-documenting part of any function definition is naturally its
-return type.
+return type.&lt;/p&gt;
 
-Lets start from the previous example:
+&lt;p&gt;Lets start from the previous example:&lt;/p&gt;
 
-```java
-@Resource MyClass implements Runnable {
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nd&quot;&gt;@Resource&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;MyClass&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;implements&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Runnable&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
 
-// ...
+&lt;span class=&quot;c1&quot;&gt;// ...&lt;/span&gt;
 
-@PostConstruct
-public void init() {
-    if(this.enabled) {
-        this.executorService.scheduleAtFixedRate(
-            this,
-            0,
-            500,
-            TimeOut.MILLISECONDS);
-    }
-}
+&lt;span class=&quot;nd&quot;&gt;@PostConstruct&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;init&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;enabled&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;executorService&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;scheduleAtFixedRate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;
+            &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;
+            &lt;span class=&quot;mi&quot;&gt;500&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;TimeOut&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;MILLISECONDS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
 
-// ...
-}
-```
+&lt;span class=&quot;c1&quot;&gt;// ...&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
-Our class is likely receiving some sort of `executorService` instance
+&lt;p&gt;Our class is likely receiving some sort of &lt;code class=&quot;highlighter-rouge&quot;&gt;executorService&lt;/code&gt; instance
 at construction time, possibly obtained from some
-[dependency injection][magic] glue code, after which a worker schedule
+&lt;a href=&quot;http://imgur.com/iZcUNxH&quot;&gt;dependency injection&lt;/a&gt; glue code, after which a worker schedule
 is started. The likelihood of client code needing to explicitly call
-`init()` is typically very low. This suggests that our
-`@PostConstruct` method should probably have a more restrictive
-visibility, maybe `private` or `protected`, and that would be the end
-of it.
+&lt;code class=&quot;highlighter-rouge&quot;&gt;init()&lt;/code&gt; is typically very low. This suggests that our
+&lt;code class=&quot;highlighter-rouge&quot;&gt;@PostConstruct&lt;/code&gt; method should probably have a more restrictive
+visibility, maybe &lt;code class=&quot;highlighter-rouge&quot;&gt;private&lt;/code&gt; or &lt;code class=&quot;highlighter-rouge&quot;&gt;protected&lt;/code&gt;, and that would be the end
+of it.&lt;/p&gt;
 
-But, is it really?
+&lt;p&gt;But, is it really?&lt;/p&gt;
 
-# Testability
+&lt;h1 id=&quot;testability&quot;&gt;Testability&lt;/h1&gt;
 
-Let&#39;s say we want to actually test the shutdown
+&lt;p&gt;Let’s say we want to actually test the shutdown
 behavior of our worker threads, typically a tricky thing to do. What
-you want to do is something along the lines of:
+you want to do is something along the lines of:&lt;/p&gt;
 
-``` java
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+&lt;span class=&quot;c1&quot;&gt;// changed code from the original MyClass file:&lt;/span&gt;
+&lt;span class=&quot;nd&quot;&gt;@PostConstruct&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ScheduledFuture&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;T&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;init&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;enabled&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;executorService&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;scheduleAtFixedRate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;
+            &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;
+            &lt;span class=&quot;mi&quot;&gt;500&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;TimeOut&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;MILLISECONDS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
 
-// changed code from the original MyClass file:
-@PostConstruct
-public ScheduledFuture&lt;T&gt; init() {
-    if(this.enabled) {
-        return this.executorService.scheduleAtFixedRate(
-            this,
-            0,
-            500,
-            TimeOut.MILLISECONDS);
-    }
-}
 
+&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;testExecutorShutdown&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;){&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;ScheduledExecutorService&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;service&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Executors&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;newSingleThreadScheduledExecutor&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;MyClass&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;MyClass&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;service&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// executorService, enabled&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;ScheduledFuture&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;T&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;scheduled&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;init&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;executorService&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;shutdown&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;scheduled&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;TimeUnit&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;SECONDS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// throws exception&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
-public testExecutorShutdown(){
-    ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
-    MyClass c = new MyClass(service, true); // executorService, enabled
-    ScheduledFuture&lt;T&gt; scheduled = c.init();
-    executorService.shutdown();
-    scheduled.get(1, TimeUnit.SECONDS); // throws exception
-}
-```
-
-The above test code tests that the scheduled action terminates within
+&lt;p&gt;The above test code tests that the scheduled action terminates within
 1 second (or two scheduled iterations) from the executor
 shutdown. Such a test relies on accessing the future object returned
-by the init method.
+by the init method.&lt;/p&gt;
 
-# Self documenting
+&lt;h1 id=&quot;self-documenting&quot;&gt;Self documenting&lt;/h1&gt;
 
-&gt; it is Human perception that is sealed off behind their current consciousness horizon
-&gt;
-&gt; -- *Elia Wise*
+&lt;blockquote&gt;
+  &lt;p&gt;it is Human perception that is sealed off behind their current consciousness horizon&lt;/p&gt;
 
-The change we made to the `init()` method enabled the behavioral test,
-but introduced an important side effect: the `ScheduledFuture` object
-is now part of `MyClass` public interface, meaning that now any client
+  &lt;p&gt;– &lt;em&gt;Elia Wise&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;The change we made to the &lt;code class=&quot;highlighter-rouge&quot;&gt;init()&lt;/code&gt; method enabled the behavioral test,
+but introduced an important side effect: the &lt;code class=&quot;highlighter-rouge&quot;&gt;ScheduledFuture&lt;/code&gt; object
+is now part of &lt;code class=&quot;highlighter-rouge&quot;&gt;MyClass&lt;/code&gt; public interface, meaning that now any client
 code is able to interact with it. Whether this is a desirable property
-really depends on the use case `MyClass` is designed to support, and
-probably you want to encapsulate the `ScheduledFuture` in a more
-friendly class that e.g. only exposes something like `bool
-isDone()`.
+really depends on the use case &lt;code class=&quot;highlighter-rouge&quot;&gt;MyClass&lt;/code&gt; is designed to support, and
+probably you want to encapsulate the &lt;code class=&quot;highlighter-rouge&quot;&gt;ScheduledFuture&lt;/code&gt; in a more
+friendly class that e.g. only exposes something like &lt;code class=&quot;highlighter-rouge&quot;&gt;bool
+isDone()&lt;/code&gt;.&lt;/p&gt;
 
-In any case, keeping the above `init` method void would always end up
-in your client code (or developer glancing at the `init` signature
-using his/her IDE) being oblivious of what `MyClass.init()` is really
+&lt;p&gt;In any case, keeping the above &lt;code class=&quot;highlighter-rouge&quot;&gt;init&lt;/code&gt; method void would always end up
+in your client code (or developer glancing at the &lt;code class=&quot;highlighter-rouge&quot;&gt;init&lt;/code&gt; signature
+using his/her IDE) being oblivious of what &lt;code class=&quot;highlighter-rouge&quot;&gt;MyClass.init()&lt;/code&gt; is really
 doing. Just look at the different signatures, and think of yourself
-coding against each of them:
+coding against each of them:&lt;/p&gt;
 
-``` java
-public void init()
-public ScheduledFuture&lt;T&gt; init()
-```
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;init&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ScheduledFuture&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;T&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;init&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
-the latter one will save you a brain cycle every time you need to use
+&lt;p&gt;the latter one will save you a brain cycle every time you need to use
 it, as it clearly states its produced effects without having to look
-at the code or at a deeper level of documentation.
+at the code or at a deeper level of documentation.&lt;/p&gt;
 
-# Do one thing and do it well
+&lt;h1 id=&quot;do-one-thing-and-do-it-well&quot;&gt;Do one thing and do it well&lt;/h1&gt;
 
-Sticking to the idea that your function returns a single value to
+&lt;p&gt;Sticking to the idea that your function returns a single value to
 explicitly states its behavior is obviously impossible when your
 function does more than one thing at a time. Fortunately, that by
-itself is a [code smell][single responsibility], and by treating your
+itself is a &lt;a href=&quot;https://en.wikipedia.org/wiki/Single_responsibility_principle&quot;&gt;code smell&lt;/a&gt;, and by treating your
 return type as the existential purpose of your functions you make it
-one step weirder to violate the principle.
+one step weirder to violate the principle.&lt;/p&gt;
 
-# Conclusions
+&lt;h1 id=&quot;conclusions&quot;&gt;Conclusions&lt;/h1&gt;
 
-Be nice to your future self and in general to all developers using
+&lt;p&gt;Be nice to your future self and in general to all developers using
 your code and never hide such a valuable piece of information like
-your return value in your public API, never again.
+your return value in your public API, never again.&lt;/p&gt;
 
-Hugs &amp; kisses,
-c.
-
-[impure]: https://en.wikipedia.org/wiki/Pure_function#Impure_functions_in_pure_expressions
-[magic]: http://imgur.com/iZcUNxH
-[considered harmful]: http://meyerweb.com/eric/comment/chech.html
-[CRC]: https://en.wikipedia.org/wiki/Class-responsibility-collaboration_card
-[single responsibility]: https://en.wikipedia.org/wiki/Single_responsibility_principle</content><category term="java" /><category term="clean code" /><summary>This post could have been titled ‘Void methods considered harmful’,
+&lt;p&gt;Hugs &amp;amp; kisses,
+c.&lt;/p&gt;</content><category term="java" /><category term="clean code" /><summary>This post could have been titled ‘Void methods considered harmful’,
 if ‘considered harmful’ essays weren’t
 considered harmful themselves. Oh welp.</summary></entry><entry><title>Yet another agile is dead post</title><link href="https://codehopper.nl/2016/12/05/yet-another-agile-is-dead-post/" rel="alternate" type="text/html" title="Yet another agile is dead post" /><published>2016-12-05T00:00:00+01:00</published><updated>2016-12-05T00:00:00+01:00</updated><id>https://codehopper.nl/2016/12/05/yet-another-agile-is-dead-post</id><content type="html" xml:base="https://codehopper.nl/2016/12/05/yet-another-agile-is-dead-post/">Say you are in the software business for a while, and you worked with many different
 organizations on software projects. Say all of them adopted an agile process,
