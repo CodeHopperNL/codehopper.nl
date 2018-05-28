@@ -3,13 +3,93 @@
     <title type="text" xml:lang="en">CodeHopper -- Software done right</title>
     <link type="application/atom+xml" href="https:https://codehopper.nl/category/developer/clojure/feed" rel="self"/>
     <link type="text" href="http://skuro.tk/category/developer/clojure/feed" rel="alternate"/>
-    <updated>2017-05-21T22:12:28+02:00</updated>
+    <updated>2018-05-28T11:43:24+02:00</updated>
     <id>https:https://codehopper.nl</id>
     <author>
         <name>Carlo Sciolla</name>
     </author>
     <rights>Copyright (c) 2010-2017 Carlo Sciolla</rights>
     
+<entry>
+  <title>A tale of Emacs, Clojure and pinned packages</title>
+  <link href="https:https://codehopper.nl/2018/05/28/a-tale-of-emacs-clojure-and-pinned-packages//"/>
+  <updated>2018-05-28T00:00:00+02:00</updated>
+  <id>https:https://codehopper.nl/2018/05/28/a-tale-of-emacs-clojure-and-pinned-packages//</id>
+  <summary type="html">&lt;blockquote&gt;
+  &lt;p&gt;It’s like trying to pin down a kangaroo on a trampoline.
+– Sid Waddel&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;If you do any clojure[script] development, &lt;a href=&quot;https://static1.squarespace.com/static/5372821be4b0aefc6719057e/t/5aafdd7e562fa73957a7b46b/1521474957333/editor.png?format=1000w&quot;&gt;chances are&lt;/a&gt; that
+you do so through Emacs and &lt;a href=&quot;https://github.com/clojure-emacs&quot;&gt;CIDER&lt;/a&gt;. The experience is
+generally nothing short of &lt;a href=&quot;https://ih1.redbubble.net/image.118710403.1747/flat,800x800,075,f.u2.jpg&quot;&gt;awesome&lt;/a&gt;, but every now and then you
+bump into some quirks. That was the case for me when the latest CIDER
+came out, mostly due to how I like to keep my Emacs.&lt;/p&gt;
+
+&lt;h3 id=&quot;tldr&quot;&gt;&lt;em&gt;tl;dr&lt;/em&gt;&lt;/h3&gt;
+
+&lt;p&gt;CIDER and &lt;code class=&quot;highlighter-rouge&quot;&gt;clj-refactor&lt;/code&gt; have incompatible stable releases for which
+you need to make sure the latter comes from &lt;code class=&quot;highlighter-rouge&quot;&gt;melpa-unstable&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;stable-vs-unstable&quot;&gt;Stable vs unstable&lt;/h2&gt;
+
+&lt;p&gt;I use Clojure &lt;a href=&quot;https://synple.eu/en/index&quot;&gt;to pay the bills&lt;/a&gt;, and as such I cannot afford
+myself to walk too much on the bleeding edge. That’s why I made sure
+all of my Emacs packages come from a slightly trustworthier stream of
+stable releases:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;require&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;&#39;package&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;setq&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;package-archives&lt;/span&gt;
+      &lt;span class=&quot;o&quot;&gt;&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;gnu&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;https://elpa.gnu.org/packages/&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;melpa&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;https://stable.melpa.org/packages/&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;melpa-unstable&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;https://melpa.org/packages/&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)))&lt;/span&gt;
+
+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;setq&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;package-archive-priorities&lt;/span&gt;
+      &lt;span class=&quot;o&quot;&gt;&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;melpa&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;50&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;gnu&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;melpa-unstable&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)))&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The priorities set on the package archives make sure that released
+packages (from &lt;a href=&quot;https://stable.melpa.org/&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;melpa-stable&lt;/code&gt;&lt;/a&gt;) will be installed in
+place of their unstable snapshots if they exist. Ideally I’d love to
+remove &lt;code class=&quot;highlighter-rouge&quot;&gt;melpa-unstable&lt;/code&gt; from my configuration, but there are cases in
+which that’s some necessary evil to keep. Like the reason why I’m
+writing this up.&lt;/p&gt;
+
+&lt;h2 id=&quot;cider-and-clj-refactor-and-pinning&quot;&gt;CIDER and &lt;code class=&quot;highlighter-rouge&quot;&gt;clj-refactor&lt;/code&gt; and pinning&lt;/h2&gt;
+
+&lt;p&gt;The latest and gratest CIDER (&lt;code class=&quot;highlighter-rouge&quot;&gt;v0.17.0&lt;/code&gt;) earlier in May 2018, while
+the latest &lt;code class=&quot;highlighter-rouge&quot;&gt;clj-refactor&lt;/code&gt; release is pretty ancient, dating back to
+June 2017. The two packages are now not compatible, and if you
+installed both in your Emacs your REPL will fail to start. This has
+been reported many, many, many times in the &lt;code class=&quot;highlighter-rouge&quot;&gt;clj-refactor&lt;/code&gt; issue
+tracker, but Java 9 compatibility is &lt;a href=&quot;https://github.com/clojure-emacs/clj-refactor.el/issues/403#issuecomment-357631244&quot;&gt;holding back&lt;/a&gt; any new
+releases of &lt;code class=&quot;highlighter-rouge&quot;&gt;clj-refactor&lt;/code&gt;, which means we might be waiting quite some
+time before we can have a stable clojure IDE including
+refactorings. We need to fiddle around ourselves:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;;; manual package pinning:&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;add-to-list&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;&#39;package-pinned-packages&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;clj-refactor&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;melpa-unstable&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;;; or if you&#39;re using `use-package&#39; to install packages:&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;use-package&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;clj-refactor&lt;/span&gt;
+  &lt;span class=&quot;ss&quot;&gt;:ensure&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;t&lt;/span&gt;
+  &lt;span class=&quot;ss&quot;&gt;:pin&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;melpa-unstable&quot;&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;That’s it. You can now safely upgrade your packages and enjoy your
+clojure IDE once again.&lt;/p&gt;
+
+</summary>
+</entry>
+
+
 <entry>
   <title>The best keyboard layout for Clojurists</title>
   <link href="https:https://codehopper.nl/2015/03/01/colemak-best-keyboard-for-clojurists//"/>

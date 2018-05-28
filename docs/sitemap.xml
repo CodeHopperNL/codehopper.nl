@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
+<loc>https://codehopper.nl/2018/05/28/a-tale-of-emacs-clojure-and-pinned-packages/</loc>
+<lastmod>2018-05-28T00:00:00+02:00</lastmod>
+</url>
+<url>
 <loc>https://codehopper.nl/2017/05/22/void-methods-as-behavior-black-holes/</loc>
 <lastmod>2017-05-22T00:00:00+02:00</lastmod>
 </url>

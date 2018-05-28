@@ -3,13 +3,93 @@
     <title type="text" xml:lang="en">CodeHopper -- Software done right</title>
     <link type="application/atom+xml" href="https:https://codehopper.nl/rss2.xml" rel="self"/>
     <link type="text" href="http://skuro.tk/rss2.xml" rel="alternate"/>
-    <updated>2017-05-21T22:12:28+02:00</updated>
+    <updated>2018-05-28T11:43:24+02:00</updated>
     <id>https:https://codehopper.nl</id>
     <author>
         <name>Carlo Sciolla</name>
     </author>
     <rights>Copyright (c) 2010-2017 Carlo Sciolla</rights>
     
+<entry>
+  <title>A tale of Emacs, Clojure and pinned packages</title>
+  <link href="https:https://codehopper.nl/2018/05/28/a-tale-of-emacs-clojure-and-pinned-packages//"/>
+  <updated>2018-05-28T00:00:00+02:00</updated>
+  <id>https:https://codehopper.nl/2018/05/28/a-tale-of-emacs-clojure-and-pinned-packages//</id>
+  <summary type="html">&lt;blockquote&gt;
+  &lt;p&gt;It’s like trying to pin down a kangaroo on a trampoline.
+– Sid Waddel&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;If you do any clojure[script] development, &lt;a href=&quot;https://static1.squarespace.com/static/5372821be4b0aefc6719057e/t/5aafdd7e562fa73957a7b46b/1521474957333/editor.png?format=1000w&quot;&gt;chances are&lt;/a&gt; that
+you do so through Emacs and &lt;a href=&quot;https://github.com/clojure-emacs&quot;&gt;CIDER&lt;/a&gt;. The experience is
+generally nothing short of &lt;a href=&quot;https://ih1.redbubble.net/image.118710403.1747/flat,800x800,075,f.u2.jpg&quot;&gt;awesome&lt;/a&gt;, but every now and then you
+bump into some quirks. That was the case for me when the latest CIDER
+came out, mostly due to how I like to keep my Emacs.&lt;/p&gt;
+
+&lt;h3 id=&quot;tldr&quot;&gt;&lt;em&gt;tl;dr&lt;/em&gt;&lt;/h3&gt;
+
+&lt;p&gt;CIDER and &lt;code class=&quot;highlighter-rouge&quot;&gt;clj-refactor&lt;/code&gt; have incompatible stable releases for which
+you need to make sure the latter comes from &lt;code class=&quot;highlighter-rouge&quot;&gt;melpa-unstable&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;stable-vs-unstable&quot;&gt;Stable vs unstable&lt;/h2&gt;
+
+&lt;p&gt;I use Clojure &lt;a href=&quot;https://synple.eu/en/index&quot;&gt;to pay the bills&lt;/a&gt;, and as such I cannot afford
+myself to walk too much on the bleeding edge. That’s why I made sure
+all of my Emacs packages come from a slightly trustworthier stream of
+stable releases:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;require&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;&#39;package&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;setq&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;package-archives&lt;/span&gt;
+      &lt;span class=&quot;o&quot;&gt;&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;gnu&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;https://elpa.gnu.org/packages/&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;melpa&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;https://stable.melpa.org/packages/&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;melpa-unstable&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;https://melpa.org/packages/&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)))&lt;/span&gt;
+
+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;setq&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;package-archive-priorities&lt;/span&gt;
+      &lt;span class=&quot;o&quot;&gt;&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;melpa&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;50&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;gnu&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;melpa-unstable&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)))&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The priorities set on the package archives make sure that released
+packages (from &lt;a href=&quot;https://stable.melpa.org/&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;melpa-stable&lt;/code&gt;&lt;/a&gt;) will be installed in
+place of their unstable snapshots if they exist. Ideally I’d love to
+remove &lt;code class=&quot;highlighter-rouge&quot;&gt;melpa-unstable&lt;/code&gt; from my configuration, but there are cases in
+which that’s some necessary evil to keep. Like the reason why I’m
+writing this up.&lt;/p&gt;
+
+&lt;h2 id=&quot;cider-and-clj-refactor-and-pinning&quot;&gt;CIDER and &lt;code class=&quot;highlighter-rouge&quot;&gt;clj-refactor&lt;/code&gt; and pinning&lt;/h2&gt;
+
+&lt;p&gt;The latest and gratest CIDER (&lt;code class=&quot;highlighter-rouge&quot;&gt;v0.17.0&lt;/code&gt;) earlier in May 2018, while
+the latest &lt;code class=&quot;highlighter-rouge&quot;&gt;clj-refactor&lt;/code&gt; release is pretty ancient, dating back to
+June 2017. The two packages are now not compatible, and if you
+installed both in your Emacs your REPL will fail to start. This has
+been reported many, many, many times in the &lt;code class=&quot;highlighter-rouge&quot;&gt;clj-refactor&lt;/code&gt; issue
+tracker, but Java 9 compatibility is &lt;a href=&quot;https://github.com/clojure-emacs/clj-refactor.el/issues/403#issuecomment-357631244&quot;&gt;holding back&lt;/a&gt; any new
+releases of &lt;code class=&quot;highlighter-rouge&quot;&gt;clj-refactor&lt;/code&gt;, which means we might be waiting quite some
+time before we can have a stable clojure IDE including
+refactorings. We need to fiddle around ourselves:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;;; manual package pinning:&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;add-to-list&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;&#39;package-pinned-packages&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;clj-refactor&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;melpa-unstable&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;;; or if you&#39;re using `use-package&#39; to install packages:&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;use-package&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;clj-refactor&lt;/span&gt;
+  &lt;span class=&quot;ss&quot;&gt;:ensure&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;t&lt;/span&gt;
+  &lt;span class=&quot;ss&quot;&gt;:pin&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;melpa-unstable&quot;&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;That’s it. You can now safely upgrade your packages and enjoy your
+clojure IDE once again.&lt;/p&gt;
+
+</summary>
+</entry>
+
+
 <entry>
   <title>Void methods as behavior black holes</title>
   <link href="https:https://codehopper.nl/2017/05/22/void-methods-as-behavior-black-holes//"/>
@@ -1267,82 +1347,6 @@ awesome Dutch Clojure nights!&lt;/p&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;That said, I’ll leave you to your local Maven repositories. Happy building!&lt;/p&gt;
-</summary>
-</entry>
-
-
-<entry>
-  <title>Debug your build with the plan maven plugin</title>
-  <link href="https:https://codehopper.nl/2012/05/08/debug-your-build-with-the-plan-maven-plugin//"/>
-  <updated>2012-05-08T00:00:00+02:00</updated>
-  <id>https:https://codehopper.nl/2012/05/08/debug-your-build-with-the-plan-maven-plugin//</id>
-  <summary type="html">&lt;h1 id=&quot;contention-over-configuration&quot;&gt;Contention over configuration&lt;/h1&gt;
-
-&lt;p&gt;While &lt;a href=&quot;http://www.thoughtworks.com/&quot;&gt;ThoughtWorks&lt;/a&gt; put it &lt;a href=&quot;http://www.thoughtworks.com/sites/www.thoughtworks.com/files/images/52/radar-march-2012-tools.jpg&quot;&gt;on hold&lt;/a&gt;, there are still a number of occasions where a normal Java guy such as the truly yours have to face refactorings of ginormus Maven builds. In my company, for instance, I’m now in the situation where I need to speed up the build of one component whose project structure involves 27 POM files, with up to 4 levels of nesting. Needless to say, there are tens of plugin executions, plugins and all the possible Maven black magic you can think of. The default options for build introspection (help plugin, enable debug, etc.) left me helpless in the middle of a gargantuan build execution log file.&lt;/p&gt;
-
-&lt;h1 id=&quot;plan-plugin-ftw&quot;&gt;Plan plugin FTW&lt;/h1&gt;
-
-&lt;p&gt;I ended up writing a small plugin to help me debugging the build by dumping the execution plan. I originally named it &lt;a href=&quot;http://plan-maven-plugin.skuro.tk&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;plan-maven-plugin&lt;/code&gt;&lt;/a&gt;, and put all the sources on &lt;a href=&quot;https://github.com/skuro/plan-maven-plugin&quot;&gt;github&lt;/a&gt;. As the plugin is already on &lt;a href=&quot;http://search.maven.org/#artifactdetails%7Ctk.skuro%7Cplan-maven-plugin%7C1.1%7Cmaven-plugin&quot;&gt;Maven Central&lt;/a&gt;, you only need to place the following in your &lt;code class=&quot;highlighter-rouge&quot;&gt;settings.xml&lt;/code&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;pluginGroups&amp;gt;
-  &amp;lt;pluginGroup&amp;gt;tk.skuro&amp;lt;/pluginGroup&amp;gt;
-&amp;lt;/pluginGroups&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Thanks to &lt;a href=&quot;https://github.com/dthume&quot;&gt;David Thume&lt;/a&gt;, this is what it looks like now:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ mvn plan:plan -Dgoals=clean,javadoc:jar,sources:jar,package,gpg:sign
-...
-[INFO] --- plan-maven-plugin:1.1:plan (default-cli) @ plan-maven-plugin ---
-[INFO] 
-[INFO] Current lifecycle:
-[INFO]     pre-clean
-[INFO]     clean
-[INFO]     post-clean
-[INFO]     validate
-[INFO]     initialize
-[INFO]     generate-sources
-[INFO]     process-sources
-[INFO]     generate-resources
-[INFO]     process-resources
-[INFO]     compile
-[INFO]     process-classes
-[INFO]     generate-test-sources
-[INFO]     process-test-sources
-[INFO]     generate-test-resources
-[INFO]     process-test-resources
-[INFO]     test-compile
-[INFO]     process-test-classes
-[INFO]     test
-[INFO]     prepare-package
-[INFO]     package
-[INFO]     pre-integration-test
-[INFO]     integration-test
-[INFO]     post-integration-test
-[INFO]     verify
-[INFO]     install
-[INFO]     deploy
-[INFO]     
-[INFO] Execution plan:
-[INFO]     [clean] org.apache.maven.plugins:maven-clean-plugin:clean (default-clean)
-[INFO]     [-] org.apache.maven.plugins:maven-javadoc-plugin:jar (default-cli)
-[INFO]     [-] org.apache.maven.plugins:maven-source-plugin:jar (default-cli)
-[INFO]     [validate] org.apache.maven.plugins:maven-enforcer-plugin:enforce (enforce-maven)
-[INFO]     [generate-resources] org.apache.maven.plugins:maven-plugin-plugin:descriptor (default-descriptor)
-[INFO]     [process-resources] org.apache.maven.plugins:maven-resources-plugin:resources (default-resources)
-[INFO]     [compile] org.apache.maven.plugins:maven-compiler-plugin:compile (default-compile)
-[INFO]     [process-test-resources] org.apache.maven.plugins:maven-resources-plugin:testResources (default-testResources)
-[INFO]     [test-compile] org.apache.maven.plugins:maven-compiler-plugin:testCompile (default-testCompile)
-[INFO]     [test] org.apache.maven.plugins:maven-surefire-plugin:test (default-test)
-[INFO]     [package] org.apache.maven.plugins:maven-jar-plugin:jar (default-jar)
-[INFO]     [package] org.apache.maven.plugins:maven-plugin-plugin:addPluginArtifactMetadata (default-addPluginArtifactMetadata)
-[INFO]     [-] org.apache.maven.plugins:maven-gpg-plugin:sign (default-cli)
-...
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;I still have a long way to go before I can bring my build to acceptable performance levels, but surely enough this will give me much more insights on what’s possibly going wrong. Enjoy!&lt;/p&gt;
 </summary>
 </entry>
 
