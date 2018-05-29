@@ -4,8 +4,8 @@ paginate: 10
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
     <title type="text" xml:lang="en">CodeHopper -- Software done right</title>
-    <link type="application/atom+xml" href="https:{{ site.url }}{{ page.url }}" rel="self"/>
-    <link type="text" href="https://codehopper.nl{{ page.url }}" rel="alternate"/>
+    <link type="application/atom+xml" href="{{ site.url }}{{ page.url }}" rel="self"/>
+    <link type="text" href="{{ site.url }}{{ page.url }}" rel="alternate"/>
     <updated>{{ site.time | date_to_xmlschema }}</updated>
     <id>https:{{ site.url }}</id>
     <author>
