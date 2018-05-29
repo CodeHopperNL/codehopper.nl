@@ -76,9 +76,24 @@ refactorings. We need to fiddle around ourselves:
 That's it. You can now safely upgrade your packages and enjoy your
 clojure IDE once again.
 
+---------------------------------------
+
+As duly noted by `dantheobserver` [in the comments][dan-comment], `use-package`
+itself is [pending a stable release][use-package-release] for some time now. As
+such, you only have one way to properly pin it, similarly to the first option
+above:
+
+``` emacs-lisp
+(add-to-list 'package-pinned-packages '(use-package . "melpa-unstable") t)
+```
+
+Happy hacking!
+
 [ide-war]: https://static1.squarespace.com/static/5372821be4b0aefc6719057e/t/5aafdd7e562fa73957a7b46b/1521474957333/editor.png?format=1000w
 [cider]: https://github.com/clojure-emacs
 [awe]: https://ih1.redbubble.net/image.118710403.1747/flat,800x800,075,f.u2.jpg
 [synple]: https://synple.eu/en/index
 [melpa-stable]: https://stable.melpa.org/
 [sad-face]: https://github.com/clojure-emacs/clj-refactor.el/issues/403#issuecomment-357631244
+[dan-comment]: http://disq.us/p/1svamen
+[use-package-release]: https://github.com/jwiegley/use-package/issues/602

@@ -4,7 +4,7 @@
     <link type="application/atom+xml" href="https://codehopper.nl/rss2.xml" rel="self"/>
     <link type="text" href="https://codehopper.nl/rss2.xml" rel="alternate"/>
     <link href="https://codehopper.nl" />
-    <updated>2018-05-29T13:02:43+02:00</updated>
+    <updated>2018-05-29T21:32:31+02:00</updated>
     <id>https://codehopper.nl</id>
     <author>
         <name>Carlo Sciolla</name>
@@ -86,6 +86,19 @@ refactorings. We need to fiddle around ourselves:&lt;/p&gt;
 
 &lt;p&gt;That’s it. You can now safely upgrade your packages and enjoy your
 clojure IDE once again.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;As duly noted by &lt;code class=&quot;highlighter-rouge&quot;&gt;dantheobserver&lt;/code&gt; &lt;a href=&quot;http://disq.us/p/1svamen&quot;&gt;in the comments&lt;/a&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;use-package&lt;/code&gt;
+itself is &lt;a href=&quot;https://github.com/jwiegley/use-package/issues/602&quot;&gt;pending a stable release&lt;/a&gt; for some time now. As
+such, you only have one way to properly pin it, similarly to the first option
+above:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;add-to-list&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;&#39;package-pinned-packages&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;use-package&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;melpa-unstable&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Happy hacking!&lt;/p&gt;
 
 </summary>
 </entry>
