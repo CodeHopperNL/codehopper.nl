@@ -3,7 +3,8 @@
     <title type="text" xml:lang="en">CodeHopper -- Software done right</title>
     <link type="application/atom+xml" href="https://codehopper.nl/category/developer/clojure/feed" rel="self"/>
     <link type="text" href="https://codehopper.nl/category/developer/clojure/feed" rel="alternate"/>
-    <updated>2018-05-29T12:00:47+02:00</updated>
+    <link href="https://codehopper.nl">
+    <updated>2018-05-29T13:00:56+02:00</updated>
     <id>https://codehopper.nl</id>
     <author>
         <name>Carlo Sciolla</name>
@@ -12,7 +13,7 @@
     
 <entry>
   <title>A tale of Emacs, Clojure and pinned packages</title>
-  <link href="https://codehopper.nl/2018/05/28/a-tale-of-emacs-clojure-and-pinned-packages/"/>
+  <link href="https://codehopper.nl/2018/05/28/a-tale-of-emacs-clojure-and-pinned-packages/" rel="alternate" />
   <updated>2018-05-28T00:00:00+02:00</updated>
   <id>https://codehopper.nl/2018/05/28/a-tale-of-emacs-clojure-and-pinned-packages/</id>
   <summary type="html">&lt;blockquote&gt;
@@ -92,7 +93,7 @@ clojure IDE once again.&lt;/p&gt;
 
 <entry>
   <title>The best keyboard layout for Clojurists</title>
-  <link href="https://codehopper.nl/2015/03/01/colemak-best-keyboard-for-clojurists/"/>
+  <link href="https://codehopper.nl/2015/03/01/colemak-best-keyboard-for-clojurists/" rel="alternate" />
   <updated>2015-03-01T00:00:00+01:00</updated>
   <id>https://codehopper.nl/2015/03/01/colemak-best-keyboard-for-clojurists/</id>
   <summary type="html">&lt;h1 id=&quot;keyboards-oh-my&quot;&gt;Keyboards, oh my!&lt;/h1&gt;
@@ -130,7 +131,7 @@ clojure IDE once again.&lt;/p&gt;
 
 <entry>
   <title>October Amsterdam Clojure 2012 is coming up!</title>
-  <link href="https://codehopper.nl/2012/10/14/october-amsterdam-clojure-coming-up/"/>
+  <link href="https://codehopper.nl/2012/10/14/october-amsterdam-clojure-coming-up/" rel="alternate" />
   <updated>2012-10-14T00:00:00+02:00</updated>
   <id>https://codehopper.nl/2012/10/14/october-amsterdam-clojure-coming-up/</id>
   <summary type="html">&lt;p&gt;Saturday, October 27th. Less than two weeks. That’s the time when
@@ -202,7 +203,7 @@ need:&lt;/p&gt;
 
 <entry>
   <title>org4idea adds org-mode support to Intellij IDEA</title>
-  <link href="https://codehopper.nl/2012/09/08/org-mode-intellij-plugin/"/>
+  <link href="https://codehopper.nl/2012/09/08/org-mode-intellij-plugin/" rel="alternate" />
   <updated>2012-09-08T00:00:00+02:00</updated>
   <id>https://codehopper.nl/2012/09/08/org-mode-intellij-plugin/</id>
   <summary type="html">&lt;p&gt;&lt;em&gt;tl;dr:&lt;/em&gt; &lt;a href=&quot;https://github.com/skuro/org4idea&quot;&gt;org4idea&lt;/a&gt; is a brand new
@@ -254,7 +255,7 @@ dialog.&lt;/p&gt;
 
 <entry>
   <title>Slides from Dispatch in Clojure</title>
-  <link href="https://codehopper.nl/2012/08/31/dispatch-in-clojure-presentation-slides/"/>
+  <link href="https://codehopper.nl/2012/08/31/dispatch-in-clojure-presentation-slides/" rel="alternate" />
   <updated>2012-08-31T00:00:00+02:00</updated>
   <id>https://codehopper.nl/2012/08/31/dispatch-in-clojure-presentation-slides/</id>
   <summary type="html">&lt;h2 id=&quot;presentation-slides&quot;&gt;Presentation slides&lt;/h2&gt;
@@ -311,7 +312,7 @@ awesome Dutch Clojure nights!&lt;/p&gt;
 
 <entry>
   <title>Slides from Alfresco the Clojure way</title>
-  <link href="https://codehopper.nl/2011/11/10/slides-from-alfresco-the-clojure-way/"/>
+  <link href="https://codehopper.nl/2011/11/10/slides-from-alfresco-the-clojure-way/" rel="alternate" />
   <updated>2011-11-10T00:00:00+01:00</updated>
   <id>https://codehopper.nl/2011/11/10/slides-from-alfresco-the-clojure-way/</id>
   <summary type="html">&lt;p&gt;I just gave a talk at the Alfresco DevCon 2011 in London, and I published the slides at slideshare:&lt;/p&gt;
@@ -329,7 +330,7 @@ awesome Dutch Clojure nights!&lt;/p&gt;
 
 <entry>
   <title>October Amsterdam Clojure with Uncle Bob</title>
-  <link href="https://codehopper.nl/2011/09/27/october-amsterdam-clojure-with-uncle-bob/"/>
+  <link href="https://codehopper.nl/2011/09/27/october-amsterdam-clojure-with-uncle-bob/" rel="alternate" />
   <updated>2011-09-27T00:00:00+02:00</updated>
   <id>https://codehopper.nl/2011/09/27/october-amsterdam-clojure-with-uncle-bob/</id>
   <summary type="html">&lt;p&gt;I’m very excited to announce that we have finalized the details, and
@@ -346,7 +347,7 @@ Wednesday, October 12th we’re going to have a great &lt;a href=&quot;http://bi
 
 <entry>
   <title>Clojure makes it to the Alfresco DevCon2011</title>
-  <link href="https://codehopper.nl/2011/09/04/clojure-makes-it-the-alfresco-devcon-2011-emea-london/"/>
+  <link href="https://codehopper.nl/2011/09/04/clojure-makes-it-the-alfresco-devcon-2011-emea-london/" rel="alternate" />
   <updated>2011-09-04T00:00:00+02:00</updated>
   <id>https://codehopper.nl/2011/09/04/clojure-makes-it-the-alfresco-devcon-2011-emea-london/</id>
   <summary type="html">&lt;p&gt;If you’re a bit into Alfresco, you surerly know what the &lt;a href=&quot;http://www.amiando.com/alfresco-devcon-london-2011.html&quot;&gt;DevCon&lt;/a&gt; is.&lt;/p&gt;
@@ -378,7 +379,7 @@ Wednesday, October 12th we’re going to have a great &lt;a href=&quot;http://bi
 
 <entry>
   <title>More Clojure for Spring Surf</title>
-  <link href="https://codehopper.nl/2011/05/10/more-clojure-for-spring-surf/"/>
+  <link href="https://codehopper.nl/2011/05/10/more-clojure-for-spring-surf/" rel="alternate" />
   <updated>2011-05-10T00:00:00+02:00</updated>
   <id>https://codehopper.nl/2011/05/10/more-clojure-for-spring-surf/</id>
   <summary type="html">&lt;p&gt;After some time from my &lt;a href=&quot;http://www.skuro.tk/2010/05/23/spring-surf-meets-clojure&quot;&gt;initial announcement&lt;/a&gt;, I’ve started again working on my &lt;a href=&quot;https://github.com/skuro/spring-webscripts-addon-clojure&quot;&gt;Clojure addon for Spring Surf&lt;/a&gt;. While it’s still a rudimentary piece of glue code, it’s now getting better and better, so much that I decided it’s good enough now to release an alpha version on &lt;a href=&quot;http://clojars.org/it.sk.spring.surf.clojure/spring-webscripts-addon-clojure&quot;&gt;clojars&lt;/a&gt;. Here’s what this library currently provides:&lt;/p&gt;
@@ -404,7 +405,7 @@ Wednesday, October 12th we’re going to have a great &lt;a href=&quot;http://bi
 
 <entry>
   <title>Performance boost in Clojure 1.3 (alpha4)</title>
-  <link href="https://codehopper.nl/2011/01/24/performance-boost-in-clojure-1-3/"/>
+  <link href="https://codehopper.nl/2011/01/24/performance-boost-in-clojure-1-3/" rel="alternate" />
   <updated>2011-01-24T00:00:00+01:00</updated>
   <id>https://codehopper.nl/2011/01/24/performance-boost-in-clojure-1-3/</id>
   <summary type="html">&lt;p&gt;As release 1.3 of Clojure is &lt;a href=&quot;http://www.assembla.com/spaces/clojure/milestones/238781-release-next&quot;&gt;on its way&lt;/a&gt;, I decided to give the currently available alpha4 a try and see some of the good stuff it brings. First thing first, I wanted to experiment myself with the performance gain that the extended support for native types would bring. I ran into an old &lt;a href=&quot;http://hughw.blogspot.com/2009/01/clojure-vs-javafx-script-only-5x-slower.html&quot;&gt;post&lt;/a&gt; from which I got the inspiration for the specific test to run: the &lt;a href=&quot;http://en.wikipedia.org/wiki/Tak_(function)&quot;&gt;Takeuchi function&lt;/a&gt;.&lt;/p&gt;
@@ -444,7 +445,7 @@ Wednesday, October 12th we’re going to have a great &lt;a href=&quot;http://bi
 
 <entry>
   <title>Spring Surf meets Clojure</title>
-  <link href="https://codehopper.nl/2010/05/23/spring-surf-meets-clojure/"/>
+  <link href="https://codehopper.nl/2010/05/23/spring-surf-meets-clojure/" rel="alternate" />
   <updated>2010-05-23T00:00:00+02:00</updated>
   <id>https://codehopper.nl/2010/05/23/spring-surf-meets-clojure/</id>
   <summary type="html">&lt;p&gt;For those who missed it, some time ago the &lt;a href=&quot;http://www.alfresco.com/&quot;&gt;Alfresco&lt;/a&gt; guys &lt;a href=&quot;http://www.alfresco.com/media/releases/2009/12/spring_surf/&quot;&gt;donated&lt;/a&gt; their &lt;a href=&quot;http://wiki.alfresco.com/wiki/Surf_Platform&quot;&gt;Surf Platform&lt;/a&gt; to &lt;a href=&quot;http://www.springsource.com/&quot;&gt;SpringSource&lt;/a&gt;, giving birth to the now-called &lt;a href=&quot;http://www.springsource.org/extensions/se-surf&quot;&gt;SpringSurf&lt;/a&gt;, which is thereby described as:&lt;/p&gt;
@@ -480,7 +481,7 @@ Wednesday, October 12th we’re going to have a great &lt;a href=&quot;http://bi
 
 <entry>
   <title>Amsterdam Clojurians meeting #4 - Dojo style</title>
-  <link href="https://codehopper.nl/2010/04/14/amsterdam-clojurians-meeting-4-dojo-style/"/>
+  <link href="https://codehopper.nl/2010/04/14/amsterdam-clojurians-meeting-4-dojo-style/" rel="alternate" />
   <updated>2010-04-14T00:00:00+02:00</updated>
   <id>https://codehopper.nl/2010/04/14/amsterdam-clojurians-meeting-4-dojo-style/</id>
   <summary type="html">&lt;p&gt;Today the fourth meeting of the Amsterdam Clojure user group was held at the now usual &lt;a href=&quot;http://www.sourcesense.com&quot;&gt;Sourcesense&lt;/a&gt; offices venue in Amsterdam.&lt;/p&gt;
