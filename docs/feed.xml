@@ -1,4 +1,137 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.1.2">Jekyll</generator><link href="https://codehopper.nl/feed.xml" rel="self" type="application/atom+xml" /><link href="https://codehopper.nl/" rel="alternate" type="text/html" /><updated>2018-05-29T21:32:31+02:00</updated><id>https://codehopper.nl/</id><title>CodeHopper</title><subtitle>Software and technology done right</subtitle><entry><title>A tale of Emacs, Clojure and pinned packages</title><link href="https://codehopper.nl/2018/05/28/a-tale-of-emacs-clojure-and-pinned-packages/" rel="alternate" type="text/html" title="A tale of Emacs, Clojure and pinned packages" /><published>2018-05-28T00:00:00+02:00</published><updated>2018-05-28T00:00:00+02:00</updated><id>https://codehopper.nl/2018/05/28/a-tale-of-emacs-clojure-and-pinned-packages</id><content type="html" xml:base="https://codehopper.nl/2018/05/28/a-tale-of-emacs-clojure-and-pinned-packages/">&lt;blockquote&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.1.2">Jekyll</generator><link href="https://codehopper.nl/feed.xml" rel="self" type="application/atom+xml" /><link href="https://codehopper.nl/" rel="alternate" type="text/html" /><updated>2018-09-27T22:28:28+02:00</updated><id>https://codehopper.nl/</id><title>CodeHopper</title><subtitle>Software and technology done right</subtitle><entry><title>Clojure GitLab deps</title><link href="https://codehopper.nl/2018/09/27/clojure-gitlab-deps/" rel="alternate" type="text/html" title="Clojure GitLab deps" /><published>2018-09-27T00:00:00+02:00</published><updated>2018-09-27T00:00:00+02:00</updated><id>https://codehopper.nl/2018/09/27/clojure-gitlab-deps</id><content type="html" xml:base="https://codehopper.nl/2018/09/27/clojure-gitlab-deps/">&lt;blockquote&gt;
+  &lt;p&gt;People addicted with technology. &lt;br /&gt;
+Technology has indulged mankind. &lt;br /&gt;
+Beware of technology dependency! &lt;br /&gt;
+– Toba Beta&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;tldr&quot;&gt;TL;DR:&lt;/h2&gt;
+
+&lt;p&gt;You need to force the &lt;code class=&quot;highlighter-rouge&quot;&gt;ssh-rsa&lt;/code&gt; host key instead of the default one picked up by the tooling:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ ssh-keygen -R gitlab.com
+$ cat &amp;lt;&amp;lt;EOF &amp;gt;&amp;gt; ~/.ssh/config
+
+Host gitlab.com
+  HostKeyAlgorithms ssh-rsa
+
+EOF
+$ ssh git@gitlab.com
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;csicsi-version-of-the-above&quot;&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/CSI:_Crime_Scene_Investigation&quot;&gt;CSI&lt;/a&gt; version of the above&lt;/h2&gt;
+
+&lt;p&gt;You are using the brand new &lt;a href=&quot;https://clojure.org/guides/deps_and_cli&quot;&gt;dependency resolution&lt;/a&gt; from the Clojure core team for the first time. You like the idea of fetching your dependency straight from git. You host all of your repos on
+&lt;a href=&quot;https://gitlab.com&quot;&gt;GitLab&lt;/a&gt;, it just makes sense, right? Right.&lt;/p&gt;
+
+&lt;p&gt;You go ahead and start your new project, you just need to bring in the usual &lt;code class=&quot;highlighter-rouge&quot;&gt;me/my-awesome-lib&lt;/code&gt; that you use everywhere. That’s just a new, empty folder in which you configure your &lt;code class=&quot;highlighter-rouge&quot;&gt;deps.edn&lt;/code&gt; like
+the following:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;:deps&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;my-awesome-lib&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;:git/url&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;git@gitlab.com:me/my-awesome-lib.git&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;no&quot;&gt;:sha&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;031aa264afc2cf6dee9e12de8b88c608faefea80&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}}}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;No more &lt;code class=&quot;highlighter-rouge&quot;&gt;lein new&lt;/code&gt;, no more templates, no more nothing. You mentally pat yourself on the shoulder.&lt;/p&gt;
+
+&lt;p&gt;You’re now at the terminal, ready to sprinkle your clojure fairy powder all over. You fire &lt;code class=&quot;highlighter-rouge&quot;&gt;clj -m my-awesome-lib.main&lt;/code&gt; and stand in awe as the tool fetches bits from GitLab and…&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Cloning: git@gitlab.com:me/my-awesome-lib.git
+Error building classpath. git@gitlab.com:me/my-awesome-lib.git: UnknownHostKey: gitlab.com. RSA key fingerprint is b6:03:0e:39:97:9e:d0:e7:24:ce:a3:77:3e:01:42:09
+org.eclipse.jgit.api.errors.TransportException: git@gitlab.com:me/my-awesome-lib.git: UnknownHostKey: gitlab.com. RSA key fingerprint is b6:03:0e:39:97:9e:d0:e7:24:ce:a3:77:3e:01:42:09
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Damn! Damn. Really? Mhhhhh…&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ ssh git@gitlab.com
+PTY allocation request failed on channel 0
+Welcome to GitLab, @carlo.sciolla!
+Connection to gitlab.com closed.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Seems all good. One final check:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ grep gitlab ~/.ssh/known_hosts
+gitlab.com,35.231.145.151 ecdsa-sha2-nistp256 ****
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Things are getting creepy. Worse of it all, you got stuck there. Fortunately, you have a &lt;a href=&quot;https://github.com/eneroth&quot;&gt;little bird&lt;/a&gt; spilling some relevant beans: the specific host key crypto algorithm
+(&lt;code class=&quot;highlighter-rouge&quot;&gt;ecdsa-sha2-nistp256&lt;/code&gt; in the above) might be relevant! A lead is a lead, and this feels like a good one. Let’s explore.&lt;/p&gt;
+
+&lt;p&gt;First things first, you need to start from a clean slate. Let’s remove the currently installed host key:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ ssh-keygen -R gitlab.com
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Good. Now let’s have a look at what keys are provided by GitLab, just to have a feel for what could be a sensible one to pick:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ ssh -Q key git@gitlab.com
+ssh-ed25519
+ssh-ed25519-cert-v01@openssh.com
+ssh-rsa
+ssh-dss
+ecdsa-sha2-nistp256
+ecdsa-sha2-nistp384
+ecdsa-sha2-nistp521
+ssh-rsa-cert-v01@openssh.com
+ssh-dss-cert-v01@openssh.com
+ecdsa-sha2-nistp256-cert-v01@openssh.com
+ecdsa-sha2-nistp384-cert-v01@openssh.com
+ecdsa-sha2-nistp521-cert-v01@openssh.com
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Whoa! That’s quite a rich of a menu to choose from. But your spidey senses are tingling: that &lt;code class=&quot;highlighter-rouge&quot;&gt;ssh-rsa&lt;/code&gt; feels good. Warm. Homey. Or maybe it’s just the closest to what the original error message
+said. Whatever, lets tell SSH to pick that one:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ cat &amp;lt;&amp;lt;EOF &amp;gt;&amp;gt; ~/.ssh/config
+
+Host gitlab.com
+  HostKeyAlgorithms ssh-rsa
+
+EOF
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Alright, time to shine. Let it fly, once again:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ clj -m my-awesome-lib.main
+Cloning: git@gitlab.com:me/my-awesome-lib.git
+Error building classpath. git@gitlab.com:me/my-awesome-lib.git: UnknownHostKey: gitlab.com. RSA key fingerprint is b6:03:0e:39:97:9e:d0:e7:24:ce:a3:77:3e:01:42:09
+org.eclipse.jgit.api.errors.TransportException: git@gitlab.com:me/my-awesome-lib.git: UnknownHostKey: gitlab.com. RSA key fingerprint is b6:03:0e:39:97:9e:d0:e7:24:ce:a3:77:3e:01:42:09
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Damn! Really?! “Oh wait!” you think, as you realize that maybe now you need to first get the new host key:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ ssh git@gitlab.com
+The authenticity of host &#39;gitlab.com (35.231.145.151)&#39; can&#39;t be established.
+RSA key fingerprint is SHA256:ROQFvPThGrW4RuWLoL9tq9I9zJ42fK4XywyRtbOz/EQ.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added &#39;gitlab.com,35.231.145.151&#39; (RSA) to the list of known hosts.
+PTY allocation request failed on channel 0
+Welcome to GitLab, @carlo.sciolla!
+Connection to gitlab.com closed.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Good! Now, what if… you just did it? “Well, here goes nothing.” you think, mindlessly typing that dreaded command one last time:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ clj -m my-awesome-lib.main
+Cloning: git@gitlab.com:me/my-awesome-lib.git
+Checking out: git@gitlab.com:me/my-awesome-lib.git at 031aa264afc2cf6dee9e12de8b88c608faefea80
+Welcome to MyProject!
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Good. That’s good, really. You feel like you deserve a coffee now. And you do.&lt;/p&gt;</content><category term="clojure" /><category term="deps.edn" /><category term="gitlab" /><summary>People addicted with technology. 
+Technology has indulged mankind. 
+Beware of technology dependency! 
+– Toba Beta</summary></entry><entry><title>A tale of Emacs, Clojure and pinned packages</title><link href="https://codehopper.nl/2018/05/28/a-tale-of-emacs-clojure-and-pinned-packages/" rel="alternate" type="text/html" title="A tale of Emacs, Clojure and pinned packages" /><published>2018-05-28T00:00:00+02:00</published><updated>2018-05-28T00:00:00+02:00</updated><id>https://codehopper.nl/2018/05/28/a-tale-of-emacs-clojure-and-pinned-packages</id><content type="html" xml:base="https://codehopper.nl/2018/05/28/a-tale-of-emacs-clojure-and-pinned-packages/">&lt;blockquote&gt;
   &lt;p&gt;It’s like trying to pin down a kangaroo on a trampoline.
 – Sid Waddel&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -602,171 +735,4 @@ Alfresco. It’s as easy as overriding the following maven property:&lt;/p&gt;
 
 &lt;p&gt;Happy development!&lt;/p&gt;</content><category term="alfresco" /><category term="h2support" /><category term="maven" /><category term="sonatype" /><summary>Just a quick update on the H2 support
 project, today I released the 1.1.1 maintenance version which targets
-Alfresco v3.4.12 Enterprise.</summary></entry><entry><title>Java StringBuilder myth debunked – now with content!</title><link href="https://codehopper.nl/2013/03/11/java-stringbuilder-myth-now-with-content/" rel="alternate" type="text/html" title="Java StringBuilder myth debunked -- now with content!" /><published>2013-03-11T00:00:00+01:00</published><updated>2013-03-11T00:00:00+01:00</updated><id>https://codehopper.nl/2013/03/11/java-stringbuilder-myth-now-with-content</id><content type="html" xml:base="https://codehopper.nl/2013/03/11/java-stringbuilder-myth-now-with-content/">&lt;h1 id=&quot;the-myth&quot;&gt;The myth&lt;/h1&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Concatenating two Strings with the plus operator is the source of all evil&lt;/p&gt;
-
-  &lt;p&gt;– Anonymous Java dev&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;strong&gt;NOTE&lt;/strong&gt;: The source code for the tests discussed here can be found on &lt;a href=&quot;https://github.com/skuro/stringbuilder&quot;&gt;Github&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;It’s from university time that I learned to regard &lt;code class=&quot;highlighter-rouge&quot;&gt;String&lt;/code&gt; concatenation in Java
-using the ‘+’ plus operator as a deadly performance sin. Recently there has been
-an internal review at &lt;a href=&quot;http://www.backbase.com&quot;&gt;Backbase R&amp;amp;D&lt;/a&gt; where such recurring
-mantra was dismissed as a myth due to &lt;code class=&quot;highlighter-rouge&quot;&gt;javac&lt;/code&gt; using &lt;code class=&quot;highlighter-rouge&quot;&gt;StringBuilder&lt;/code&gt; under the hood
-any time you use the plus operator to join Strings. I set myself up to prove
-such a point and verify the reality under different environments.&lt;/p&gt;
-
-&lt;h1 id=&quot;the-test&quot;&gt;The test&lt;/h1&gt;
-
-&lt;p&gt;Relying on your compiler to optimize your &lt;code class=&quot;highlighter-rouge&quot;&gt;String&lt;/code&gt; concatenation means that things
-might change heavily depending on the JDK vendor you adopt. As far as platform
-support goes for my daily job, three main vendors should be considered:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Oracle JDK&lt;/li&gt;
-  &lt;li&gt;IBM JDK&lt;/li&gt;
-  &lt;li&gt;ECJ – for developers only&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Moreover, while we officially support Java 5 through 6, we are also looking into
-supporting Java 7 for our products, adding another three-folded level of indirection on top of
-the three vendors. For the sake of &lt;del&gt;lazyness&lt;/del&gt; simplicity, the &lt;code class=&quot;highlighter-rouge&quot;&gt;ecj&lt;/code&gt; compiled
-bytecode will be run with a single JDK, namely Oracle JDK7.&lt;/p&gt;
-
-&lt;p&gt;I prepared a &lt;a href=&quot;https://www.virtualbox.org/&quot;&gt;Virtualbox&lt;/a&gt; VM with all the above JDK
-installed, then I developed some classes to express three different concatenation
-methods, amounting to three to four concatenations per method invocaiton,
-depending on the specific test case.&lt;/p&gt;
-
-&lt;p&gt;The test classes are run a thousands times for each test round, with a total of
-100 rounds each test case. The same VM is used to run all the rounds for the same
-test case, and it’s restarted across different test cases, all to let the Java
-runtime perform all the optimizations it can, without affecting the other test
-cases in any way. The default options were used to start all JVMs.&lt;/p&gt;
-
-&lt;p&gt;More details can be found in the benchmark runner &lt;a href=&quot;https://github.com/skuro/stringbuilder/blob/master/bench.sh&quot;&gt;script&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h1 id=&quot;the-code&quot;&gt;The code&lt;/h1&gt;
-
-&lt;p&gt;Full code for both test cases and the test suite is available on &lt;a href=&quot;https://github.com/skuro/stringbuilder&quot;&gt;Github&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;The following different test cases were produced to measure performance
-differences of the String concatenation with plus against the direct use of a
-&lt;code class=&quot;highlighter-rouge&quot;&gt;StringBuilder&lt;/code&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;// String concat with plus
-String result = &quot;const1&quot; + base;
-result = result + &quot;const2&quot;;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;hr /&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;// String concat with a StringBuilder
-new StringBuilder()
-              .append(&quot;const1&quot;)
-              .append(base)
-              .append(&quot;const2&quot;)
-              .append(append)
-              .toString();
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;hr /&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;//String concat with an initialized StringBuilder
-new StringBuilder(&quot;const1&quot;)
-              .append(base)
-              .append(&quot;const2&quot;)
-              .append(append)
-              .toString();
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;The general idea is to provide a concatenation both at the head and at the tail
-of constant &lt;code class=&quot;highlighter-rouge&quot;&gt;String&lt;/code&gt;s over a variable. The difference between the last two cases,
-both making explicit use of &lt;code class=&quot;highlighter-rouge&quot;&gt;StringBuilder&lt;/code&gt;, is in the latter using the 1-arg
-constructor which initializes the builder with the initial part of the result.&lt;/p&gt;
-
-&lt;h1 id=&quot;the-results&quot;&gt;The results&lt;/h1&gt;
-
-&lt;p&gt;Enough talking, down below here you can have a look at the generated graphs, where
-each data point corresponds to a single test round (e.g. 1000 executions of the same
-test class).&lt;/p&gt;
-
-&lt;p&gt;The discussion of the results and some more juicy details will follow.&lt;/p&gt;
-
-&lt;h2 id=&quot;concatenation-with-pluscatplus&quot;&gt;&lt;img src=&quot;/img/post/catplus.png&quot; alt=&quot;Concatenation with plus&quot; title=&quot;Concatenation with plus&quot; /&gt;&lt;/h2&gt;
-&lt;p&gt;&lt;img src=&quot;/img/post/catsb.png&quot; alt=&quot;Concatenation with StringBuilder&quot; title=&quot;Concatenation with StringBuilder&quot; /&gt;
-—-
-&lt;img src=&quot;/img/post/catsb2.png&quot; alt=&quot;Concatenation with initialized StringBuilder&quot; title=&quot;Concatenation with initalized StringBuilder&quot; /&gt;&lt;/p&gt;
-
-&lt;h1 id=&quot;the-discussion&quot;&gt;The discussion&lt;/h1&gt;
-
-&lt;p&gt;Oracle JKD5 is the clear loser here, appearing to be in a B league when compared
-to the others. But that’s not really the scope of this exercise, and thus we’ll
-gloss over it for the time being.&lt;/p&gt;
-
-&lt;p&gt;That said, there are two other interesting bits I observe in the above graph. The first is that indeed
-there is generally quite a difference between the use of the plus operator vs an explicit
-&lt;code class=&quot;highlighter-rouge&quot;&gt;StringBuilder&lt;/code&gt;, &lt;em&gt;especially&lt;/em&gt; if you’re using Oracle Java5 which performs tree
-times worse the the rest of the crew.&lt;/p&gt;
-
-&lt;p&gt;The second observation is that while it generally holds for most of the JDKs that
-an explicit &lt;code class=&quot;highlighter-rouge&quot;&gt;StringBuilder&lt;/code&gt; will offer up to twice the speed as the regular plus
-operator, &lt;strong&gt;IBM JDK6 seems not to suffer&lt;/strong&gt; from any performance loss, always averaging
-25ms to complete the task in all test cases.&lt;/p&gt;
-
-&lt;p&gt;A closer look at the generated bytecode reveals some interesting details&lt;/p&gt;
-
-&lt;h1 id=&quot;the-bytecode&quot;&gt;The bytecode&lt;/h1&gt;
-
-&lt;p&gt;&lt;em&gt;&lt;strong&gt;NOTE:&lt;/strong&gt; the decompiled classes are also available on &lt;a href=&quot;https://github.com/skuro/stringbuilder&quot;&gt;Github&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;Across all possible JDKs &lt;code class=&quot;highlighter-rouge&quot;&gt;StringBuilders&lt;/code&gt; are &lt;strong&gt;always&lt;/strong&gt; used to implement &lt;code class=&quot;highlighter-rouge&quot;&gt;String&lt;/code&gt;
-concatenation even in presence of a plus sign.
-Moreover, across all vendors and versions, &lt;strong&gt;there is almost no difference at all&lt;/strong&gt;
-for the same test case. The only one that stands a bit apart is &lt;a href=&quot;https://github.com/skuro/stringbuilder/blob/master/ecj/CatPlus.class.txt&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;ecj&lt;/code&gt;&lt;/a&gt;,
-which is the only one to cleverly optimize the &lt;code class=&quot;highlighter-rouge&quot;&gt;CatPlus&lt;/code&gt; test case to invoke
-the 1-arg constructor of the &lt;code class=&quot;highlighter-rouge&quot;&gt;StringBuilder&lt;/code&gt; instead of the 0-arg version.&lt;/p&gt;
-
-&lt;p&gt;Comparing the resulting bytecode exposes what could affect performance in the
-different scnarios:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;when concatenating with plus, &lt;em&gt;new instances of &lt;code class=&quot;highlighter-rouge&quot;&gt;StringBuilder&lt;/code&gt;&lt;/em&gt; are created
-any time a concatenation happens. This can easily result in a performance
-degradation due to useless invocation of the constructor plus more stress on
-the garbage collector due to throw away instances&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;compilers will take you literally and only initalize &lt;code class=&quot;highlighter-rouge&quot;&gt;StringBuilder&lt;/code&gt; with its
-1-arg constructor if and only if you write it that way in the original code. This
-results in respectively four and three invocations of &lt;code class=&quot;highlighter-rouge&quot;&gt;StringBuilder.append&lt;/code&gt; for
-&lt;a href=&quot;https://github.com/skuro/stringbuilder/blob/master/ecj/CatSB.class.txt&quot;&gt;CatSB&lt;/a&gt; and &lt;a href=&quot;https://github.com/skuro/stringbuilder/blob/master/ecj/CatSB2.class.txt&quot;&gt;CatSB2&lt;/a&gt;.&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&quot;the-conclusion&quot;&gt;The conclusion&lt;/h1&gt;
-
-&lt;p&gt;Bytecode analysis offers the final answer to the original question.&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Do you need to explicitly use a &lt;code class=&quot;highlighter-rouge&quot;&gt;StringBuilder&lt;/code&gt; to improve performance? &lt;strong&gt;Yes&lt;/strong&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;The above graphs clearly show that, unless you’re using IBM JDK6 runtime, you will
-loss 50% performance when using the plus operator, although it’s the one to perform
-slightly worse across the candidates when expliciting &lt;code class=&quot;highlighter-rouge&quot;&gt;StringBuilder&lt;/code&gt;s.&lt;/p&gt;
-
-&lt;p&gt;Also, it’s quite interesting to see how &lt;em&gt;JIT optimizations&lt;/em&gt; impact the overall
-performance: for instance, even in presence of different bytecode between the two
-explicit &lt;code class=&quot;highlighter-rouge&quot;&gt;StringBuilder&lt;/code&gt; test cases, the end result is absolutely the same in the
-long run.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/img/post/myth-confirmed.jpg&quot; alt=&quot;Myth confirmed&quot; /&gt;&lt;/p&gt;</content><category term="java" /><category term="performance" /><category term="development" /><summary>The myth</summary></entry></feed>
+Alfresco v3.4.12 Enterprise.</summary></entry></feed>

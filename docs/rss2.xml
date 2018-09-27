@@ -4,13 +4,154 @@
     <link type="application/atom+xml" href="https://codehopper.nl/rss2.xml" rel="self"/>
     <link type="text" href="https://codehopper.nl/rss2.xml" rel="alternate"/>
     <link href="https://codehopper.nl" />
-    <updated>2018-05-29T21:32:31+02:00</updated>
+    <updated>2018-09-27T22:28:28+02:00</updated>
     <id>https://codehopper.nl</id>
     <author>
         <name>Carlo Sciolla</name>
     </author>
     <rights>Copyright (c) 2010-2019 Carlo Sciolla</rights>
     
+<entry>
+  <title>Clojure GitLab deps</title>
+  <link href="https://codehopper.nl/2018/09/27/clojure-gitlab-deps/" rel="alternate" />
+  <updated>2018-09-27T00:00:00+02:00</updated>
+  <id>https://codehopper.nl/2018/09/27/clojure-gitlab-deps/</id>
+  <summary type="html">&lt;blockquote&gt;
+  &lt;p&gt;People addicted with technology. &lt;br /&gt;
+Technology has indulged mankind. &lt;br /&gt;
+Beware of technology dependency! &lt;br /&gt;
+– Toba Beta&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;tldr&quot;&gt;TL;DR:&lt;/h2&gt;
+
+&lt;p&gt;You need to force the &lt;code class=&quot;highlighter-rouge&quot;&gt;ssh-rsa&lt;/code&gt; host key instead of the default one picked up by the tooling:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ ssh-keygen -R gitlab.com
+$ cat &amp;lt;&amp;lt;EOF &amp;gt;&amp;gt; ~/.ssh/config
+
+Host gitlab.com
+  HostKeyAlgorithms ssh-rsa
+
+EOF
+$ ssh git@gitlab.com
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;csicsi-version-of-the-above&quot;&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/CSI:_Crime_Scene_Investigation&quot;&gt;CSI&lt;/a&gt; version of the above&lt;/h2&gt;
+
+&lt;p&gt;You are using the brand new &lt;a href=&quot;https://clojure.org/guides/deps_and_cli&quot;&gt;dependency resolution&lt;/a&gt; from the Clojure core team for the first time. You like the idea of fetching your dependency straight from git. You host all of your repos on
+&lt;a href=&quot;https://gitlab.com&quot;&gt;GitLab&lt;/a&gt;, it just makes sense, right? Right.&lt;/p&gt;
+
+&lt;p&gt;You go ahead and start your new project, you just need to bring in the usual &lt;code class=&quot;highlighter-rouge&quot;&gt;me/my-awesome-lib&lt;/code&gt; that you use everywhere. That’s just a new, empty folder in which you configure your &lt;code class=&quot;highlighter-rouge&quot;&gt;deps.edn&lt;/code&gt; like
+the following:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;:deps&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;my-awesome-lib&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;:git/url&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;git@gitlab.com:me/my-awesome-lib.git&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;no&quot;&gt;:sha&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;031aa264afc2cf6dee9e12de8b88c608faefea80&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}}}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;No more &lt;code class=&quot;highlighter-rouge&quot;&gt;lein new&lt;/code&gt;, no more templates, no more nothing. You mentally pat yourself on the shoulder.&lt;/p&gt;
+
+&lt;p&gt;You’re now at the terminal, ready to sprinkle your clojure fairy powder all over. You fire &lt;code class=&quot;highlighter-rouge&quot;&gt;clj -m my-awesome-lib.main&lt;/code&gt; and stand in awe as the tool fetches bits from GitLab and…&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Cloning: git@gitlab.com:me/my-awesome-lib.git
+Error building classpath. git@gitlab.com:me/my-awesome-lib.git: UnknownHostKey: gitlab.com. RSA key fingerprint is b6:03:0e:39:97:9e:d0:e7:24:ce:a3:77:3e:01:42:09
+org.eclipse.jgit.api.errors.TransportException: git@gitlab.com:me/my-awesome-lib.git: UnknownHostKey: gitlab.com. RSA key fingerprint is b6:03:0e:39:97:9e:d0:e7:24:ce:a3:77:3e:01:42:09
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Damn! Damn. Really? Mhhhhh…&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ ssh git@gitlab.com
+PTY allocation request failed on channel 0
+Welcome to GitLab, @carlo.sciolla!
+Connection to gitlab.com closed.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Seems all good. One final check:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ grep gitlab ~/.ssh/known_hosts
+gitlab.com,35.231.145.151 ecdsa-sha2-nistp256 ****
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Things are getting creepy. Worse of it all, you got stuck there. Fortunately, you have a &lt;a href=&quot;https://github.com/eneroth&quot;&gt;little bird&lt;/a&gt; spilling some relevant beans: the specific host key crypto algorithm
+(&lt;code class=&quot;highlighter-rouge&quot;&gt;ecdsa-sha2-nistp256&lt;/code&gt; in the above) might be relevant! A lead is a lead, and this feels like a good one. Let’s explore.&lt;/p&gt;
+
+&lt;p&gt;First things first, you need to start from a clean slate. Let’s remove the currently installed host key:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ ssh-keygen -R gitlab.com
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Good. Now let’s have a look at what keys are provided by GitLab, just to have a feel for what could be a sensible one to pick:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ ssh -Q key git@gitlab.com
+ssh-ed25519
+ssh-ed25519-cert-v01@openssh.com
+ssh-rsa
+ssh-dss
+ecdsa-sha2-nistp256
+ecdsa-sha2-nistp384
+ecdsa-sha2-nistp521
+ssh-rsa-cert-v01@openssh.com
+ssh-dss-cert-v01@openssh.com
+ecdsa-sha2-nistp256-cert-v01@openssh.com
+ecdsa-sha2-nistp384-cert-v01@openssh.com
+ecdsa-sha2-nistp521-cert-v01@openssh.com
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Whoa! That’s quite a rich of a menu to choose from. But your spidey senses are tingling: that &lt;code class=&quot;highlighter-rouge&quot;&gt;ssh-rsa&lt;/code&gt; feels good. Warm. Homey. Or maybe it’s just the closest to what the original error message
+said. Whatever, lets tell SSH to pick that one:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ cat &amp;lt;&amp;lt;EOF &amp;gt;&amp;gt; ~/.ssh/config
+
+Host gitlab.com
+  HostKeyAlgorithms ssh-rsa
+
+EOF
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Alright, time to shine. Let it fly, once again:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ clj -m my-awesome-lib.main
+Cloning: git@gitlab.com:me/my-awesome-lib.git
+Error building classpath. git@gitlab.com:me/my-awesome-lib.git: UnknownHostKey: gitlab.com. RSA key fingerprint is b6:03:0e:39:97:9e:d0:e7:24:ce:a3:77:3e:01:42:09
+org.eclipse.jgit.api.errors.TransportException: git@gitlab.com:me/my-awesome-lib.git: UnknownHostKey: gitlab.com. RSA key fingerprint is b6:03:0e:39:97:9e:d0:e7:24:ce:a3:77:3e:01:42:09
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Damn! Really?! “Oh wait!” you think, as you realize that maybe now you need to first get the new host key:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ ssh git@gitlab.com
+The authenticity of host &#39;gitlab.com (35.231.145.151)&#39; can&#39;t be established.
+RSA key fingerprint is SHA256:ROQFvPThGrW4RuWLoL9tq9I9zJ42fK4XywyRtbOz/EQ.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added &#39;gitlab.com,35.231.145.151&#39; (RSA) to the list of known hosts.
+PTY allocation request failed on channel 0
+Welcome to GitLab, @carlo.sciolla!
+Connection to gitlab.com closed.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Good! Now, what if… you just did it? “Well, here goes nothing.” you think, mindlessly typing that dreaded command one last time:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ clj -m my-awesome-lib.main
+Cloning: git@gitlab.com:me/my-awesome-lib.git
+Checking out: git@gitlab.com:me/my-awesome-lib.git at 031aa264afc2cf6dee9e12de8b88c608faefea80
+Welcome to MyProject!
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Good. That’s good, really. You feel like you deserve a coffee now. And you do.&lt;/p&gt;
+
+</summary>
+</entry>
+
+
 <entry>
   <title>A tale of Emacs, Clojure and pinned packages</title>
   <link href="https://codehopper.nl/2018/05/28/a-tale-of-emacs-clojure-and-pinned-packages/" rel="alternate" />
@@ -1295,72 +1436,6 @@ awesome Dutch Clojure nights!&lt;/p&gt;
 &lt;/div&gt;
 
 &lt;p&gt;Where you have to replace &lt;code class=&quot;highlighter-rouge&quot;&gt;$USER&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;$PROJECT&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;$PATH&lt;/code&gt; with your Github username, your project name and the path to your maven repository root within your sources (e.g. &lt;code class=&quot;highlighter-rouge&quot;&gt;src/main/lib&lt;/code&gt; in the previous article).&lt;/p&gt;
-</summary>
-</entry>
-
-
-<entry>
-  <title>Legacy libraries for your maven build</title>
-  <link href="https://codehopper.nl/2012/05/14/legacy-libraries-for-your-maven-build/" rel="alternate" />
-  <updated>2012-05-14T00:00:00+02:00</updated>
-  <id>https://codehopper.nl/2012/05/14/legacy-libraries-for-your-maven-build/</id>
-  <summary type="html">&lt;h1 id=&quot;legacy-libraries&quot;&gt;Legacy libraries&lt;/h1&gt;
-
-&lt;p&gt;Dealing with legacy code is always tricky, and adapting your tooling to leverage them is sometimes plain hard. Especially when you’re building your projects with Maven and your code happens to depend on some ancient library which appear to be unknown to the Internet™, you probably have to figure out how to tell Maven where to find that damn library. This is also the problem when dealing with e.g. proprietary third party libraries which don’t ship with a POM, therefore they don’t mavenly exist.&lt;/p&gt;
-
-&lt;h1 id=&quot;local-repositories-ftw&quot;&gt;Local repositories FTW&lt;/h1&gt;
-
-&lt;p&gt;&lt;strong&gt;UPDATE:&lt;/strong&gt; following the argument from &lt;a href=&quot;http://discursive.com/&quot;&gt;Tim O’Brien&lt;/a&gt;, I wrote a &lt;a href=&quot;http://skuro.tk/2012/05/28/legacy-artifacts-repository-update-going-remote/&quot;&gt;follow up&lt;/a&gt; to also exploit Github as a remote repository using the same storage strategy&lt;/p&gt;
-
-&lt;p&gt;There are a number of possible solutions to the above mentioned problem, which ideally involve a shared, remote artifact repository where to deploy the JAR file that causes you headaches. Recently, I found myself in the need of creating (yet another) Maven build around some &lt;a href=&quot;http://www.alfresco.com&quot;&gt;Alfresco&lt;/a&gt;, to enable &lt;a href=&quot;http://skuro.tk/lambdalf/&quot;&gt;Lambdalf&lt;/a&gt; to build its Clojure sources. The rocky road to Maven for Alfresco is still long, and as a result you find yourself dealing with some iffy libraries when coding against Alfresco. Some examples, just opening up the WAR files:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;truezip.jar&lt;/code&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;mybaties-3.0.4-patched.jar&lt;/code&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;acegi-security-0.8.2_patched.jar&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;One solution I found that doesn’t require setting up your publicly available &lt;a href=&quot;http://www.sonatype.org/nexus/&quot;&gt;Nexus&lt;/a&gt; repository, nor using someone else’s &lt;a href=&quot;http://www.jfrog.com/products.php&quot;&gt;Artifactory&lt;/a&gt;, is to provide the problematic JARs in a maven repository as part of your sources. Suppose you have a mysterious &lt;code class=&quot;highlighter-rouge&quot;&gt;fluff.jar&lt;/code&gt; library you need to include in your classpath, here’s how it works:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;place the JAR file in &lt;code class=&quot;highlighter-rouge&quot;&gt;src/main/lib/fluff/fluff/unknown/fluff-unknown.jar&lt;/code&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;setup the dependency in your POM:&lt;/p&gt;
-
-    &lt;dependencies&gt;
-    &lt;dependency&gt;
-      &lt;groupid&gt;fluff&lt;/groupid&gt;
-      &lt;artifactid&gt;fluff&lt;/artifactid&gt;
-      &lt;version&gt;unknown&lt;/version&gt;
-    &lt;/dependency&gt;
-  &lt;/dependencies&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;still in your POM, enable the local repository:&lt;/p&gt;
-
-    &lt;repositories&gt;
-    &lt;repository&gt;
-      &lt;id&gt;legacy-artifacts&lt;/id&gt;
-      &lt;url&gt;file://${project.basedir}/src/main/lib&lt;/url&gt;
-    &lt;/repository&gt;
-  &lt;/repositories&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Voilá. You just created a local, portable repository in your sources and instructed Maven to look there for artifacts.&lt;/p&gt;
-
-&lt;h1 id=&quot;license&quot;&gt;License&lt;/h1&gt;
-
-&lt;p&gt;A couple of golden rules for all the cowboy programmers out there:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;always, always, &lt;strong&gt;always check if the license allows you to redistribute the libraries&lt;/strong&gt; you’re going to include in your project&lt;/li&gt;
-  &lt;li&gt;never, never, &lt;strong&gt;never distribute a piece of software you’re not entitled to give away&lt;/strong&gt; and &lt;strong&gt;attach the license of all third party libraries&lt;/strong&gt; along with your project&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;That said, I’ll leave you to your local Maven repositories. Happy building!&lt;/p&gt;
 </summary>
 </entry>
 
