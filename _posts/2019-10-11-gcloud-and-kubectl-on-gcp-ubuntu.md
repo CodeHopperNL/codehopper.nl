@@ -1,5 +1,5 @@
 ---
-title: gcolud and kubectl on GCP ubuntu images
+title: gcloud and kubectl on GCP ubuntu images
 layout: post
 primary_img: /img/post/entangled.jpg
 tags: [kubernetes, gcp, google, cloud, devops]
