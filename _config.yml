@@ -63,4 +63,4 @@ gems:
 
 # Exclude list
 include: [_pages]
-exclude: [README.md, Gemfile, Gemfile.lock, _site, src, vendor, CNAME, LICENSE, Rakefile, .sass-cache, .DS_Store, docs]
+exclude: [README.md, Gemfile, Gemfile.lock, _site, src, vendor, LICENSE, Rakefile, .sass-cache, .DS_Store, docs]
