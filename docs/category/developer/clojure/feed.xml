@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
     <title type="text" xml:lang="en">CodeHopper -- Software done right</title>
-    <link type="application/atom+xml" href="https://codehopper.nl/category/developer/clojure/feed" rel="self"/>
-    <link type="text" href="https://codehopper.nl/category/developer/clojure/feed" rel="alternate"/>
-    <link href="https://codehopper.nl" />
-    <updated>2018-09-27T22:28:28+02:00</updated>
-    <id>https://codehopper.nl</id>
+    <link type="application/atom+xml" href="http://localhost:4000/category/developer/clojure/feed" rel="self"/>
+    <link type="text" href="http://localhost:4000/category/developer/clojure/feed" rel="alternate"/>
+    <link href="http://localhost:4000" />
+    <updated>2019-10-13T23:50:04+02:00</updated>
+    <id>http://localhost:4000</id>
     <author>
         <name>Carlo Sciolla</name>
     </author>
@@ -13,9 +13,9 @@
     
 <entry>
   <title>Clojure GitLab deps</title>
-  <link href="https://codehopper.nl/2018/09/27/clojure-gitlab-deps/" rel="alternate" />
+  <link href="http://localhost:4000/2018/09/27/clojure-gitlab-deps/" rel="alternate" />
   <updated>2018-09-27T00:00:00+02:00</updated>
-  <id>https://codehopper.nl/2018/09/27/clojure-gitlab-deps/</id>
+  <id>http://localhost:4000/2018/09/27/clojure-gitlab-deps/</id>
   <summary type="html">&lt;blockquote&gt;
   &lt;p&gt;People addicted with technology. &lt;br /&gt;
 Technology has indulged mankind. &lt;br /&gt;
@@ -27,7 +27,7 @@ Beware of technology dependency! &lt;br /&gt;
 
 &lt;p&gt;You need to force the &lt;code class=&quot;highlighter-rouge&quot;&gt;ssh-rsa&lt;/code&gt; host key instead of the default one picked up by the tooling:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ ssh-keygen -R gitlab.com
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ ssh-keygen -R gitlab.com
 $ cat &amp;lt;&amp;lt;EOF &amp;gt;&amp;gt; ~/.ssh/config
 
 Host gitlab.com
@@ -35,10 +35,9 @@ Host gitlab.com
 
 EOF
 $ ssh git@gitlab.com
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;h2 id=&quot;csicsi-version-of-the-above&quot;&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/CSI:_Crime_Scene_Investigation&quot;&gt;CSI&lt;/a&gt; version of the above&lt;/h2&gt;
+&lt;h2 id=&quot;csi-version-of-the-above&quot;&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/CSI:_Crime_Scene_Investigation&quot;&gt;CSI&lt;/a&gt; version of the above&lt;/h2&gt;
 
 &lt;p&gt;You are using the brand new &lt;a href=&quot;https://clojure.org/guides/deps_and_cli&quot;&gt;dependency resolution&lt;/a&gt; from the Clojure core team for the first time. You like the idea of fetching your dependency straight from git. You host all of your repos on
 &lt;a href=&quot;https://gitlab.com&quot;&gt;GitLab&lt;/a&gt;, it just makes sense, right? Right.&lt;/p&gt;
@@ -46,48 +45,43 @@ $ ssh git@gitlab.com
 &lt;p&gt;You go ahead and start your new project, you just need to bring in the usual &lt;code class=&quot;highlighter-rouge&quot;&gt;me/my-awesome-lib&lt;/code&gt; that you use everywhere. That’s just a new, empty folder in which you configure your &lt;code class=&quot;highlighter-rouge&quot;&gt;deps.edn&lt;/code&gt; like
 the following:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;:deps&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;my-awesome-lib&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;:git/url&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;git@gitlab.com:me/my-awesome-lib.git&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;no&quot;&gt;:sha&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;031aa264afc2cf6dee9e12de8b88c608faefea80&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}}}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;div class=&quot;language-clojure highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;:deps&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;my-awesome-lib&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;:git/url&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;git@gitlab.com:me/my-awesome-lib.git&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;no&quot;&gt;:sha&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;031aa264afc2cf6dee9e12de8b88c608faefea80&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}}}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;No more &lt;code class=&quot;highlighter-rouge&quot;&gt;lein new&lt;/code&gt;, no more templates, no more nothing. You mentally pat yourself on the shoulder.&lt;/p&gt;
 
 &lt;p&gt;You’re now at the terminal, ready to sprinkle your clojure fairy powder all over. You fire &lt;code class=&quot;highlighter-rouge&quot;&gt;clj -m my-awesome-lib.main&lt;/code&gt; and stand in awe as the tool fetches bits from GitLab and…&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Cloning: git@gitlab.com:me/my-awesome-lib.git
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Cloning: git@gitlab.com:me/my-awesome-lib.git
 Error building classpath. git@gitlab.com:me/my-awesome-lib.git: UnknownHostKey: gitlab.com. RSA key fingerprint is b6:03:0e:39:97:9e:d0:e7:24:ce:a3:77:3e:01:42:09
 org.eclipse.jgit.api.errors.TransportException: git@gitlab.com:me/my-awesome-lib.git: UnknownHostKey: gitlab.com. RSA key fingerprint is b6:03:0e:39:97:9e:d0:e7:24:ce:a3:77:3e:01:42:09
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;Damn! Damn. Really? Mhhhhh…&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ ssh git@gitlab.com
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ ssh git@gitlab.com
 PTY allocation request failed on channel 0
 Welcome to GitLab, @carlo.sciolla!
 Connection to gitlab.com closed.
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;Seems all good. One final check:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ grep gitlab ~/.ssh/known_hosts
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ grep gitlab ~/.ssh/known_hosts
 gitlab.com,35.231.145.151 ecdsa-sha2-nistp256 ****
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;Things are getting creepy. Worse of it all, you got stuck there. Fortunately, you have a &lt;a href=&quot;https://github.com/eneroth&quot;&gt;little bird&lt;/a&gt; spilling some relevant beans: the specific host key crypto algorithm
 (&lt;code class=&quot;highlighter-rouge&quot;&gt;ecdsa-sha2-nistp256&lt;/code&gt; in the above) might be relevant! A lead is a lead, and this feels like a good one. Let’s explore.&lt;/p&gt;
 
 &lt;p&gt;First things first, you need to start from a clean slate. Let’s remove the currently installed host key:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ ssh-keygen -R gitlab.com
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ ssh-keygen -R gitlab.com
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;Good. Now let’s have a look at what keys are provided by GitLab, just to have a feel for what could be a sensible one to pick:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ ssh -Q key git@gitlab.com
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ ssh -Q key git@gitlab.com
 ssh-ed25519
 ssh-ed25519-cert-v01@openssh.com
 ssh-rsa
@@ -100,51 +94,46 @@ ssh-dss-cert-v01@openssh.com
 ecdsa-sha2-nistp256-cert-v01@openssh.com
 ecdsa-sha2-nistp384-cert-v01@openssh.com
 ecdsa-sha2-nistp521-cert-v01@openssh.com
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;Whoa! That’s quite a rich of a menu to choose from. But your spidey senses are tingling: that &lt;code class=&quot;highlighter-rouge&quot;&gt;ssh-rsa&lt;/code&gt; feels good. Warm. Homey. Or maybe it’s just the closest to what the original error message
 said. Whatever, lets tell SSH to pick that one:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ cat &amp;lt;&amp;lt;EOF &amp;gt;&amp;gt; ~/.ssh/config
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ cat &amp;lt;&amp;lt;EOF &amp;gt;&amp;gt; ~/.ssh/config
 
 Host gitlab.com
   HostKeyAlgorithms ssh-rsa
 
 EOF
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;Alright, time to shine. Let it fly, once again:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ clj -m my-awesome-lib.main
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ clj -m my-awesome-lib.main
 Cloning: git@gitlab.com:me/my-awesome-lib.git
 Error building classpath. git@gitlab.com:me/my-awesome-lib.git: UnknownHostKey: gitlab.com. RSA key fingerprint is b6:03:0e:39:97:9e:d0:e7:24:ce:a3:77:3e:01:42:09
 org.eclipse.jgit.api.errors.TransportException: git@gitlab.com:me/my-awesome-lib.git: UnknownHostKey: gitlab.com. RSA key fingerprint is b6:03:0e:39:97:9e:d0:e7:24:ce:a3:77:3e:01:42:09
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;Damn! Really?! “Oh wait!” you think, as you realize that maybe now you need to first get the new host key:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ ssh git@gitlab.com
-The authenticity of host &#39;gitlab.com (35.231.145.151)&#39; can&#39;t be established.
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ ssh git@gitlab.com
+The authenticity of host 'gitlab.com (35.231.145.151)' can't be established.
 RSA key fingerprint is SHA256:ROQFvPThGrW4RuWLoL9tq9I9zJ42fK4XywyRtbOz/EQ.
 Are you sure you want to continue connecting (yes/no)? yes
-Warning: Permanently added &#39;gitlab.com,35.231.145.151&#39; (RSA) to the list of known hosts.
+Warning: Permanently added 'gitlab.com,35.231.145.151' (RSA) to the list of known hosts.
 PTY allocation request failed on channel 0
 Welcome to GitLab, @carlo.sciolla!
 Connection to gitlab.com closed.
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;Good! Now, what if… you just did it? “Well, here goes nothing.” you think, mindlessly typing that dreaded command one last time:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ clj -m my-awesome-lib.main
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ clj -m my-awesome-lib.main
 Cloning: git@gitlab.com:me/my-awesome-lib.git
 Checking out: git@gitlab.com:me/my-awesome-lib.git at 031aa264afc2cf6dee9e12de8b88c608faefea80
 Welcome to MyProject!
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;Good. That’s good, really. You feel like you deserve a coffee now. And you do.&lt;/p&gt;
 
@@ -154,9 +143,9 @@ Welcome to MyProject!
 
 <entry>
   <title>A tale of Emacs, Clojure and pinned packages</title>
-  <link href="https://codehopper.nl/2018/05/28/a-tale-of-emacs-clojure-and-pinned-packages/" rel="alternate" />
+  <link href="http://localhost:4000/2018/05/28/a-tale-of-emacs-clojure-and-pinned-packages/" rel="alternate" />
   <updated>2018-05-28T00:00:00+02:00</updated>
-  <id>https://codehopper.nl/2018/05/28/a-tale-of-emacs-clojure-and-pinned-packages/</id>
+  <id>http://localhost:4000/2018/05/28/a-tale-of-emacs-clojure-and-pinned-packages/</id>
   <summary type="html">&lt;blockquote&gt;
   &lt;p&gt;It’s like trying to pin down a kangaroo on a trampoline.
 – Sid Waddel&lt;/p&gt;
@@ -180,19 +169,18 @@ myself to walk too much on the bleeding edge. That’s why I made sure
 all of my Emacs packages come from a slightly trustworthier stream of
 stable releases:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;require&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;&#39;package&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;div class=&quot;language-emacs-lisp highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;require&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;'package&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 
 &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;setq&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;package-archives&lt;/span&gt;
-      &lt;span class=&quot;o&quot;&gt;&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;gnu&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;https://elpa.gnu.org/packages/&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+      &lt;span class=&quot;o&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;gnu&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;https://elpa.gnu.org/packages/&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
         &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;melpa&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;https://stable.melpa.org/packages/&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
         &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;melpa-unstable&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;https://melpa.org/packages/&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)))&lt;/span&gt;
 
 &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;setq&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;package-archive-priorities&lt;/span&gt;
-      &lt;span class=&quot;o&quot;&gt;&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;melpa&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;50&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+      &lt;span class=&quot;o&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;melpa&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;50&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
         &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;gnu&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
         &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;melpa-unstable&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)))&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;The priorities set on the package archives make sure that released
 packages (from &lt;a href=&quot;https://stable.melpa.org/&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;melpa-stable&lt;/code&gt;&lt;/a&gt;) will be installed in
@@ -213,17 +201,16 @@ releases of &lt;code class=&quot;highlighter-rouge&quot;&gt;clj-refactor&lt;/cod
 time before we can have a stable clojure IDE including
 refactorings. We need to fiddle around ourselves:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;;; manual package pinning:&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;add-to-list&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;&#39;package-pinned-packages&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;clj-refactor&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;melpa-unstable&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;div class=&quot;language-emacs-lisp highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;;; manual package pinning:&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;add-to-list&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;'package-pinned-packages&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;clj-refactor&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;melpa-unstable&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 
-&lt;span class=&quot;c1&quot;&gt;;; or if you&#39;re using `use-package&#39; to install packages:&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;;; or if you're using `use-package' to install packages:&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;use-package&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;clj-refactor&lt;/span&gt;
   &lt;span class=&quot;ss&quot;&gt;:ensure&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;t&lt;/span&gt;
   &lt;span class=&quot;ss&quot;&gt;:pin&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;melpa-unstable&quot;&lt;/span&gt;
   &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;That’s it. You can now safely upgrade your packages and enjoy your
 clojure IDE once again.&lt;/p&gt;
@@ -235,9 +222,8 @@ itself is &lt;a href=&quot;https://github.com/jwiegley/use-package/issues/602&qu
 such, you only have one way to properly pin it, similarly to the first option
 above:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;add-to-list&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;&#39;package-pinned-packages&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;use-package&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;melpa-unstable&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;div class=&quot;language-emacs-lisp highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;add-to-list&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;'package-pinned-packages&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;use-package&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;melpa-unstable&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;Happy hacking!&lt;/p&gt;
 
@@ -247,9 +233,9 @@ above:&lt;/p&gt;
 
 <entry>
   <title>The best keyboard layout for Clojurists</title>
-  <link href="https://codehopper.nl/2015/03/01/colemak-best-keyboard-for-clojurists/" rel="alternate" />
+  <link href="http://localhost:4000/2015/03/01/colemak-best-keyboard-for-clojurists/" rel="alternate" />
   <updated>2015-03-01T00:00:00+01:00</updated>
-  <id>https://codehopper.nl/2015/03/01/colemak-best-keyboard-for-clojurists/</id>
+  <id>http://localhost:4000/2015/03/01/colemak-best-keyboard-for-clojurists/</id>
   <summary type="html">&lt;h1 id=&quot;keyboards-oh-my&quot;&gt;Keyboards, oh my!&lt;/h1&gt;
 
 &lt;p&gt;If you’re a programmer, you spend most of your working life on your keyboard, and a good keyboard layout can make the difference between touch typing and carpal syndrome.&lt;/p&gt;
@@ -285,9 +271,9 @@ above:&lt;/p&gt;
 
 <entry>
   <title>October Amsterdam Clojure 2012 is coming up!</title>
-  <link href="https://codehopper.nl/2012/10/14/october-amsterdam-clojure-coming-up/" rel="alternate" />
+  <link href="http://localhost:4000/2012/10/14/october-amsterdam-clojure-coming-up/" rel="alternate" />
   <updated>2012-10-14T00:00:00+02:00</updated>
-  <id>https://codehopper.nl/2012/10/14/october-amsterdam-clojure-coming-up/</id>
+  <id>http://localhost:4000/2012/10/14/october-amsterdam-clojure-coming-up/</id>
   <summary type="html">&lt;p&gt;Saturday, October 27th. Less than two weeks. That’s the time when
 October Amsterdam Clojure, the biggest Clojure free event in the
 Netherlands, will be up on stage. I’m so incredibly excited about it,
@@ -357,9 +343,9 @@ need:&lt;/p&gt;
 
 <entry>
   <title>org4idea adds org-mode support to Intellij IDEA</title>
-  <link href="https://codehopper.nl/2012/09/08/org-mode-intellij-plugin/" rel="alternate" />
+  <link href="http://localhost:4000/2012/09/08/org-mode-intellij-plugin/" rel="alternate" />
   <updated>2012-09-08T00:00:00+02:00</updated>
-  <id>https://codehopper.nl/2012/09/08/org-mode-intellij-plugin/</id>
+  <id>http://localhost:4000/2012/09/08/org-mode-intellij-plugin/</id>
   <summary type="html">&lt;p&gt;&lt;em&gt;tl;dr:&lt;/em&gt; &lt;a href=&quot;https://github.com/skuro/org4idea&quot;&gt;org4idea&lt;/a&gt; is a brand new
  project to add &lt;a href=&quot;http://orgmode.org&quot;&gt;org-mode&lt;/a&gt; support to &lt;a href=&quot;http://www.jetbrains.com/idea/&quot;&gt;IntelliJ IDEA&lt;/a&gt;&lt;/p&gt;
 
@@ -409,9 +395,9 @@ dialog.&lt;/p&gt;
 
 <entry>
   <title>Slides from Dispatch in Clojure</title>
-  <link href="https://codehopper.nl/2012/08/31/dispatch-in-clojure-presentation-slides/" rel="alternate" />
+  <link href="http://localhost:4000/2012/08/31/dispatch-in-clojure-presentation-slides/" rel="alternate" />
   <updated>2012-08-31T00:00:00+02:00</updated>
-  <id>https://codehopper.nl/2012/08/31/dispatch-in-clojure-presentation-slides/</id>
+  <id>http://localhost:4000/2012/08/31/dispatch-in-clojure-presentation-slides/</id>
   <summary type="html">&lt;h2 id=&quot;presentation-slides&quot;&gt;Presentation slides&lt;/h2&gt;
 
 &lt;p&gt;A bit late, and already announced
@@ -466,9 +452,9 @@ awesome Dutch Clojure nights!&lt;/p&gt;
 
 <entry>
   <title>Slides from Alfresco the Clojure way</title>
-  <link href="https://codehopper.nl/2011/11/10/slides-from-alfresco-the-clojure-way/" rel="alternate" />
+  <link href="http://localhost:4000/2011/11/10/slides-from-alfresco-the-clojure-way/" rel="alternate" />
   <updated>2011-11-10T00:00:00+01:00</updated>
-  <id>https://codehopper.nl/2011/11/10/slides-from-alfresco-the-clojure-way/</id>
+  <id>http://localhost:4000/2011/11/10/slides-from-alfresco-the-clojure-way/</id>
   <summary type="html">&lt;p&gt;I just gave a talk at the Alfresco DevCon 2011 in London, and I published the slides at slideshare:&lt;/p&gt;
 
 &lt;div style=&quot;width:425px; padding-left: 10%&quot; id=&quot;__ss_10104981&quot;&gt;
@@ -484,9 +470,9 @@ awesome Dutch Clojure nights!&lt;/p&gt;
 
 <entry>
   <title>October Amsterdam Clojure with Uncle Bob</title>
-  <link href="https://codehopper.nl/2011/09/27/october-amsterdam-clojure-with-uncle-bob/" rel="alternate" />
+  <link href="http://localhost:4000/2011/09/27/october-amsterdam-clojure-with-uncle-bob/" rel="alternate" />
   <updated>2011-09-27T00:00:00+02:00</updated>
-  <id>https://codehopper.nl/2011/09/27/october-amsterdam-clojure-with-uncle-bob/</id>
+  <id>http://localhost:4000/2011/09/27/october-amsterdam-clojure-with-uncle-bob/</id>
   <summary type="html">&lt;p&gt;I’m very excited to announce that we have finalized the details, and
 Wednesday, October 12th we’re going to have a great &lt;a href=&quot;http://bit.ly/ams-clj&quot;&gt;Amsterdam Clojure meetup&lt;/a&gt;”, with great talks and an awesome guest speaker: &lt;a href=&quot;http://twitter.com/#!/unclebobmartin&quot;&gt;“Uncle” Bob Martin&lt;/a&gt; from &lt;a href=&quot;http://www.objectmentor.com/&quot;&gt;Object Mentor&lt;/a&gt; and of &lt;a href=&quot;http://www.cleancoders.com/&quot;&gt;Clean Coders&lt;/a&gt; fame.&lt;/p&gt;
 
@@ -501,9 +487,9 @@ Wednesday, October 12th we’re going to have a great &lt;a href=&quot;http://bi
 
 <entry>
   <title>Clojure makes it to the Alfresco DevCon2011</title>
-  <link href="https://codehopper.nl/2011/09/04/clojure-makes-it-the-alfresco-devcon-2011-emea-london/" rel="alternate" />
+  <link href="http://localhost:4000/2011/09/04/clojure-makes-it-the-alfresco-devcon-2011-emea-london/" rel="alternate" />
   <updated>2011-09-04T00:00:00+02:00</updated>
-  <id>https://codehopper.nl/2011/09/04/clojure-makes-it-the-alfresco-devcon-2011-emea-london/</id>
+  <id>http://localhost:4000/2011/09/04/clojure-makes-it-the-alfresco-devcon-2011-emea-london/</id>
   <summary type="html">&lt;p&gt;If you’re a bit into Alfresco, you surerly know what the &lt;a href=&quot;http://www.amiando.com/alfresco-devcon-london-2011.html&quot;&gt;DevCon&lt;/a&gt; is.&lt;/p&gt;
 
 &lt;p&gt;To use the same words from &lt;a href=&quot;http://blogs.alfresco.com/wp/devcon/2011/08/04/save-the-date-alfresco-devcon-san-diego-london/&quot;&gt;Jeff Potts&lt;/a&gt;:
@@ -533,9 +519,9 @@ Wednesday, October 12th we’re going to have a great &lt;a href=&quot;http://bi
 
 <entry>
   <title>More Clojure for Spring Surf</title>
-  <link href="https://codehopper.nl/2011/05/10/more-clojure-for-spring-surf/" rel="alternate" />
+  <link href="http://localhost:4000/2011/05/10/more-clojure-for-spring-surf/" rel="alternate" />
   <updated>2011-05-10T00:00:00+02:00</updated>
-  <id>https://codehopper.nl/2011/05/10/more-clojure-for-spring-surf/</id>
+  <id>http://localhost:4000/2011/05/10/more-clojure-for-spring-surf/</id>
   <summary type="html">&lt;p&gt;After some time from my &lt;a href=&quot;http://www.skuro.tk/2010/05/23/spring-surf-meets-clojure&quot;&gt;initial announcement&lt;/a&gt;, I’ve started again working on my &lt;a href=&quot;https://github.com/skuro/spring-webscripts-addon-clojure&quot;&gt;Clojure addon for Spring Surf&lt;/a&gt;. While it’s still a rudimentary piece of glue code, it’s now getting better and better, so much that I decided it’s good enough now to release an alpha version on &lt;a href=&quot;http://clojars.org/it.sk.spring.surf.clojure/spring-webscripts-addon-clojure&quot;&gt;clojars&lt;/a&gt;. Here’s what this library currently provides:&lt;/p&gt;
 &lt;ul&gt;
 	&lt;li&gt;a &lt;a href=&quot;https://github.com/skuro/spring-webscripts-addon-clojure/blob/master/src/main/java/org/springframework/extensions/webscripts/processor/ClojureScriptProcessor.java&quot;&gt;ScriptProcessor&lt;/a&gt; that allows webscript controllers to be written in Clojure&lt;/li&gt;
@@ -559,9 +545,9 @@ Wednesday, October 12th we’re going to have a great &lt;a href=&quot;http://bi
 
 <entry>
   <title>Performance boost in Clojure 1.3 (alpha4)</title>
-  <link href="https://codehopper.nl/2011/01/24/performance-boost-in-clojure-1-3/" rel="alternate" />
+  <link href="http://localhost:4000/2011/01/24/performance-boost-in-clojure-1-3/" rel="alternate" />
   <updated>2011-01-24T00:00:00+01:00</updated>
-  <id>https://codehopper.nl/2011/01/24/performance-boost-in-clojure-1-3/</id>
+  <id>http://localhost:4000/2011/01/24/performance-boost-in-clojure-1-3/</id>
   <summary type="html">&lt;p&gt;As release 1.3 of Clojure is &lt;a href=&quot;http://www.assembla.com/spaces/clojure/milestones/238781-release-next&quot;&gt;on its way&lt;/a&gt;, I decided to give the currently available alpha4 a try and see some of the good stuff it brings. First thing first, I wanted to experiment myself with the performance gain that the extended support for native types would bring. I ran into an old &lt;a href=&quot;http://hughw.blogspot.com/2009/01/clojure-vs-javafx-script-only-5x-slower.html&quot;&gt;post&lt;/a&gt; from which I got the inspiration for the specific test to run: the &lt;a href=&quot;http://en.wikipedia.org/wiki/Tak_(function)&quot;&gt;Takeuchi function&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;/img/post/clj-triple.jpg&quot; alt=&quot;Full disclosure: I own a Triumph Street Triple and I love Clojure&quot; /&gt;&lt;/p&gt;
@@ -599,9 +585,9 @@ Wednesday, October 12th we’re going to have a great &lt;a href=&quot;http://bi
 
 <entry>
   <title>Spring Surf meets Clojure</title>
-  <link href="https://codehopper.nl/2010/05/23/spring-surf-meets-clojure/" rel="alternate" />
+  <link href="http://localhost:4000/2010/05/23/spring-surf-meets-clojure/" rel="alternate" />
   <updated>2010-05-23T00:00:00+02:00</updated>
-  <id>https://codehopper.nl/2010/05/23/spring-surf-meets-clojure/</id>
+  <id>http://localhost:4000/2010/05/23/spring-surf-meets-clojure/</id>
   <summary type="html">&lt;p&gt;For those who missed it, some time ago the &lt;a href=&quot;http://www.alfresco.com/&quot;&gt;Alfresco&lt;/a&gt; guys &lt;a href=&quot;http://www.alfresco.com/media/releases/2009/12/spring_surf/&quot;&gt;donated&lt;/a&gt; their &lt;a href=&quot;http://wiki.alfresco.com/wiki/Surf_Platform&quot;&gt;Surf Platform&lt;/a&gt; to &lt;a href=&quot;http://www.springsource.com/&quot;&gt;SpringSource&lt;/a&gt;, giving birth to the now-called &lt;a href=&quot;http://www.springsource.org/extensions/se-surf&quot;&gt;SpringSurf&lt;/a&gt;, which is thereby described as:&lt;/p&gt;
 &lt;blockquote&gt;a view composition framework for Spring MVC that plugs into your existing Spring applications. It provides a scriptable and content-centric approach to building web applications.&lt;/blockquote&gt;
 &lt;p&gt;I’m not going to introduce you how to use this yet-another MVC framework, but Michael Uzquiano provided an &lt;a href=&quot;http://blogs.alfresco.com/wp/uzi/2009/11/03/using-surf-in-your-spring-apps/&quot;&gt;awesome blogpost&lt;/a&gt;, in case you were interested into learning more about it.&lt;/p&gt;
@@ -612,17 +598,15 @@ Wednesday, October 12th we’re going to have a great &lt;a href=&quot;http://bi
 
 &lt;p&gt;Anyway, the first thing you usually do is to populate the &lt;em&gt;model&lt;/em&gt; map with a number of objects that will be needed by the rendering engine to build the response. To support this use case, this first implementation of the Clojure backend for Spring Surf webscripts expects your Clojure “script” to yield a map, in Clojure sense. This map will be then forwarded to a Freemarker template and used to build a webpage or whatever the user asked for, i.e. this controller:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;(ns web.script.test)
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;(ns web.script.test)
 
 {:foo &quot;bar&quot;}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;and this freemarker template:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;foo: ${foo}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;foo: ${foo}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;will provide “foo: bar” back to the client.&lt;/p&gt;
 
@@ -635,9 +619,9 @@ Wednesday, October 12th we’re going to have a great &lt;a href=&quot;http://bi
 
 <entry>
   <title>Amsterdam Clojurians meeting #4 - Dojo style</title>
-  <link href="https://codehopper.nl/2010/04/14/amsterdam-clojurians-meeting-4-dojo-style/" rel="alternate" />
+  <link href="http://localhost:4000/2010/04/14/amsterdam-clojurians-meeting-4-dojo-style/" rel="alternate" />
   <updated>2010-04-14T00:00:00+02:00</updated>
-  <id>https://codehopper.nl/2010/04/14/amsterdam-clojurians-meeting-4-dojo-style/</id>
+  <id>http://localhost:4000/2010/04/14/amsterdam-clojurians-meeting-4-dojo-style/</id>
   <summary type="html">&lt;p&gt;Today the fourth meeting of the Amsterdam Clojure user group was held at the now usual &lt;a href=&quot;http://www.sourcesense.com&quot;&gt;Sourcesense&lt;/a&gt; offices venue in Amsterdam.&lt;/p&gt;
 
 &lt;p&gt;It has been probably the most successful one until now: thanks to some newcomers we had the most participated event ever with 10 nerdy, awesome geeks sitting together to discuss about nerdy, awesome stuff with lots of parenthesis.&lt;/p&gt;

@@ -55,7 +55,8 @@ The thing I didn't expect was a poor synergy with the Google Cloud SDK installa
 - the machine that's running all of the above commands was created using the Google official [`ubuntu-1804-lts` image][ubuntu-image]
 - in that machine, the Google Cloud SDK is installed using [Snapcraft][https://snapcraft.io/]
 - `gcloud` stores it's own binary *full path* within `~/.kubectl/config` which is what shows up in the above error message, e.g.:
-```
+
+```yaml
     auth-provider:
       config:
         ...
