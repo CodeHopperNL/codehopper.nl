@@ -1,142 +1,134 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-10-14T00:11:27+02:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">CodeHopper</title><subtitle>Software and technology done right</subtitle><entry><title type="html">gcloud and kubectl on GCP ubuntu images</title><link href="http://localhost:4000/2019/10/11/gcloud-and-kubectl-on-gcp-ubuntu/" rel="alternate" type="text/html" title="gcloud and kubectl on GCP ubuntu images" /><published>2019-10-11T00:00:00+02:00</published><updated>2019-10-11T00:00:00+02:00</updated><id>http://localhost:4000/2019/10/11/gcloud-and-kubectl-on-gcp-ubuntu</id><content type="html" xml:base="http://localhost:4000/2019/10/11/gcloud-and-kubectl-on-gcp-ubuntu/">&gt; morning glory!&lt;br /&gt;
-&gt; the well bucket-entangled,&lt;br /&gt;
-&gt; I ask for water&lt;br /&gt;
-&gt; -- Fukuda Chiyo-ni
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-10-14T00:13:16+02:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">CodeHopper</title><subtitle>Software and technology done right</subtitle><entry><title type="html">gcloud and kubectl on GCP ubuntu images</title><link href="http://localhost:4000/2019/10/11/gcloud-and-kubectl-on-gcp-ubuntu/" rel="alternate" type="text/html" title="gcloud and kubectl on GCP ubuntu images" /><published>2019-10-11T00:00:00+02:00</published><updated>2019-10-11T00:00:00+02:00</updated><id>http://localhost:4000/2019/10/11/gcloud-and-kubectl-on-gcp-ubuntu</id><content type="html" xml:base="http://localhost:4000/2019/10/11/gcloud-and-kubectl-on-gcp-ubuntu/">&lt;blockquote&gt;
+  &lt;p&gt;morning glory!&lt;br /&gt;
+the well bucket-entangled,&lt;br /&gt;
+I ask for water&lt;br /&gt;
+– Fukuda Chiyo-ni&lt;/p&gt;
+&lt;/blockquote&gt;
 
-## Yet another versioning issue
+&lt;h2 id=&quot;yet-another-versioning-issue&quot;&gt;Yet another versioning issue&lt;/h2&gt;
 
-Versioning is [a recurring PITA in my life][old-article], it seems. Today I ran (for the second time on the same machine, actually) into an issue with [`kubectl`][kubectl] commands run from my CI server:
+&lt;p&gt;Versioning is &lt;a href=&quot;/2018/05/28/a-tale-of-emacs-clojure-and-pinned-packages/&quot;&gt;a recurring PITA in my life&lt;/a&gt;, it seems. Today I ran (for the second time on the same machine, actually) into an issue with &lt;a href=&quot;https://kubernetes.io/docs/tasks/tools/install-kubectl/&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;kubectl&lt;/code&gt;&lt;/a&gt; commands run from my CI server:&lt;/p&gt;
 
-    Get https://172.16.0.2/api?timeout=32s: error executing access token command &quot;/snap/google-cloud-sdk/100/bin/gcloud config config-helper --format=json&quot;: err=fork/exec /snap/google-cloud-sdk/100/bin/gcloud: no such file or directory output= stderr=
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Get https://172.16.0.2/api?timeout=32s: error executing access token command &quot;/snap/google-cloud-sdk/100/bin/gcloud config config-helper --format=json&quot;: err=fork/exec /snap/google-cloud-sdk/100/bin/gcloud: no such file or directory output= stderr=
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-The actual error message was longer than that, but it basically tells me that my `kubectl` commands that I run to deploy new versions of some applications in our `k8s` cluster failed. More
-specifically, it encountered an `error executing acces token command ...`. What's that? And how to fix it? Well there are a few ingredients to the mix.
+&lt;p&gt;The actual error message was longer than that, but it basically tells me that my &lt;code class=&quot;highlighter-rouge&quot;&gt;kubectl&lt;/code&gt; commands that I run to deploy new versions of some applications in our &lt;code class=&quot;highlighter-rouge&quot;&gt;k8s&lt;/code&gt; cluster failed. More
+specifically, it encountered an &lt;code class=&quot;highlighter-rouge&quot;&gt;error executing acces token command ...&lt;/code&gt;. What’s that? And how to fix it? Well there are a few ingredients to the mix.&lt;/p&gt;
 
-### tl;dr
+&lt;h3 id=&quot;tldr&quot;&gt;tl;dr&lt;/h3&gt;
 
-Use the `/snap/google-cloud-sdk/current` symlink instead of the bespoke snap version number of your `gcloud` SDK:
+&lt;p&gt;Use the &lt;code class=&quot;highlighter-rouge&quot;&gt;/snap/google-cloud-sdk/current&lt;/code&gt; symlink instead of the bespoke snap version number of your &lt;code class=&quot;highlighter-rouge&quot;&gt;gcloud&lt;/code&gt; SDK:&lt;/p&gt;
 
-```sh
-$ sed -E -ibak 's/(\/snap\/google-cloud-sdk\/)(.*)(\/bin\/gcloud)/\1current\3/' ~/.kube/config
-```
+&lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sed&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-E&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-ibak&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'s/(\/snap\/google-cloud-sdk\/)(.*)(\/bin\/gcloud)/\1current\3/'&lt;/span&gt; ~/.kube/config
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-Explanation:
+&lt;p&gt;Explanation:&lt;/p&gt;
 
-```sh
-sed -E             # extended regex
-    -ibak          # edit in place, create a ~/.kube/config.bak backup file
-    's/(\/snap\/google-cloud-sdk\/)(.*)(\/bin\/gcloud)/\1current\3/' # replace the version number with `current`
-    ~/.kube/config # file to update
-```
+&lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sed&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-E&lt;/span&gt;             &lt;span class=&quot;c&quot;&gt;# extended regex&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;-ibak&lt;/span&gt;          &lt;span class=&quot;c&quot;&gt;# edit in place, create a ~/.kube/config.bak backup file&lt;/span&gt;
+    &lt;span class=&quot;s1&quot;&gt;'s/(\/snap\/google-cloud-sdk\/)(.*)(\/bin\/gcloud)/\1current\3/'&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# replace the version number with `current`&lt;/span&gt;
+    ~/.kube/config &lt;span class=&quot;c&quot;&gt;# file to update&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-### Authentication in `kubectl`
+&lt;h3 id=&quot;authentication-in-kubectl&quot;&gt;Authentication in &lt;code class=&quot;highlighter-rouge&quot;&gt;kubectl&lt;/code&gt;&lt;/h3&gt;
 
-If you want more low level details you should definitely go to [the official documentation][kube-auth]. Here, suffice it so say that I used the following command to configure my `kubectl` access to
-the cluster[[↪][gcloud-get-cred]]:
+&lt;p&gt;If you want more low level details you should definitely go to &lt;a href=&quot; https://kubernetes.io/docs/reference/access-authn-authz/authentication/&quot;&gt;the official documentation&lt;/a&gt;. Here, suffice it so say that I used the following command to configure my &lt;code class=&quot;highlighter-rouge&quot;&gt;kubectl&lt;/code&gt; access to
+the cluster[&lt;a href=&quot;https://cloud.google.com/sdk/gcloud/reference/container/clusters/get-credentials&quot;&gt;↪&lt;/a&gt;]:&lt;/p&gt;
 
-    gcloud container clusters get-credentials &lt;my-cluster-name&gt; --zone &lt;my-cluster-zone&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;gcloud container clusters get-credentials &amp;lt;my-cluster-name&amp;gt; --zone &amp;lt;my-cluster-zone&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-That's automagically creating your `~/.kube/config` file with everything you need to connect to a specific cluster. Then you're supposed to `kubectl` happily ever after, with `gcloud` being directly
-invoked to retrieve the authentication tokens automagically. Until..
+&lt;p&gt;That’s automagically creating your &lt;code class=&quot;highlighter-rouge&quot;&gt;~/.kube/config&lt;/code&gt; file with everything you need to connect to a specific cluster. Then you’re supposed to &lt;code class=&quot;highlighter-rouge&quot;&gt;kubectl&lt;/code&gt; happily ever after, with &lt;code class=&quot;highlighter-rouge&quot;&gt;gcloud&lt;/code&gt; being directly
+invoked to retrieve the authentication tokens automagically. Until..&lt;/p&gt;
 
-### Oh, snap!
+&lt;h3 id=&quot;oh-snap&quot;&gt;Oh, snap!&lt;/h3&gt;
 
-The thing I didn't expect was a poor synergy with the Google Cloud SDK installation and the produced `kubectl` configuration. There's a few ingredients to the mix:
+&lt;p&gt;The thing I didn’t expect was a poor synergy with the Google Cloud SDK installation and the produced &lt;code class=&quot;highlighter-rouge&quot;&gt;kubectl&lt;/code&gt; configuration. There’s a few ingredients to the mix:&lt;/p&gt;
 
-- the machine that's running all of the above commands was created using the Google official [`ubuntu-1804-lts` image][ubuntu-image]
-- in that machine, the Google Cloud SDK is installed using [Snapcraft][https://snapcraft.io/]
-- `gcloud` stores it's own binary *full path* within `~/.kubectl/config` which is what shows up in the above error message, e.g.:
+&lt;ul&gt;
+  &lt;li&gt;the machine that’s running all of the above commands was created using the Google official &lt;a href=&quot;https://cloud.google.com/compute/docs/images#os-compute-support&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;ubuntu-1804-lts&lt;/code&gt; image&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;in that machine, the Google Cloud SDK is installed using [Snapcraft][https://snapcraft.io/]&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;gcloud&lt;/code&gt; stores it’s own binary &lt;em&gt;full path&lt;/em&gt; within &lt;code class=&quot;highlighter-rouge&quot;&gt;~/.kubectl/config&lt;/code&gt; which is what shows up in the above error message, e.g.:&lt;/li&gt;
+&lt;/ul&gt;
 
-```yaml
-    auth-provider:
-      config:
-        ...
-        cmd-args: config config-helper --format=json
-        cmd-path: /snap/google-cloud-sdk/100/bin/gcloud
+&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    &lt;span class=&quot;na&quot;&gt;auth-provider&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;s&quot;&gt;...&lt;/span&gt;
+        &lt;span class=&quot;s&quot;&gt;cmd-args&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;config config-helper --format=json&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;cmd-path&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;/snap/google-cloud-sdk/100/bin/gcloud&lt;/span&gt;
 
-```
-- snaps are updated [frequently][snap-up], installing new versions into `/snap/google-cloud-sdk/$VERSION`
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;ul&gt;
+  &lt;li&gt;snaps are updated &lt;a href=&quot;https://snapcraft.io/docs/keeping-snaps-up-to-date&quot;&gt;frequently&lt;/a&gt;, installing new versions into &lt;code class=&quot;highlighter-rouge&quot;&gt;/snap/google-cloud-sdk/$VERSION&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
 
-The salvation is provided by the `/snap/google-cloud-sdk/current` symlink which is always updated by `snapd` upon installation, making the `sed` script above fix the issue once and for
-all. Kinda. There are multiple users on the machine I'm using, and the above configuration is user specific. Hence why I faced this issue *twice* on the same machine. Welp.
+&lt;p&gt;The salvation is provided by the &lt;code class=&quot;highlighter-rouge&quot;&gt;/snap/google-cloud-sdk/current&lt;/code&gt; symlink which is always updated by &lt;code class=&quot;highlighter-rouge&quot;&gt;snapd&lt;/code&gt; upon installation, making the &lt;code class=&quot;highlighter-rouge&quot;&gt;sed&lt;/code&gt; script above fix the issue once and for
+all. Kinda. There are multiple users on the machine I’m using, and the above configuration is user specific. Hence why I faced this issue &lt;em&gt;twice&lt;/em&gt; on the same machine. Welp.&lt;/p&gt;</content><author><name></name></author><category term="kubernetes" /><category term="gcp" /><category term="google" /><category term="cloud" /><category term="devops" /><summary type="html">morning glory! the well bucket-entangled, I ask for water – Fukuda Chiyo-ni</summary></entry><entry><title type="html">Clojure GitLab deps</title><link href="http://localhost:4000/2018/09/27/clojure-gitlab-deps/" rel="alternate" type="text/html" title="Clojure GitLab deps" /><published>2018-09-27T00:00:00+02:00</published><updated>2018-09-27T00:00:00+02:00</updated><id>http://localhost:4000/2018/09/27/clojure-gitlab-deps</id><content type="html" xml:base="http://localhost:4000/2018/09/27/clojure-gitlab-deps/">&lt;blockquote&gt;
+  &lt;p&gt;People addicted with technology. &lt;br /&gt;
+Technology has indulged mankind. &lt;br /&gt;
+Beware of technology dependency! &lt;br /&gt;
+– Toba Beta&lt;/p&gt;
+&lt;/blockquote&gt;
 
+&lt;h2 id=&quot;tldr&quot;&gt;TL;DR:&lt;/h2&gt;
 
-[kubectl]: https://kubernetes.io/docs/tasks/tools/install-kubectl/
-[kube-auth]: https://kubernetes.io/docs/reference/access-authn-authz/authentication/
-[old-article]: /2018/05/28/a-tale-of-emacs-clojure-and-pinned-packages/
-[gcloud-get-cred]: https://cloud.google.com/sdk/gcloud/reference/container/clusters/get-credentials
-[ubuntu-image]: https://cloud.google.com/compute/docs/images#os-compute-support
-[snap-up]: https://snapcraft.io/docs/keeping-snaps-up-to-date</content><author><name></name></author><category term="kubernetes" /><category term="gcp" /><category term="google" /><category term="cloud" /><category term="devops" /><summary type="html">morning glory! the well bucket-entangled, I ask for water – Fukuda Chiyo-ni</summary></entry><entry><title type="html">Clojure GitLab deps</title><link href="http://localhost:4000/2018/09/27/clojure-gitlab-deps/" rel="alternate" type="text/html" title="Clojure GitLab deps" /><published>2018-09-27T00:00:00+02:00</published><updated>2018-09-27T00:00:00+02:00</updated><id>http://localhost:4000/2018/09/27/clojure-gitlab-deps</id><content type="html" xml:base="http://localhost:4000/2018/09/27/clojure-gitlab-deps/">&gt; People addicted with technology. &lt;br /&gt;
-&gt; Technology has indulged mankind. &lt;br /&gt;
-&gt; Beware of technology dependency! &lt;br /&gt;
-&gt; -- Toba Beta
+&lt;p&gt;You need to force the &lt;code class=&quot;highlighter-rouge&quot;&gt;ssh-rsa&lt;/code&gt; host key instead of the default one picked up by the tooling:&lt;/p&gt;
 
-## TL;DR:
-
-You need to force the `ssh-rsa` host key instead of the default one picked up by the tooling:
-
-```
-$ ssh-keygen -R gitlab.com
-$ cat &lt;&lt;EOF &gt;&gt; ~/.ssh/config
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ ssh-keygen -R gitlab.com
+$ cat &amp;lt;&amp;lt;EOF &amp;gt;&amp;gt; ~/.ssh/config
 
 Host gitlab.com
   HostKeyAlgorithms ssh-rsa
 
 EOF
 $ ssh git@gitlab.com
-```
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-## [CSI][csi] version of the above
+&lt;h2 id=&quot;csi-version-of-the-above&quot;&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/CSI:_Crime_Scene_Investigation&quot;&gt;CSI&lt;/a&gt; version of the above&lt;/h2&gt;
 
-You are using the brand new [dependency resolution][deps] from the Clojure core team for the first time. You like the idea of fetching your dependency straight from git. You host all of your repos on
-[GitLab][gitlab], it just makes sense, right? Right.
+&lt;p&gt;You are using the brand new &lt;a href=&quot;https://clojure.org/guides/deps_and_cli&quot;&gt;dependency resolution&lt;/a&gt; from the Clojure core team for the first time. You like the idea of fetching your dependency straight from git. You host all of your repos on
+&lt;a href=&quot;https://gitlab.com&quot;&gt;GitLab&lt;/a&gt;, it just makes sense, right? Right.&lt;/p&gt;
 
-You go ahead and start your new project, you just need to bring in the usual `me/my-awesome-lib` that you use everywhere. That's just a new, empty folder in which you configure your `deps.edn` like
-the following:
+&lt;p&gt;You go ahead and start your new project, you just need to bring in the usual &lt;code class=&quot;highlighter-rouge&quot;&gt;me/my-awesome-lib&lt;/code&gt; that you use everywhere. That’s just a new, empty folder in which you configure your &lt;code class=&quot;highlighter-rouge&quot;&gt;deps.edn&lt;/code&gt; like
+the following:&lt;/p&gt;
 
-```clojure
-{:deps {my-awesome-lib {:git/url &quot;git@gitlab.com:me/my-awesome-lib.git&quot; :sha &quot;031aa264afc2cf6dee9e12de8b88c608faefea80&quot;}}}
-```
+&lt;div class=&quot;language-clojure highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;:deps&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;my-awesome-lib&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;:git/url&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;git@gitlab.com:me/my-awesome-lib.git&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;no&quot;&gt;:sha&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;031aa264afc2cf6dee9e12de8b88c608faefea80&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}}}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-No more `lein new`, no more templates, no more nothing. You mentally pat yourself on the shoulder.
+&lt;p&gt;No more &lt;code class=&quot;highlighter-rouge&quot;&gt;lein new&lt;/code&gt;, no more templates, no more nothing. You mentally pat yourself on the shoulder.&lt;/p&gt;
 
-You're now at the terminal, ready to sprinkle your clojure fairy powder all over. You fire `clj -m my-awesome-lib.main` and stand in awe as the tool fetches bits from GitLab and...
+&lt;p&gt;You’re now at the terminal, ready to sprinkle your clojure fairy powder all over. You fire &lt;code class=&quot;highlighter-rouge&quot;&gt;clj -m my-awesome-lib.main&lt;/code&gt; and stand in awe as the tool fetches bits from GitLab and…&lt;/p&gt;
 
-```
-Cloning: git@gitlab.com:me/my-awesome-lib.git
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Cloning: git@gitlab.com:me/my-awesome-lib.git
 Error building classpath. git@gitlab.com:me/my-awesome-lib.git: UnknownHostKey: gitlab.com. RSA key fingerprint is b6:03:0e:39:97:9e:d0:e7:24:ce:a3:77:3e:01:42:09
 org.eclipse.jgit.api.errors.TransportException: git@gitlab.com:me/my-awesome-lib.git: UnknownHostKey: gitlab.com. RSA key fingerprint is b6:03:0e:39:97:9e:d0:e7:24:ce:a3:77:3e:01:42:09
-```
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-Damn! Damn. Really? Mhhhhh...
+&lt;p&gt;Damn! Damn. Really? Mhhhhh…&lt;/p&gt;
 
-```
-$ ssh git@gitlab.com
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ ssh git@gitlab.com
 PTY allocation request failed on channel 0
 Welcome to GitLab, @carlo.sciolla!
 Connection to gitlab.com closed.
-```
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-Seems all good. One final check:
+&lt;p&gt;Seems all good. One final check:&lt;/p&gt;
 
-```
-$ grep gitlab ~/.ssh/known_hosts
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ grep gitlab ~/.ssh/known_hosts
 gitlab.com,35.231.145.151 ecdsa-sha2-nistp256 ****
-```
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-Things are getting creepy. Worse of it all, you got stuck there. Fortunately, you have a [little bird][henrik] spilling some relevant beans: the specific host key crypto algorithm
-(`ecdsa-sha2-nistp256` in the above) might be relevant! A lead is a lead, and this feels like a good one. Let's explore.
+&lt;p&gt;Things are getting creepy. Worse of it all, you got stuck there. Fortunately, you have a &lt;a href=&quot;https://github.com/eneroth&quot;&gt;little bird&lt;/a&gt; spilling some relevant beans: the specific host key crypto algorithm
+(&lt;code class=&quot;highlighter-rouge&quot;&gt;ecdsa-sha2-nistp256&lt;/code&gt; in the above) might be relevant! A lead is a lead, and this feels like a good one. Let’s explore.&lt;/p&gt;
 
-First things first, you need to start from a clean slate. Let's remove the currently installed host key:
+&lt;p&gt;First things first, you need to start from a clean slate. Let’s remove the currently installed host key:&lt;/p&gt;
 
-```
-$ ssh-keygen -R gitlab.com
-```
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ ssh-keygen -R gitlab.com
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-Good. Now let's have a look at what keys are provided by GitLab, just to have a feel for what could be a sensible one to pick:
+&lt;p&gt;Good. Now let’s have a look at what keys are provided by GitLab, just to have a feel for what could be a sensible one to pick:&lt;/p&gt;
 
-```
-$ ssh -Q key git@gitlab.com
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ ssh -Q key git@gitlab.com
 ssh-ed25519
 ssh-ed25519-cert-v01@openssh.com
 ssh-rsa
@@ -149,33 +141,30 @@ ssh-dss-cert-v01@openssh.com
 ecdsa-sha2-nistp256-cert-v01@openssh.com
 ecdsa-sha2-nistp384-cert-v01@openssh.com
 ecdsa-sha2-nistp521-cert-v01@openssh.com
-```
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-Whoa! That's quite a rich of a menu to choose from. But your spidey senses are tingling: that `ssh-rsa` feels good. Warm. Homey. Or maybe it's just the closest to what the original error message
-said. Whatever, lets tell SSH to pick that one:
+&lt;p&gt;Whoa! That’s quite a rich of a menu to choose from. But your spidey senses are tingling: that &lt;code class=&quot;highlighter-rouge&quot;&gt;ssh-rsa&lt;/code&gt; feels good. Warm. Homey. Or maybe it’s just the closest to what the original error message
+said. Whatever, lets tell SSH to pick that one:&lt;/p&gt;
 
-```
-$ cat &lt;&lt;EOF &gt;&gt; ~/.ssh/config
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ cat &amp;lt;&amp;lt;EOF &amp;gt;&amp;gt; ~/.ssh/config
 
 Host gitlab.com
   HostKeyAlgorithms ssh-rsa
 
 EOF
-```
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-Alright, time to shine. Let it fly, once again:
+&lt;p&gt;Alright, time to shine. Let it fly, once again:&lt;/p&gt;
 
-```
-$ clj -m my-awesome-lib.main
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ clj -m my-awesome-lib.main
 Cloning: git@gitlab.com:me/my-awesome-lib.git
 Error building classpath. git@gitlab.com:me/my-awesome-lib.git: UnknownHostKey: gitlab.com. RSA key fingerprint is b6:03:0e:39:97:9e:d0:e7:24:ce:a3:77:3e:01:42:09
 org.eclipse.jgit.api.errors.TransportException: git@gitlab.com:me/my-awesome-lib.git: UnknownHostKey: gitlab.com. RSA key fingerprint is b6:03:0e:39:97:9e:d0:e7:24:ce:a3:77:3e:01:42:09
-```
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-Damn! Really?! &quot;Oh wait!&quot; you think, as you realize that maybe now you need to first get the new host key:
+&lt;p&gt;Damn! Really?! “Oh wait!” you think, as you realize that maybe now you need to first get the new host key:&lt;/p&gt;
 
-```
-$ ssh git@gitlab.com
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ ssh git@gitlab.com
 The authenticity of host 'gitlab.com (35.231.145.151)' can't be established.
 RSA key fingerprint is SHA256:ROQFvPThGrW4RuWLoL9tq9I9zJ42fK4XywyRtbOz/EQ.
 Are you sure you want to continue connecting (yes/no)? yes
@@ -183,608 +172,575 @@ Warning: Permanently added 'gitlab.com,35.231.145.151' (RSA) to the list of know
 PTY allocation request failed on channel 0
 Welcome to GitLab, @carlo.sciolla!
 Connection to gitlab.com closed.
-```
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-Good! Now, what if... you just did it? &quot;Well, here goes nothing.&quot; you think, mindlessly typing that dreaded command one last time:
+&lt;p&gt;Good! Now, what if… you just did it? “Well, here goes nothing.” you think, mindlessly typing that dreaded command one last time:&lt;/p&gt;
 
-```
-$ clj -m my-awesome-lib.main
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ clj -m my-awesome-lib.main
 Cloning: git@gitlab.com:me/my-awesome-lib.git
 Checking out: git@gitlab.com:me/my-awesome-lib.git at 031aa264afc2cf6dee9e12de8b88c608faefea80
 Welcome to MyProject!
-```
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-Good. That's good, really. You feel like you deserve a coffee now. And you do.
+&lt;p&gt;Good. That’s good, really. You feel like you deserve a coffee now. And you do.&lt;/p&gt;</content><author><name></name></author><category term="clojure" /><category term="deps.edn" /><category term="gitlab" /><summary type="html">People addicted with technology. Technology has indulged mankind. Beware of technology dependency! – Toba Beta</summary></entry><entry><title type="html">A tale of Emacs, Clojure and pinned packages</title><link href="http://localhost:4000/2018/05/28/a-tale-of-emacs-clojure-and-pinned-packages/" rel="alternate" type="text/html" title="A tale of Emacs, Clojure and pinned packages" /><published>2018-05-28T00:00:00+02:00</published><updated>2018-05-28T00:00:00+02:00</updated><id>http://localhost:4000/2018/05/28/a-tale-of-emacs-clojure-and-pinned-packages</id><content type="html" xml:base="http://localhost:4000/2018/05/28/a-tale-of-emacs-clojure-and-pinned-packages/">&lt;blockquote&gt;
+  &lt;p&gt;It’s like trying to pin down a kangaroo on a trampoline.
+– Sid Waddel&lt;/p&gt;
+&lt;/blockquote&gt;
 
-[csi]: https://en.wikipedia.org/wiki/CSI:_Crime_Scene_Investigation
-[deps]: https://clojure.org/guides/deps_and_cli
-[gitlab]: https://gitlab.com
-[henrik]: https://github.com/eneroth</content><author><name></name></author><category term="clojure" /><category term="deps.edn" /><category term="gitlab" /><summary type="html">People addicted with technology. Technology has indulged mankind. Beware of technology dependency! – Toba Beta</summary></entry><entry><title type="html">A tale of Emacs, Clojure and pinned packages</title><link href="http://localhost:4000/2018/05/28/a-tale-of-emacs-clojure-and-pinned-packages/" rel="alternate" type="text/html" title="A tale of Emacs, Clojure and pinned packages" /><published>2018-05-28T00:00:00+02:00</published><updated>2018-05-28T00:00:00+02:00</updated><id>http://localhost:4000/2018/05/28/a-tale-of-emacs-clojure-and-pinned-packages</id><content type="html" xml:base="http://localhost:4000/2018/05/28/a-tale-of-emacs-clojure-and-pinned-packages/">&gt; It's like trying to pin down a kangaroo on a trampoline.
-&gt; -- Sid Waddel
-
-If you do any clojure[script] development, [chances are][ide-war] that
-you do so through Emacs and [CIDER][cider]. The experience is
-generally nothing short of [awesome][awe], but every now and then you
+&lt;p&gt;If you do any clojure[script] development, &lt;a href=&quot;https://static1.squarespace.com/static/5372821be4b0aefc6719057e/t/5aafdd7e562fa73957a7b46b/1521474957333/editor.png?format=1000w&quot;&gt;chances are&lt;/a&gt; that
+you do so through Emacs and &lt;a href=&quot;https://github.com/clojure-emacs&quot;&gt;CIDER&lt;/a&gt;. The experience is
+generally nothing short of &lt;a href=&quot;https://ih1.redbubble.net/image.118710403.1747/flat,800x800,075,f.u2.jpg&quot;&gt;awesome&lt;/a&gt;, but every now and then you
 bump into some quirks. That was the case for me when the latest CIDER
-came out, mostly due to how I like to keep my Emacs.
+came out, mostly due to how I like to keep my Emacs.&lt;/p&gt;
 
-### *tl;dr*
+&lt;h3 id=&quot;tldr&quot;&gt;&lt;em&gt;tl;dr&lt;/em&gt;&lt;/h3&gt;
 
-CIDER and `clj-refactor` have incompatible stable releases for which
-you need to make sure the latter comes from `melpa-unstable`
+&lt;p&gt;CIDER and &lt;code class=&quot;highlighter-rouge&quot;&gt;clj-refactor&lt;/code&gt; have incompatible stable releases for which
+you need to make sure the latter comes from &lt;code class=&quot;highlighter-rouge&quot;&gt;melpa-unstable&lt;/code&gt;&lt;/p&gt;
 
-## Stable vs unstable
+&lt;h2 id=&quot;stable-vs-unstable&quot;&gt;Stable vs unstable&lt;/h2&gt;
 
-I use Clojure [to pay the bills][synple], and as such I cannot afford
-myself to walk too much on the bleeding edge. That's why I made sure
+&lt;p&gt;I use Clojure &lt;a href=&quot;https://synple.eu/en/index&quot;&gt;to pay the bills&lt;/a&gt;, and as such I cannot afford
+myself to walk too much on the bleeding edge. That’s why I made sure
 all of my Emacs packages come from a slightly trustworthier stream of
-stable releases:
+stable releases:&lt;/p&gt;
 
-``` emacs-lisp
-(require 'package)
+&lt;div class=&quot;language-emacs-lisp highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;require&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;'package&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 
-(setq package-archives
-      '((&quot;gnu&quot; . &quot;https://elpa.gnu.org/packages/&quot;)
-        (&quot;melpa&quot; . &quot;https://stable.melpa.org/packages/&quot;)
-        (&quot;melpa-unstable&quot; . &quot;https://melpa.org/packages/&quot;)))
+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;setq&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;package-archives&lt;/span&gt;
+      &lt;span class=&quot;o&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;gnu&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;https://elpa.gnu.org/packages/&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;melpa&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;https://stable.melpa.org/packages/&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;melpa-unstable&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;https://melpa.org/packages/&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)))&lt;/span&gt;
 
-(setq package-archive-priorities
-      '((&quot;melpa&quot; . 50)
-        (&quot;gnu&quot; . 10)
-        (&quot;melpa-unstable&quot; . 0)))
-```
+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;setq&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;package-archive-priorities&lt;/span&gt;
+      &lt;span class=&quot;o&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;melpa&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;50&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;gnu&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;melpa-unstable&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)))&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-The priorities set on the package archives make sure that released
-packages (from [`melpa-stable`][melpa-stable]) will be installed in
-place of their unstable snapshots if they exist. Ideally I'd love to
-remove `melpa-unstable` from my configuration, but there are cases in
-which that's some necessary evil to keep. Like the reason why I'm
-writing this up.
+&lt;p&gt;The priorities set on the package archives make sure that released
+packages (from &lt;a href=&quot;https://stable.melpa.org/&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;melpa-stable&lt;/code&gt;&lt;/a&gt;) will be installed in
+place of their unstable snapshots if they exist. Ideally I’d love to
+remove &lt;code class=&quot;highlighter-rouge&quot;&gt;melpa-unstable&lt;/code&gt; from my configuration, but there are cases in
+which that’s some necessary evil to keep. Like the reason why I’m
+writing this up.&lt;/p&gt;
 
-## CIDER and `clj-refactor` and pinning
+&lt;h2 id=&quot;cider-and-clj-refactor-and-pinning&quot;&gt;CIDER and &lt;code class=&quot;highlighter-rouge&quot;&gt;clj-refactor&lt;/code&gt; and pinning&lt;/h2&gt;
 
-The latest and gratest CIDER (`v0.17.0`) earlier in May 2018, while
-the latest `clj-refactor` release is pretty ancient, dating back to
+&lt;p&gt;The latest and gratest CIDER (&lt;code class=&quot;highlighter-rouge&quot;&gt;v0.17.0&lt;/code&gt;) earlier in May 2018, while
+the latest &lt;code class=&quot;highlighter-rouge&quot;&gt;clj-refactor&lt;/code&gt; release is pretty ancient, dating back to
 June 2017. The two packages are now not compatible, and if you
 installed both in your Emacs your REPL will fail to start. This has
-been reported many, many, many times in the `clj-refactor` issue
-tracker, but Java 9 compatibility is [holding back][sad-face] any new
-releases of `clj-refactor`, which means we might be waiting quite some
+been reported many, many, many times in the &lt;code class=&quot;highlighter-rouge&quot;&gt;clj-refactor&lt;/code&gt; issue
+tracker, but Java 9 compatibility is &lt;a href=&quot;https://github.com/clojure-emacs/clj-refactor.el/issues/403#issuecomment-357631244&quot;&gt;holding back&lt;/a&gt; any new
+releases of &lt;code class=&quot;highlighter-rouge&quot;&gt;clj-refactor&lt;/code&gt;, which means we might be waiting quite some
 time before we can have a stable clojure IDE including
-refactorings. We need to fiddle around ourselves:
+refactorings. We need to fiddle around ourselves:&lt;/p&gt;
 
-``` emacs-lisp
-;; manual package pinning:
-(add-to-list 'package-pinned-packages '(clj-refactor . &quot;melpa-unstable&quot;) t)
+&lt;div class=&quot;language-emacs-lisp highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;;; manual package pinning:&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;add-to-list&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;'package-pinned-packages&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;clj-refactor&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;melpa-unstable&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 
-;; or if you're using `use-package' to install packages:
-(use-package clj-refactor
-  :ensure t
-  :pin &quot;melpa-unstable&quot;
-  ...)
+&lt;span class=&quot;c1&quot;&gt;;; or if you're using `use-package' to install packages:&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;use-package&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;clj-refactor&lt;/span&gt;
+  &lt;span class=&quot;ss&quot;&gt;:ensure&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;t&lt;/span&gt;
+  &lt;span class=&quot;ss&quot;&gt;:pin&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;melpa-unstable&quot;&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 
-```
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-That's it. You can now safely upgrade your packages and enjoy your
-clojure IDE once again.
+&lt;p&gt;That’s it. You can now safely upgrade your packages and enjoy your
+clojure IDE once again.&lt;/p&gt;
 
----------------------------------------
+&lt;hr /&gt;
 
-As duly noted by `dantheobserver` [in the comments][dan-comment], `use-package`
-itself is [pending a stable release][use-package-release] for some time now. As
+&lt;p&gt;As duly noted by &lt;code class=&quot;highlighter-rouge&quot;&gt;dantheobserver&lt;/code&gt; &lt;a href=&quot;http://disq.us/p/1svamen&quot;&gt;in the comments&lt;/a&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;use-package&lt;/code&gt;
+itself is &lt;a href=&quot;https://github.com/jwiegley/use-package/issues/602&quot;&gt;pending a stable release&lt;/a&gt; for some time now. As
 such, you only have one way to properly pin it, similarly to the first option
-above:
+above:&lt;/p&gt;
 
-``` emacs-lisp
-(add-to-list 'package-pinned-packages '(use-package . &quot;melpa-unstable&quot;) t)
-```
+&lt;div class=&quot;language-emacs-lisp highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;add-to-list&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;'package-pinned-packages&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;use-package&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;melpa-unstable&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-Happy hacking!
+&lt;p&gt;Happy hacking!&lt;/p&gt;</content><author><name></name></author><category term="clojure" /><category term="emacs" /><category term="elisp" /><summary type="html">It’s like trying to pin down a kangaroo on a trampoline. – Sid Waddel</summary></entry><entry><title type="html">Void methods as behavior black holes</title><link href="http://localhost:4000/2017/05/22/void-methods-as-behavior-black-holes/" rel="alternate" type="text/html" title="Void methods as behavior black holes" /><published>2017-05-22T00:00:00+02:00</published><updated>2017-05-22T00:00:00+02:00</updated><id>http://localhost:4000/2017/05/22/void-methods-as-behavior-black-holes</id><content type="html" xml:base="http://localhost:4000/2017/05/22/void-methods-as-behavior-black-holes/">&lt;blockquote&gt;
+  &lt;p&gt;This post could have been titled ‘Void methods considered harmful’,
+if ‘considered harmful’ essays weren’t
+&lt;a href=&quot;http://meyerweb.com/eric/comment/chech.html&quot;&gt;considered harmful themselves&lt;/a&gt;. Oh welp.&lt;/p&gt;
+&lt;/blockquote&gt;
 
-[ide-war]: https://static1.squarespace.com/static/5372821be4b0aefc6719057e/t/5aafdd7e562fa73957a7b46b/1521474957333/editor.png?format=1000w
-[cider]: https://github.com/clojure-emacs
-[awe]: https://ih1.redbubble.net/image.118710403.1747/flat,800x800,075,f.u2.jpg
-[synple]: https://synple.eu/en/index
-[melpa-stable]: https://stable.melpa.org/
-[sad-face]: https://github.com/clojure-emacs/clj-refactor.el/issues/403#issuecomment-357631244
-[dan-comment]: http://disq.us/p/1svamen
-[use-package-release]: https://github.com/jwiegley/use-package/issues/602</content><author><name></name></author><category term="clojure" /><category term="emacs" /><category term="elisp" /><summary type="html">It’s like trying to pin down a kangaroo on a trampoline. – Sid Waddel</summary></entry><entry><title type="html">Void methods as behavior black holes</title><link href="http://localhost:4000/2017/05/22/void-methods-as-behavior-black-holes/" rel="alternate" type="text/html" title="Void methods as behavior black holes" /><published>2017-05-22T00:00:00+02:00</published><updated>2017-05-22T00:00:00+02:00</updated><id>http://localhost:4000/2017/05/22/void-methods-as-behavior-black-holes</id><content type="html" xml:base="http://localhost:4000/2017/05/22/void-methods-as-behavior-black-holes/">&gt; This post could have been titled 'Void methods considered harmful',
-&gt; if 'considered harmful' essays weren't
-&gt; [considered harmful themselves][considered harmful]. Oh welp.
-
-Void methods are ubiquitous in most Object Oriented codebases. A
+&lt;p&gt;Void methods are ubiquitous in most Object Oriented codebases. A
 direct consequence of mutable state or I/O somewhere in your runtime,
 you can wrap any behavior that functional programming zealots would
-call [impure][impure], which in principle has no meaningful return
+call &lt;a href=&quot;https://en.wikipedia.org/wiki/Pure_function#Impure_functions_in_pure_expressions&quot;&gt;impure&lt;/a&gt;, which in principle has no meaningful return
 value. One common example is during application bootstrap, e.g. in
-Java:
+Java:&lt;/p&gt;
 
-```java
-@Resource MyClass implements Runnable {
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nd&quot;&gt;@Resource&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;MyClass&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;implements&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Runnable&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
 
-// ...
+&lt;span class=&quot;c1&quot;&gt;// ...&lt;/span&gt;
 
-@PostConstruct
-public void init() {
-    if(this.enabled) {
-        this.executorService.scheduleAtFixedRate(
-            this,
-            0,
-            500,
-            TimeOut.MILLISECONDS);
-    }
-}
+&lt;span class=&quot;nd&quot;&gt;@PostConstruct&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;init&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;enabled&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;executorService&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;scheduleAtFixedRate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;
+            &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;
+            &lt;span class=&quot;mi&quot;&gt;500&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;
+            &lt;span class=&quot;nc&quot;&gt;TimeOut&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;MILLISECONDS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
 
-// ...
-}
-```
+&lt;span class=&quot;c1&quot;&gt;// ...&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-The above is supposedly fine, but public void methods, and especially
+&lt;p&gt;The above is supposedly fine, but public void methods, and especially
 a proliferation of them in a given codebase, are an evident code
-smell. Even when coding in Object Oriented style.
+smell. Even when coding in Object Oriented style.&lt;/p&gt;
 
-# Your `public` interface
+&lt;h1 id=&quot;your-public-interface&quot;&gt;Your &lt;code class=&quot;highlighter-rouge&quot;&gt;public&lt;/code&gt; interface&lt;/h1&gt;
 
-Public methods are meant for your class [collaborators][CRC] to
+&lt;p&gt;Public methods are meant for your class &lt;a href=&quot;https://en.wikipedia.org/wiki/Class-responsibility-collaboration_card&quot;&gt;collaborators&lt;/a&gt; to
 consume, they are the gateway to your class functionality. As such,
 they should be as clear as concise as possible, offering the minimal
 surface area needed to enable your class behaviors. One major,
 self-documenting part of any function definition is naturally its
-return type.
+return type.&lt;/p&gt;
 
-Lets start from the previous example:
+&lt;p&gt;Lets start from the previous example:&lt;/p&gt;
 
-```java
-@Resource MyClass implements Runnable {
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nd&quot;&gt;@Resource&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;MyClass&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;implements&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Runnable&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
 
-// ...
+&lt;span class=&quot;c1&quot;&gt;// ...&lt;/span&gt;
 
-@PostConstruct
-public void init() {
-    if(this.enabled) {
-        this.executorService.scheduleAtFixedRate(
-            this,
-            0,
-            500,
-            TimeOut.MILLISECONDS);
-    }
-}
+&lt;span class=&quot;nd&quot;&gt;@PostConstruct&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;init&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;enabled&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;executorService&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;scheduleAtFixedRate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;
+            &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;
+            &lt;span class=&quot;mi&quot;&gt;500&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;
+            &lt;span class=&quot;nc&quot;&gt;TimeOut&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;MILLISECONDS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
 
-// ...
-}
-```
+&lt;span class=&quot;c1&quot;&gt;// ...&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-Our class is likely receiving some sort of `executorService` instance
+&lt;p&gt;Our class is likely receiving some sort of &lt;code class=&quot;highlighter-rouge&quot;&gt;executorService&lt;/code&gt; instance
 at construction time, possibly obtained from some
-[dependency injection][magic] glue code, after which a worker schedule
+&lt;a href=&quot;http://imgur.com/iZcUNxH&quot;&gt;dependency injection&lt;/a&gt; glue code, after which a worker schedule
 is started. The likelihood of client code needing to explicitly call
-`init()` is typically very low. This suggests that our
-`@PostConstruct` method should probably have a more restrictive
-visibility, maybe `private` or `protected`, and that would be the end
-of it.
+&lt;code class=&quot;highlighter-rouge&quot;&gt;init()&lt;/code&gt; is typically very low. This suggests that our
+&lt;code class=&quot;highlighter-rouge&quot;&gt;@PostConstruct&lt;/code&gt; method should probably have a more restrictive
+visibility, maybe &lt;code class=&quot;highlighter-rouge&quot;&gt;private&lt;/code&gt; or &lt;code class=&quot;highlighter-rouge&quot;&gt;protected&lt;/code&gt;, and that would be the end
+of it.&lt;/p&gt;
 
-But, is it really?
+&lt;p&gt;But, is it really?&lt;/p&gt;
 
-# Testability
+&lt;h1 id=&quot;testability&quot;&gt;Testability&lt;/h1&gt;
 
-Let's say we want to actually test the shutdown
+&lt;p&gt;Let’s say we want to actually test the shutdown
 behavior of our worker threads, typically a tricky thing to do. What
-you want to do is something along the lines of:
+you want to do is something along the lines of:&lt;/p&gt;
 
-``` java
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+&lt;span class=&quot;c1&quot;&gt;// changed code from the original MyClass file:&lt;/span&gt;
+&lt;span class=&quot;nd&quot;&gt;@PostConstruct&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ScheduledFuture&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;T&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;init&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;enabled&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;executorService&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;scheduleAtFixedRate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;
+            &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;
+            &lt;span class=&quot;mi&quot;&gt;500&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;
+            &lt;span class=&quot;nc&quot;&gt;TimeOut&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;MILLISECONDS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
 
-// changed code from the original MyClass file:
-@PostConstruct
-public ScheduledFuture&lt;T&gt; init() {
-    if(this.enabled) {
-        return this.executorService.scheduleAtFixedRate(
-            this,
-            0,
-            500,
-            TimeOut.MILLISECONDS);
-    }
-}
 
+&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;testExecutorShutdown&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(){&lt;/span&gt;
+    &lt;span class=&quot;nc&quot;&gt;ScheduledExecutorService&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;service&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Executors&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;newSingleThreadScheduledExecutor&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+    &lt;span class=&quot;nc&quot;&gt;MyClass&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;MyClass&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;service&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// executorService, enabled&lt;/span&gt;
+    &lt;span class=&quot;nc&quot;&gt;ScheduledFuture&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;T&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;scheduled&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;init&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;executorService&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;shutdown&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;scheduled&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;TimeUnit&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;SECONDS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// throws exception&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-public testExecutorShutdown(){
-    ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
-    MyClass c = new MyClass(service, true); // executorService, enabled
-    ScheduledFuture&lt;T&gt; scheduled = c.init();
-    executorService.shutdown();
-    scheduled.get(1, TimeUnit.SECONDS); // throws exception
-}
-```
-
-The above test code tests that the scheduled action terminates within
+&lt;p&gt;The above test code tests that the scheduled action terminates within
 1 second (or two scheduled iterations) from the executor
 shutdown. Such a test relies on accessing the future object returned
-by the init method.
+by the init method.&lt;/p&gt;
 
-# Self documenting
+&lt;h1 id=&quot;self-documenting&quot;&gt;Self documenting&lt;/h1&gt;
 
-&gt; it is Human perception that is sealed off behind their current consciousness horizon
-&gt;
-&gt; -- *Elia Wise*
+&lt;blockquote&gt;
+  &lt;p&gt;it is Human perception that is sealed off behind their current consciousness horizon&lt;/p&gt;
 
-The change we made to the `init()` method enabled the behavioral test,
-but introduced an important side effect: the `ScheduledFuture` object
-is now part of `MyClass` public interface, meaning that now any client
+  &lt;p&gt;– &lt;em&gt;Elia Wise&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;The change we made to the &lt;code class=&quot;highlighter-rouge&quot;&gt;init()&lt;/code&gt; method enabled the behavioral test,
+but introduced an important side effect: the &lt;code class=&quot;highlighter-rouge&quot;&gt;ScheduledFuture&lt;/code&gt; object
+is now part of &lt;code class=&quot;highlighter-rouge&quot;&gt;MyClass&lt;/code&gt; public interface, meaning that now any client
 code is able to interact with it. Whether this is a desirable property
-really depends on the use case `MyClass` is designed to support, and
-probably you want to encapsulate the `ScheduledFuture` in a more
-friendly class that e.g. only exposes something like `bool
-isDone()`.
+really depends on the use case &lt;code class=&quot;highlighter-rouge&quot;&gt;MyClass&lt;/code&gt; is designed to support, and
+probably you want to encapsulate the &lt;code class=&quot;highlighter-rouge&quot;&gt;ScheduledFuture&lt;/code&gt; in a more
+friendly class that e.g. only exposes something like &lt;code class=&quot;highlighter-rouge&quot;&gt;bool
+isDone()&lt;/code&gt;.&lt;/p&gt;
 
-In any case, keeping the above `init` method void would always end up
-in your client code (or developer glancing at the `init` signature
-using his/her IDE) being oblivious of what `MyClass.init()` is really
+&lt;p&gt;In any case, keeping the above &lt;code class=&quot;highlighter-rouge&quot;&gt;init&lt;/code&gt; method void would always end up
+in your client code (or developer glancing at the &lt;code class=&quot;highlighter-rouge&quot;&gt;init&lt;/code&gt; signature
+using his/her IDE) being oblivious of what &lt;code class=&quot;highlighter-rouge&quot;&gt;MyClass.init()&lt;/code&gt; is really
 doing. Just look at the different signatures, and think of yourself
-coding against each of them:
+coding against each of them:&lt;/p&gt;
 
-``` java
-public void init()
-public ScheduledFuture&lt;T&gt; init()
-```
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;init&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ScheduledFuture&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;T&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;init&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-the latter one will save you a brain cycle every time you need to use
+&lt;p&gt;the latter one will save you a brain cycle every time you need to use
 it, as it clearly states its produced effects without having to look
-at the code or at a deeper level of documentation.
+at the code or at a deeper level of documentation.&lt;/p&gt;
 
-# Do one thing and do it well
+&lt;h1 id=&quot;do-one-thing-and-do-it-well&quot;&gt;Do one thing and do it well&lt;/h1&gt;
 
-Sticking to the idea that your function returns a single value to
+&lt;p&gt;Sticking to the idea that your function returns a single value to
 explicitly states its behavior is obviously impossible when your
 function does more than one thing at a time. Fortunately, that by
-itself is a [code smell][single responsibility], and by treating your
+itself is a &lt;a href=&quot;https://en.wikipedia.org/wiki/Single_responsibility_principle&quot;&gt;code smell&lt;/a&gt;, and by treating your
 return type as the existential purpose of your functions you make it
-one step weirder to violate the principle.
+one step weirder to violate the principle.&lt;/p&gt;
 
-# Conclusions
+&lt;h1 id=&quot;conclusions&quot;&gt;Conclusions&lt;/h1&gt;
 
-Be nice to your future self and in general to all developers using
+&lt;p&gt;Be nice to your future self and in general to all developers using
 your code and never hide such a valuable piece of information like
-your return value in your public API, never again.
+your return value in your public API, never again.&lt;/p&gt;
 
-Hugs &amp; kisses,
-c.
-
-[impure]: https://en.wikipedia.org/wiki/Pure_function#Impure_functions_in_pure_expressions
-[magic]: http://imgur.com/iZcUNxH
-[considered harmful]: http://meyerweb.com/eric/comment/chech.html
-[CRC]: https://en.wikipedia.org/wiki/Class-responsibility-collaboration_card
-[single responsibility]: https://en.wikipedia.org/wiki/Single_responsibility_principle</content><author><name></name></author><category term="java" /><category term="clean code" /><summary type="html">This post could have been titled ‘Void methods considered harmful’, if ‘considered harmful’ essays weren’t considered harmful themselves. Oh welp.</summary></entry><entry><title type="html">Yet another agile is dead post</title><link href="http://localhost:4000/2016/12/05/yet-another-agile-is-dead-post/" rel="alternate" type="text/html" title="Yet another agile is dead post" /><published>2016-12-05T00:00:00+01:00</published><updated>2016-12-05T00:00:00+01:00</updated><id>http://localhost:4000/2016/12/05/yet-another-agile-is-dead-post</id><content type="html" xml:base="http://localhost:4000/2016/12/05/yet-another-agile-is-dead-post/">Say you are in the software business for a while, and you worked with many different
+&lt;p&gt;Hugs &amp;amp; kisses,
+c.&lt;/p&gt;</content><author><name></name></author><category term="java" /><category term="clean code" /><summary type="html">This post could have been titled ‘Void methods considered harmful’, if ‘considered harmful’ essays weren’t considered harmful themselves. Oh welp.</summary></entry><entry><title type="html">Yet another agile is dead post</title><link href="http://localhost:4000/2016/12/05/yet-another-agile-is-dead-post/" rel="alternate" type="text/html" title="Yet another agile is dead post" /><published>2016-12-05T00:00:00+01:00</published><updated>2016-12-05T00:00:00+01:00</updated><id>http://localhost:4000/2016/12/05/yet-another-agile-is-dead-post</id><content type="html" xml:base="http://localhost:4000/2016/12/05/yet-another-agile-is-dead-post/">&lt;p&gt;Say you are in the software business for a while, and you worked with many different
 organizations on software projects. Say all of them adopted an agile process,
 and you had more than your fair share of standups, burndowns, sprints, release
-trains and stuff. Now, say someone asks you to draw a picture of **#agile**,
-will that be like this?
+trains and stuff. Now, say someone asks you to draw a picture of &lt;strong&gt;#agile&lt;/strong&gt;,
+will that be like this?&lt;/p&gt;
 
-![simple agile](/img/post/wheel.png)
+&lt;p&gt;&lt;img src=&quot;/img/post/wheel.png&quot; alt=&quot;simple agile&quot; /&gt;&lt;/p&gt;
 
-No. Effing. Way.
+&lt;p&gt;No. Effing. Way.&lt;/p&gt;
 
-## Agile is dead
+&lt;h2 id=&quot;agile-is-dead&quot;&gt;Agile is dead&lt;/h2&gt;
 
-I'm by far not the first one on the [agile is dead bangwagon][agile-is-dead].
+&lt;p&gt;I’m by far not the first one on the &lt;a href=&quot;https://www.google.nl/search?q=agile%20is%20dead&quot;&gt;agile is dead bangwagon&lt;/a&gt;.
 There is a practically infinite corpus citing how agile is broken, whether because
-it lends itself to [oversimplifying our profession][overly-simple] or because it's
-just a [hype come to its end][hype-cycle].
+it lends itself to &lt;a href=&quot;https://effectivesoftwaredesign.com/2014/03/17/the-end-of-agile-death-by-over-simplification/&quot;&gt;oversimplifying our profession&lt;/a&gt; or because it’s
+just a &lt;a href=&quot;https://en.wikipedia.org/wiki/Hype_cycle&quot;&gt;hype come to its end&lt;/a&gt;.&lt;/p&gt;
 
-Set aside all the good intentions
-and [compelling ethics][agile-manifesto], Agile became way too meta for it to be
+&lt;p&gt;Set aside all the good intentions
+and &lt;a href=&quot;http://agilemanifesto.org/&quot;&gt;compelling ethics&lt;/a&gt;, Agile became way too meta for it to be
 any good to anyone. In search for the exact science of process management, people
 thought it was in the best interest of everyone to create standards over standards
-of supposedly battle-proven methodologies.
+of supposedly battle-proven methodologies.&lt;/p&gt;
 
-This is what we actually got ([*image courtesy of Deloitte*][deloitte]):
+&lt;p&gt;This is what we actually got (&lt;a href=&quot;http://blog.deloitte.com.au/agile/2016/03/07/navigating-the-agile-landscape/#.WEbfLqIrLdQ&quot;&gt;&lt;em&gt;image courtesy of Deloitte&lt;/em&gt;&lt;/a&gt;):&lt;/p&gt;
 
-![real agile](/img/post/agile-landscape.jpg)
+&lt;p&gt;&lt;img src=&quot;/img/post/agile-landscape.jpg&quot; alt=&quot;real agile&quot; /&gt;&lt;/p&gt;
 
-The author of this complex diagram was trying to shed some light on the current
+&lt;p&gt;The author of this complex diagram was trying to shed some light on the current
 plethora of Agile methodologies that people have been implementing, and while
-the result is horrifying from anyone interested into Getting Things Done, it's
+the result is horrifying from anyone interested into Getting Things Done, it’s
 spot on the very issue we have at hand: there is no exact science of management.
-We, as a whole industry, should be get over it already.
+We, as a whole industry, should be get over it already.&lt;/p&gt;
 
-## Long live agile
+&lt;h2 id=&quot;long-live-agile&quot;&gt;Long live agile&lt;/h2&gt;
 
-I believe we're now at the Agile [antithesis][antithesis]. The [hype cycle][hype-cycle]
+&lt;p&gt;I believe we’re now at the Agile &lt;a href=&quot;https://en.wikipedia.org/wiki/Antithesis#Hegel_and_antithesis&quot;&gt;antithesis&lt;/a&gt;. The &lt;a href=&quot;https://en.wikipedia.org/wiki/Hype_cycle&quot;&gt;hype cycle&lt;/a&gt;
 is now at the end of the Disillusionment deep, and already getting into
-Productivity. The [gospel][agile-manifesto] has been introspected and it's
-simply not a thing to speak of agile anymore.
+Productivity. The &lt;a href=&quot;http://agilemanifesto.org/&quot;&gt;gospel&lt;/a&gt; has been introspected and it’s
+simply not a thing to speak of agile anymore.&lt;/p&gt;
 
-Eventually, we're in the [post-agile][post-agile]
+&lt;p&gt;Eventually, we’re in the &lt;a href=&quot;https://www.google.nl/search?q=post%20agile&quot;&gt;post-agile&lt;/a&gt;
 era already, and we need our IT managers to truly understand what they role
 really is, we need them to do their job and understand where the agile script
-works, where it doesn't and ultimately where it enables the whole organization
-to really work as it should.
+works, where it doesn’t and ultimately where it enables the whole organization
+to really work as it should.&lt;/p&gt;
 
-Amen.
+&lt;p&gt;Amen.&lt;/p&gt;</content><author><name></name></author><category term="agile" /><summary type="html">Say you are in the software business for a while, and you worked with many different organizations on software projects. Say all of them adopted an agile process, and you had more than your fair share of standups, burndowns, sprints, release trains and stuff. Now, say someone asks you to draw a picture of #agile, will that be like this?</summary></entry><entry><title type="html">Dear future me</title><link href="http://localhost:4000/2016/01/10/a-new-chapter/" rel="alternate" type="text/html" title="Dear future me" /><published>2016-01-10T00:00:00+01:00</published><updated>2016-01-10T00:00:00+01:00</updated><id>http://localhost:4000/2016/01/10/a-new-chapter</id><content type="html" xml:base="http://localhost:4000/2016/01/10/a-new-chapter/">&lt;blockquote&gt;
+  &lt;p&gt;NOTE: these are the words that I wrote to myself on October 31st 2016, the day
+in which I left my then-current company. The piece was written with the intent
+of being published, in case people who regard my opinion (future me hopefully included)
+on working things can
+have a look at how I reflect on my own decisions. Happy reading!&lt;/p&gt;
+&lt;/blockquote&gt;
 
+&lt;p&gt;&lt;strong&gt;Dear future me&lt;/strong&gt;,&lt;/p&gt;
 
-[deloitte]: http://blog.deloitte.com.au/agile/2016/03/07/navigating-the-agile-landscape/#.WEbfLqIrLdQ
-[agile-is-dead]: https://www.google.nl/search?q=agile%20is%20dead
-[overly-simple]: https://effectivesoftwaredesign.com/2014/03/17/the-end-of-agile-death-by-over-simplification/
-[hype-cycle]: https://www.linkedin.com/pulse/agile-hype-cycle-matthew-kern-msea-cea-pmp-itil-cissp-issap?trk=mp-reader-card
-[agile-manifesto]: http://agilemanifesto.org/
-[antithesis]: https://en.wikipedia.org/wiki/Antithesis#Hegel_and_antithesis
-[hype-cycle]: https://en.wikipedia.org/wiki/Hype_cycle
-[post-agile]: https://www.google.nl/search?q=post%20agile</content><author><name></name></author><category term="agile" /><summary type="html">Say you are in the software business for a while, and you worked with many different organizations on software projects. Say all of them adopted an agile process, and you had more than your fair share of standups, burndowns, sprints, release trains and stuff. Now, say someone asks you to draw a picture of #agile, will that be like this?</summary></entry><entry><title type="html">Dear future me</title><link href="http://localhost:4000/2016/01/10/a-new-chapter/" rel="alternate" type="text/html" title="Dear future me" /><published>2016-01-10T00:00:00+01:00</published><updated>2016-01-10T00:00:00+01:00</updated><id>http://localhost:4000/2016/01/10/a-new-chapter</id><content type="html" xml:base="http://localhost:4000/2016/01/10/a-new-chapter/">&gt; NOTE: these are the words that I wrote to myself on October 31st 2016, the day
-&gt; in which I left my then-current company. The piece was written with the intent
-&gt; of being published, in case people who regard my opinion (future me hopefully included)
-&gt; on working things can
-&gt; have a look at how I reflect on my own decisions. Happy reading!
+&lt;p&gt;here’s you at the very end of your experience at Sytac.&lt;/p&gt;
 
+&lt;p&gt;Yes, you multiple personalities weirdo.&lt;/p&gt;
 
-**Dear future me**,
-
-here's you at the very end of your experience at Sytac.
-
-Yes, you multiple personalities weirdo.
-
-As of today you are not anymore on office as the CTO of [Sytac](http://www.sytac.nl),
-the IT consulting company you've part of in the last two years. As your memory is proverbially
+&lt;p&gt;As of today you are not anymore on office as the CTO of &lt;a href=&quot;http://www.sytac.nl&quot;&gt;Sytac&lt;/a&gt;,
+the IT consulting company you’ve part of in the last two years. As your memory is proverbially
 awful, I hope these notes will give you a better perspective on how you feel
-at the moment, surely a better one than what you *think* you had.
+at the moment, surely a better one than what you &lt;em&gt;think&lt;/em&gt; you had.&lt;/p&gt;
 
-# On leaving
+&lt;h1 id=&quot;on-leaving&quot;&gt;On leaving&lt;/h1&gt;
 
-Yes, you quitter.
+&lt;p&gt;Yes, you quitter.&lt;/p&gt;
 
-It's not the first time you leave colleagues you loved behind,
+&lt;p&gt;It’s not the first time you leave colleagues you loved behind,
 and you firmly believe that either you are part of the solution, or you are part
 of the problem. Yet to leave is like declaring to the general public that you
-believe to be part of the problem, so what's up with that?
+believe to be part of the problem, so what’s up with that?&lt;/p&gt;
 
-Well, that's true. With all your ideas and suggestions and big mouth and stuff,
-you weren't able to fix the problems that always bothered you, making you 100%
+&lt;p&gt;Well, that’s true. With all your ideas and suggestions and big mouth and stuff,
+you weren’t able to fix the problems that always bothered you, making you 100%
 part of the problem, certified. Deep inside you almost always knew that you
 were not cut for leading Sytac to revolutionize itself on your terms, and maybe
-that was even a foolish thing to hope for in the first place.
+that was even a foolish thing to hope for in the first place.&lt;/p&gt;
 
-Yet, you wanted to believe and ran circles *around* the main issues without facing the
-biggest obstacles first. You feared you would have crushed on them anyway.
+&lt;p&gt;Yet, you wanted to believe and ran circles &lt;em&gt;around&lt;/em&gt; the main issues without facing the
+biggest obstacles first. You feared you would have crushed on them anyway.&lt;/p&gt;
 
-So yes, better leave and give way to the new. But remember: next time, face the
+&lt;p&gt;So yes, better leave and give way to the new. But remember: next time, face the
 biggest issues first, or else you might find yourself wasting precious time
-chasing windmills.
+chasing windmills.&lt;/p&gt;
 
-# On career
+&lt;h1 id=&quot;on-career&quot;&gt;On career&lt;/h1&gt;
 
-Yes, your ego.
+&lt;p&gt;Yes, your ego.&lt;/p&gt;
 
-As pretty much everyone that ever wrote some software, you have a big
+&lt;p&gt;As pretty much everyone that ever wrote some software, you have a big
 thirst for the alpha-nerd recognition. You did prove yourself here, so much that
-you earned the C level. That was a morality booster for you, wasn't it?
+you earned the C level. That was a morality booster for you, wasn’t it?&lt;/p&gt;
 
-The thing is, for you the most important part of getting up the ladder is to
+&lt;p&gt;The thing is, for you the most important part of getting up the ladder is to
 prove yourself that you are capable of handling the bigger headaches that any
 new accomplishment comes with. One step up, and you take due note that ok, that
-is something you can do if you want. You fed your ego enough, time to move on.
+is something you can do if you want. You fed your ego enough, time to move on.&lt;/p&gt;
 
-At this point you have evolved from an insecure, awkward nerd into an accomplished
+&lt;p&gt;At this point you have evolved from an insecure, awkward nerd into an accomplished
 professional who craves stage time and public attention. Your ego has inflated
 enough, and at the moment you look at that CTO thingy more as an uncomfortable
-position: if you are the top dog, who will you learn from?
+position: if you are the top dog, who will you learn from?&lt;/p&gt;
 
-But by now you know it all too well, that you care almost nothing for what step of
-the ladder you occupy: do something great and do it good, that's what makes you
-open your tail like a &lt;pavone&gt;.
+&lt;p&gt;But by now you know it all too well, that you care almost nothing for what step of
+the ladder you occupy: do something great and do it good, that’s what makes you
+open your tail like a &lt;pavone&gt;.&lt;/pavone&gt;&lt;/p&gt;
 
-# On having guts
+&lt;h1 id=&quot;on-having-guts&quot;&gt;On having guts&lt;/h1&gt;
 
-Yes, you sissy.
+&lt;p&gt;Yes, you sissy.&lt;/p&gt;
 
-Despite your quite evident issue of logorrhea, you missed many
+&lt;p&gt;Despite your quite evident issue of logorrhea, you missed many
 occasions in which you could open your damn mouth when it really mattered. You
-saw potential and you didn't fight to realize it. And you know why? You didn't
-think you could win it. And maybe you could not, but that's beside the point.
+saw potential and you didn’t fight to realize it. And you know why? You didn’t
+think you could win it. And maybe you could not, but that’s beside the point.&lt;/p&gt;
 
-Make sure you always try your best, and if you think that's not enough then be
+&lt;p&gt;Make sure you always try your best, and if you think that’s not enough then be
 open and admit failure. In software as in life, fail fast is always the best
-option for everyone involved.
+option for everyone involved.&lt;/p&gt;
 
-# On closing
+&lt;h1 id=&quot;on-closing&quot;&gt;On closing&lt;/h1&gt;
 
-Yes, you blatant fool, time to close this psycho letter.
+&lt;p&gt;Yes, you blatant fool, time to close this psycho letter.&lt;/p&gt;
 
-The past two years have been an interesting journey, and you did grow personally
-and professionally and you [did things](http://amsterdam2016.codemotionworld.com)
+&lt;p&gt;The past two years have been an interesting journey, and you did grow personally
+and professionally and you &lt;a href=&quot;http://amsterdam2016.codemotionworld.com&quot;&gt;did things&lt;/a&gt;
 you never dreamt you could handle. And as you know yourself good enough, that can
-only mean that bigger challenges are ahead.
+only mean that bigger challenges are ahead.&lt;/p&gt;
 
-Brace yourself, for the journey and keep your focus sharp on things that really
+&lt;p&gt;Brace yourself, for the journey and keep your focus sharp on things that really
 matter to you. But as you who read this is me in the future, you know that better
-than me.
+than me.&lt;/p&gt;
 
-[Or do you?](https://en.wikipedia.org/wiki/Eternal_return)
+&lt;p&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/Eternal_return&quot;&gt;Or do you?&lt;/a&gt;&lt;/p&gt;
 
-A si biri in bon'ora.</content><author><name></name></author><category term="real life" /><category term="sytac" /><summary type="html">NOTE: these are the words that I wrote to myself on October 31st 2016, the day in which I left my then-current company. The piece was written with the intent of being published, in case people who regard my opinion (future me hopefully included) on working things can have a look at how I reflect on my own decisions. Happy reading!</summary></entry><entry><title type="html">The best keyboard layout for Clojurists</title><link href="http://localhost:4000/2015/03/01/colemak-best-keyboard-for-clojurists/" rel="alternate" type="text/html" title="The best keyboard layout for Clojurists" /><published>2015-03-01T00:00:00+01:00</published><updated>2015-03-01T00:00:00+01:00</updated><id>http://localhost:4000/2015/03/01/colemak-best-keyboard-for-clojurists</id><content type="html" xml:base="http://localhost:4000/2015/03/01/colemak-best-keyboard-for-clojurists/">Keyboards, oh my!
-=================
+&lt;p&gt;A si biri in bon’ora.&lt;/p&gt;</content><author><name></name></author><category term="real life" /><category term="sytac" /><summary type="html">NOTE: these are the words that I wrote to myself on October 31st 2016, the day in which I left my then-current company. The piece was written with the intent of being published, in case people who regard my opinion (future me hopefully included) on working things can have a look at how I reflect on my own decisions. Happy reading!</summary></entry><entry><title type="html">The best keyboard layout for Clojurists</title><link href="http://localhost:4000/2015/03/01/colemak-best-keyboard-for-clojurists/" rel="alternate" type="text/html" title="The best keyboard layout for Clojurists" /><published>2015-03-01T00:00:00+01:00</published><updated>2015-03-01T00:00:00+01:00</updated><id>http://localhost:4000/2015/03/01/colemak-best-keyboard-for-clojurists</id><content type="html" xml:base="http://localhost:4000/2015/03/01/colemak-best-keyboard-for-clojurists/">&lt;h1 id=&quot;keyboards-oh-my&quot;&gt;Keyboards, oh my!&lt;/h1&gt;
 
-If you're a programmer, you spend most of your working life on your keyboard, and a good keyboard layout can make the difference between touch typing and carpal syndrome.
+&lt;p&gt;If you’re a programmer, you spend most of your working life on your keyboard, and a good keyboard layout can make the difference between touch typing and carpal syndrome.&lt;/p&gt;
 
-That, and an irresistible drive for being the alpha nerd around, pushed me to teach myself [Colemak](http://colemak.com/).
+&lt;p&gt;That, and an irresistible drive for being the alpha nerd around, pushed me to teach myself &lt;a href=&quot;http://colemak.com/&quot;&gt;Colemak&lt;/a&gt;.&lt;/p&gt;
 
-It was painful and frustrating at the beginning, when I saw my typing speed precipitating from a respectable 80 words per minute to a horrific 20wpm. But now, now that touch typing has no mysteries for me on this mystical keyboard, now I got beyond my past self, recently crushing the 90wpm milestone. Hooray!
+&lt;p&gt;It was painful and frustrating at the beginning, when I saw my typing speed precipitating from a respectable 80 words per minute to a horrific 20wpm. But now, now that touch typing has no mysteries for me on this mystical keyboard, now I got beyond my past self, recently crushing the 90wpm milestone. Hooray!&lt;/p&gt;
 
-`(def best)`
-============
+&lt;h1 id=&quot;def-best&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;(def best)&lt;/code&gt;&lt;/h1&gt;
 
-In this data driven world, we constantly need to verify whether the decisions we make are still valid, and therefore the question: would Colemak be the best keyboard for me? Am I losing by sticking with the wrong choice? And would I be even willing to switch again keyboard layout in the foreseeable future?
+&lt;p&gt;In this data driven world, we constantly need to verify whether the decisions we make are still valid, and therefore the question: would Colemak be the best keyboard for me? Am I losing by sticking with the wrong choice? And would I be even willing to switch again keyboard layout in the foreseeable future?&lt;/p&gt;
 
-While the answer to the last question is a roaring [&quot;NO!&quot;](http://images.sodahead.com/polls/003657975/125779928_Noooooooooooooooo_answer_1_xlarge.Peg), I needed to know. I needed data. But how?
+&lt;p&gt;While the answer to the last question is a roaring &lt;a href=&quot;http://images.sodahead.com/polls/003657975/125779928_Noooooooooooooooo_answer_1_xlarge.Peg&quot;&gt;“NO!”&lt;/a&gt;, I needed to know. I needed data. But how?&lt;/p&gt;
 
-Well, first things first, I type lots of [Groovy](http://groovy.codehaus.org/) and [Clojure](http://clojure.org/) these days. But I don't care for the former language, my heart is really about my dear lispy friend. I just had to find a way to produce an automatic comparison, surely enough, here it is: the [Keyboard Layout Analyzer](http://patorjk.com/keyboard-layout-analyzer/), courtesy of [Patrick Gillespie](http://patorjk.com/).
+&lt;p&gt;Well, first things first, I type lots of &lt;a href=&quot;http://groovy.codehaus.org/&quot;&gt;Groovy&lt;/a&gt; and &lt;a href=&quot;http://clojure.org/&quot;&gt;Clojure&lt;/a&gt; these days. But I don’t care for the former language, my heart is really about my dear lispy friend. I just had to find a way to produce an automatic comparison, surely enough, here it is: the &lt;a href=&quot;http://patorjk.com/keyboard-layout-analyzer/&quot;&gt;Keyboard Layout Analyzer&lt;/a&gt;, courtesy of &lt;a href=&quot;http://patorjk.com/&quot;&gt;Patrick Gillespie&lt;/a&gt;.&lt;/p&gt;
 
-I love the Internet.
+&lt;p&gt;I love the Internet.&lt;/p&gt;
 
-The winner is..
-===============
+&lt;h1 id=&quot;the-winner-is&quot;&gt;The winner is..&lt;/h1&gt;
 
-Aaaaand here it is: a comparative analysis of what keyboard is the best for Clojure Developers&amp;#8482;, after feeding the analyzer with [`clojure/core.clj`](https://github.com/clojure/clojure/blob/master/src/clj/clojure/core.clj), with its impressive 7447 lines of code:
+&lt;p&gt;Aaaaand here it is: a comparative analysis of what keyboard is the best for Clojure Developers™, after feeding the analyzer with &lt;a href=&quot;https://github.com/clojure/clojure/blob/master/src/clj/clojure/core.clj&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;clojure/core.clj&lt;/code&gt;&lt;/a&gt;, with its impressive 7447 lines of code:&lt;/p&gt;
 
-![Test results](/img/post/colemak_clj.png)
+&lt;p&gt;&lt;img src=&quot;/img/post/colemak_clj.png&quot; alt=&quot;Test results&quot; /&gt;&lt;/p&gt;
 
-Now you know. Now it's official.
+&lt;p&gt;Now you know. Now it’s official.&lt;/p&gt;
 
-Happy touch typing, everyone!
+&lt;p&gt;Happy touch typing, everyone!&lt;/p&gt;
 
-p.s.: you can read the details of the comparison [here](http://patorjk.com/keyboard-layout-analyzer/#/load/D40PQ0hB)</content><author><name></name></author><category term="clojure" /><category term="keyboard" /><category term="colemak" /><summary type="html">Keyboards, oh my!</summary></entry><entry><title type="html">Spring Environment is for initialization code only</title><link href="http://localhost:4000/2015/01/31/spring-environment-only-for-init/" rel="alternate" type="text/html" title="Spring Environment is for initialization code only" /><published>2015-01-31T00:00:00+01:00</published><updated>2015-01-31T00:00:00+01:00</updated><id>http://localhost:4000/2015/01/31/spring-environment-only-for-init</id><content type="html" xml:base="http://localhost:4000/2015/01/31/spring-environment-only-for-init/">Since version 3.1, the [Spring framework](https://spring.io/) offers an abstraction towards several different
-sources through which you can easily configure your application: the [``Environment``](http://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/core/env/Environment.html).
+&lt;p&gt;p.s.: you can read the details of the comparison &lt;a href=&quot;http://patorjk.com/keyboard-layout-analyzer/#/load/D40PQ0hB&quot;&gt;here&lt;/a&gt;&lt;/p&gt;</content><author><name></name></author><category term="clojure" /><category term="keyboard" /><category term="colemak" /><summary type="html">Keyboards, oh my!</summary></entry><entry><title type="html">Spring Environment is for initialization code only</title><link href="http://localhost:4000/2015/01/31/spring-environment-only-for-init/" rel="alternate" type="text/html" title="Spring Environment is for initialization code only" /><published>2015-01-31T00:00:00+01:00</published><updated>2015-01-31T00:00:00+01:00</updated><id>http://localhost:4000/2015/01/31/spring-environment-only-for-init</id><content type="html" xml:base="http://localhost:4000/2015/01/31/spring-environment-only-for-init/">&lt;p&gt;Since version 3.1, the &lt;a href=&quot;https://spring.io/&quot;&gt;Spring framework&lt;/a&gt; offers an abstraction towards several different
+sources through which you can easily configure your application: the &lt;a href=&quot;http://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/core/env/Environment.html&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Environment&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
 
-In this post I describe a micro benchmark that I ran to prove that, while it's a convenient API if you're
+&lt;p&gt;In this post I describe a micro benchmark that I ran to prove that, while it’s a convenient API if you’re
 using Spring in your application, it might introduce a performance penalty for which you should not use it
-outside of your initialization code.
+outside of your initialization code.&lt;/p&gt;
 
-How it works
-============
+&lt;h1 id=&quot;how-it-works&quot;&gt;How it works&lt;/h1&gt;
 
-Before getting into the numbers, a quick digression on the internals of the ``Environment`` that are important
-to this post.
+&lt;p&gt;Before getting into the numbers, a quick digression on the internals of the &lt;code class=&quot;highlighter-rouge&quot;&gt;Environment&lt;/code&gt; that are important
+to this post.&lt;/p&gt;
 
-From the documentation:
+&lt;p&gt;From the documentation:&lt;/p&gt;
 
-&gt;&gt; _Properties play an important role in almost all applications, and may originate from a variety of sources: properties files, JVM system properties, system environment variables, JNDI, servlet context parameters, ad-hoc Properties objects, Maps, and so on. The role of the environment object with relation to properties is to provide the user with a convenient service interface for configuring property sources and resolving properties from them._
+&lt;blockquote&gt;
+  &lt;blockquote&gt;
+    &lt;p&gt;&lt;em&gt;Properties play an important role in almost all applications, and may originate from a variety of sources: properties files, JVM system properties, system environment variables, JNDI, servlet context parameters, ad-hoc Properties objects, Maps, and so on. The role of the environment object with relation to properties is to provide the user with a convenient service interface for configuring property sources and resolving properties from them.&lt;/em&gt;&lt;/p&gt;
+  &lt;/blockquote&gt;
+&lt;/blockquote&gt;
 
-So, you can use the ``Environment`` to have a common interface to properties provided with different strategies, using
-a simple ``getProperty`` call to access the required value. Look at the following Groovy code:
+&lt;p&gt;So, you can use the &lt;code class=&quot;highlighter-rouge&quot;&gt;Environment&lt;/code&gt; to have a common interface to properties provided with different strategies, using
+a simple &lt;code class=&quot;highlighter-rouge&quot;&gt;getProperty&lt;/code&gt; call to access the required value. Look at the following Groovy code:&lt;/p&gt;
 
-```java
-    @Component
-    public class Greeter {
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    &lt;span class=&quot;nd&quot;&gt;@Component&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Greeter&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
 
-        private Environment environment
+        &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Environment&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;environment&lt;/span&gt;
 
-        @Autowired
-        public Greeter greeter(Environment environment){
-            this.environment = environment
-        }
+        &lt;span class=&quot;nd&quot;&gt;@Autowired&lt;/span&gt;
+        &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Greeter&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;greeter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Environment&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;environment&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;){&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;environment&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;environment&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
 
-        def nickName(user) {
-            environment.getProperty(&quot;user&quot;) // here be magic
-        }
+        &lt;span class=&quot;n&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;nickName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;environment&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getProperty&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;user&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// here be magic&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
 
-        def greet(user) {
-            def nick = nickName(user)
-            if (name == null) println &quot;Hi, ${user}!&quot;
-                         else println &quot;Hi, ${nick}!&quot;
-        }
+        &lt;span class=&quot;n&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;greet&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nick&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nickName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;println&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;Hi, ${user}!&quot;&lt;/span&gt;
+                         &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;println&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;Hi, ${nick}!&quot;&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
 
-    }
-```
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-Now, I can specify nicknames in a properties file so that I can greet know users with a more familiar nick name,
-still being able to salute also users which are not given a nickname. Neat, but how about performance?
+&lt;p&gt;Now, I can specify nicknames in a properties file so that I can greet know users with a more familiar nick name,
+still being able to salute also users which are not given a nickname. Neat, but how about performance?&lt;/p&gt;
 
-The hidden Exception
-====================
+&lt;h1 id=&quot;the-hidden-exception&quot;&gt;The hidden Exception&lt;/h1&gt;
 
-I got into this exercise while debugging a couple of slow pages in the website I'm working on: the
-[destinations pages](http://www.klm.com/destinations/nl/en/search) of the KLM main site. While performance is generally
-satisfactory, two pages were constantly giving above second response times. Definitely [too much](http://www.vm.ibm.com/devpages/jelliott/evrrt.html).
+&lt;p&gt;I got into this exercise while debugging a couple of slow pages in the website I’m working on: the
+&lt;a href=&quot;http://www.klm.com/destinations/nl/en/search&quot;&gt;destinations pages&lt;/a&gt; of the KLM main site. While performance is generally
+satisfactory, two pages were constantly giving above second response times. Definitely &lt;a href=&quot;http://www.vm.ibm.com/devpages/jelliott/evrrt.html&quot;&gt;too much&lt;/a&gt;.&lt;/p&gt;
 
-In our code, we were translating some country names into queriable keys for an external services. We also needed to override
+&lt;p&gt;In our code, we were translating some country names into queriable keys for an external services. We also needed to override
 an otherwise straightforward translation algorithm with very specific exceptions to the rule. The actual code was pretty much
-like the above ``Greeter.greet(user)``, and a [Flight Recorder](http://docs.oracle.com/javacomponents/jmc-5-4/jfr-runtime-guide/run.htm) session
-eventually provided us with the performance bottleneck (click to open):
+like the above &lt;code class=&quot;highlighter-rouge&quot;&gt;Greeter.greet(user)&lt;/code&gt;, and a &lt;a href=&quot;http://docs.oracle.com/javacomponents/jmc-5-4/jfr-runtime-guide/run.htm&quot;&gt;Flight Recorder&lt;/a&gt; session
+eventually provided us with the performance bottleneck (click to open):&lt;/p&gt;
 
-&lt;a href=&quot;/img/post/exceptions.png&quot;&gt;&lt;img style=&quot;width: 500px&quot; src=&quot;/img/post/exceptions.png&quot; /&gt;&lt;/a&gt;
+&lt;p&gt;&lt;a href=&quot;/img/post/exceptions.png&quot;&gt;&lt;img style=&quot;width: 500px&quot; src=&quot;/img/post/exceptions.png&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
 
-For 12 page refreshes we were silently throwing 140k+ exceptions. And exceptions are
-[sloooooow](http://java-performance.info/throwing-an-exception-in-java-is-very-slow/), even if you just create them.
+&lt;p&gt;For 12 page refreshes we were silently throwing 140k+ exceptions. And exceptions are
+&lt;a href=&quot;http://java-performance.info/throwing-an-exception-in-java-is-very-slow/&quot;&gt;sloooooow&lt;/a&gt;, even if you just create them.&lt;/p&gt;
 
-Looking at the top thrown exception, it was actually pretty
-easy to understand what's going on: the ``Environment`` checks whether the requested property is defined in the current JNDI context. But, if the
-name is not found, a [``NameNotFoundException``](http://docs.oracle.com/javase/8/docs/api/javax/naming/NameNotFoundException.html) is thrown. In our specific case we were using property lookup for *exceptional* cases,
-which means the vast majority of cases resulted in an exception being thrown.
+&lt;p&gt;Looking at the top thrown exception, it was actually pretty
+easy to understand what’s going on: the &lt;code class=&quot;highlighter-rouge&quot;&gt;Environment&lt;/code&gt; checks whether the requested property is defined in the current JNDI context. But, if the
+name is not found, a &lt;a href=&quot;http://docs.oracle.com/javase/8/docs/api/javax/naming/NameNotFoundException.html&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;NameNotFoundException&lt;/code&gt;&lt;/a&gt; is thrown. In our specific case we were using property lookup for &lt;em&gt;exceptional&lt;/em&gt; cases,
+which means the vast majority of cases resulted in an exception being thrown.&lt;/p&gt;
 
-Micro benchmark
-===============
+&lt;h1 id=&quot;micro-benchmark&quot;&gt;Micro benchmark&lt;/h1&gt;
 
-I put together a [micro benchmark](https://gist.github.com/skuro/648cf1d871d203a73a0c) to evaluate the potential performance gain
+&lt;p&gt;I put together a &lt;a href=&quot;https://gist.github.com/skuro/648cf1d871d203a73a0c&quot;&gt;micro benchmark&lt;/a&gt; to evaluate the potential performance gain
 of the original property lookup strategy versus a simpler one where relevant properties are loaded up at class construction time. I used the
-[Java Microbenchmark Harness](http://openjdk.java.net/projects/code-tools/jmh/), which does an incredible job at making micro benchmarks
+&lt;a href=&quot;http://openjdk.java.net/projects/code-tools/jmh/&quot;&gt;Java Microbenchmark Harness&lt;/a&gt;, which does an incredible job at making micro benchmarks
 easy on the JVM: JIT, warm up, class loading, all is taken care of for you and you can just go ahead and put your code under test. Here the results
-(higher numbers better):
+(higher numbers better):&lt;/p&gt;
 
-&gt;&gt; [Property lookup per invocation]
-&gt;&gt;
-&gt;&gt; Result: 28917.876 ?(99.9%) 183.630 ops/s [Average] &lt;br /&gt;
-&gt;&gt; Statistics: (min, avg, max) = (25688.067, 28917.876, 30976.876), stdev = 777.500 &lt;br /&gt;
-&gt;&gt; **Confidence interval (99.9%): [28734.246, 29101.505]**
+&lt;blockquote&gt;
+  &lt;blockquote&gt;
+    &lt;p&gt;[Property lookup per invocation]&lt;/p&gt;
 
-----
+    &lt;p&gt;Result: 28917.876 ?(99.9%) 183.630 ops/s [Average] &lt;br /&gt;
+Statistics: (min, avg, max) = (25688.067, 28917.876, 30976.876), stdev = 777.500 &lt;br /&gt;
+&lt;strong&gt;Confidence interval (99.9%): [28734.246, 29101.505]&lt;/strong&gt;&lt;/p&gt;
+  &lt;/blockquote&gt;
+&lt;/blockquote&gt;
 
-&gt;&gt; [Property loading at class construction]
-&gt;&gt;
-&gt;&gt; Result: 159062.900 ?(99.9%) 1013.309 ops/s [Average] &lt;br /&gt;
-&gt;&gt; Statistics: (min, avg, max) = (138707.926, 159062.900, 177183.549), stdev = 4290.413 &lt;br /&gt;
-&gt;&gt; **Confidence interval (99.9%): [158049.591, 160076.209]**
+&lt;hr /&gt;
 
-As expected, five times as fast.
+&lt;blockquote&gt;
+  &lt;blockquote&gt;
+    &lt;p&gt;[Property loading at class construction]&lt;/p&gt;
 
-Conclusions
-===========
+    &lt;p&gt;Result: 159062.900 ?(99.9%) 1013.309 ops/s [Average] &lt;br /&gt;
+Statistics: (min, avg, max) = (138707.926, 159062.900, 177183.549), stdev = 4290.413 &lt;br /&gt;
+&lt;strong&gt;Confidence interval (99.9%): [158049.591, 160076.209]&lt;/strong&gt;&lt;/p&gt;
+  &lt;/blockquote&gt;
+&lt;/blockquote&gt;
 
-I'm not a big fan of Spring, but if you're using it the ``Environment`` class is a dead easy interface to your application configuration. But,
-unless you're using JNDI as your main store of configuration  properties,
-its performance characteristics make it a great tool only if you're using it in your initialization code, and not during on-line processing of
-requests.</content><author><name></name></author><category term="java" /><category term="performance" /><summary type="html">Since version 3.1, the Spring framework offers an abstraction towards several different sources through which you can easily configure your application: the Environment.</summary></entry><entry><title type="html">Alfresco H2 support releases and versioning scheme</title><link href="http://localhost:4000/2014/07/06/alfresco-h2-support-new-releases-version-scheme/" rel="alternate" type="text/html" title="Alfresco H2 support releases and versioning scheme" /><published>2014-07-06T00:00:00+02:00</published><updated>2014-07-06T00:00:00+02:00</updated><id>http://localhost:4000/2014/07/06/alfresco-h2-support-new-releases-version-scheme</id><content type="html" xml:base="http://localhost:4000/2014/07/06/alfresco-h2-support-new-releases-version-scheme/">Some time has passed since the [last releases](/2013/03/27/h2-support-for-alfresco-3-4-12-and-maven/), and all the merits go once again to our dear [John Evans](http://springyweb.com/) from [Ixxus](http://www.ixxus.com/). Let's see what's new in the project.
+&lt;p&gt;As expected, five times as fast.&lt;/p&gt;
 
-Lots of releases, now with a new version scheme!
-================================================
+&lt;h1 id=&quot;conclusions&quot;&gt;Conclusions&lt;/h1&gt;
 
-We were lagging behind Alfresco releases quite a bit, so you now have quite some [new releases](https://github.com/skuro/alfresco-h2-support/wiki/H2-Database-support-for-Alfresco) to look at. Most importantly, starting with Alfresco 4.2.0 we decided to align H2 Support with the official Alfresco versioning. So, while H2 Support v1.7 and v1.8 are the ones to be used respectively with Alfresco Enterprise 4.1.5 and 4.1.6, you will easily guess what versions of Alfresco Enterprise will have to use H2 Support v4.2.0 and v4.2.1.
+&lt;p&gt;I’m not a big fan of Spring, but if you’re using it the &lt;code class=&quot;highlighter-rouge&quot;&gt;Environment&lt;/code&gt; class is a dead easy interface to your application configuration. But,
+unless you’re using JNDI as your main store of configuration  properties,
+its performance characteristics make it a great tool only if you’re using it in your initialization code, and not during on-line processing of
+requests.&lt;/p&gt;</content><author><name></name></author><category term="java" /><category term="performance" /><summary type="html">Since version 3.1, the Spring framework offers an abstraction towards several different sources through which you can easily configure your application: the Environment.</summary></entry><entry><title type="html">Alfresco H2 support releases and versioning scheme</title><link href="http://localhost:4000/2014/07/06/alfresco-h2-support-new-releases-version-scheme/" rel="alternate" type="text/html" title="Alfresco H2 support releases and versioning scheme" /><published>2014-07-06T00:00:00+02:00</published><updated>2014-07-06T00:00:00+02:00</updated><id>http://localhost:4000/2014/07/06/alfresco-h2-support-new-releases-version-scheme</id><content type="html" xml:base="http://localhost:4000/2014/07/06/alfresco-h2-support-new-releases-version-scheme/">&lt;p&gt;Some time has passed since the &lt;a href=&quot;/2013/03/27/h2-support-for-alfresco-3-4-12-and-maven/&quot;&gt;last releases&lt;/a&gt;, and all the merits go once again to our dear &lt;a href=&quot;http://springyweb.com/&quot;&gt;John Evans&lt;/a&gt; from &lt;a href=&quot;http://www.ixxus.com/&quot;&gt;Ixxus&lt;/a&gt;. Let’s see what’s new in the project.&lt;/p&gt;
 
-Say your Alfresco v4.2.0 project is based on the [maven archetypes](https://code.google.com/p/maven-alfresco-archetypes/) (and shame on you if it's not), then you could simply override the following ``&lt;property&gt;`` in your pom:
+&lt;h1 id=&quot;lots-of-releases-now-with-a-new-version-scheme&quot;&gt;Lots of releases, now with a new version scheme!&lt;/h1&gt;
 
+&lt;p&gt;We were lagging behind Alfresco releases quite a bit, so you now have quite some &lt;a href=&quot;https://github.com/skuro/alfresco-h2-support/wiki/H2-Database-support-for-Alfresco&quot;&gt;new releases&lt;/a&gt; to look at. Most importantly, starting with Alfresco 4.2.0 we decided to align H2 Support with the official Alfresco versioning. So, while H2 Support v1.7 and v1.8 are the ones to be used respectively with Alfresco Enterprise 4.1.5 and 4.1.6, you will easily guess what versions of Alfresco Enterprise will have to use H2 Support v4.2.0 and v4.2.1.&lt;/p&gt;
 
-{% highlight xml %}
-    &lt;h2-support.version&gt;${alfresco.version}&lt;/h2-support.version&gt; &lt;!-- WARN WARN WARN!! --&gt;
-{% endhighlight %}
+&lt;p&gt;Say your Alfresco v4.2.0 project is based on the &lt;a href=&quot;https://code.google.com/p/maven-alfresco-archetypes/&quot;&gt;maven archetypes&lt;/a&gt; (and shame on you if it’s not), then you could simply override the following &lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;property&amp;gt;&lt;/code&gt; in your pom:&lt;/p&gt;
 
-Neah huh? But there's a big ``WARN`` sign in there, why's that?
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-xml&quot; data-lang=&quot;xml&quot;&gt;    &lt;span class=&quot;nt&quot;&gt;&amp;lt;h2-support.version&amp;gt;&lt;/span&gt;${alfresco.version}&lt;span class=&quot;nt&quot;&gt;&amp;lt;/h2-support.version&amp;gt;&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;&amp;lt;!-- WARN WARN WARN!! --&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-Say the release of H2 Support is broken in any way (in theory it should never happen, but in practice it might happen). Then it might be a bit unfortunate if your poms rely on H2 Support and Alfresco to have exactly the same version. So, while the above should work in most cases, the preferred way to include H2 Support in your project is still as follows:
+&lt;p&gt;Neah huh? But there’s a big &lt;code class=&quot;highlighter-rouge&quot;&gt;WARN&lt;/code&gt; sign in there, why’s that?&lt;/p&gt;
 
-{% highlight xml %}
-    &lt;h2-support.version&gt;4.2.0&lt;/h2-support.version&gt; &lt;!-- much better! --&gt;
-{% endhighlight %}
+&lt;p&gt;Say the release of H2 Support is broken in any way (in theory it should never happen, but in practice it might happen). Then it might be a bit unfortunate if your poms rely on H2 Support and Alfresco to have exactly the same version. So, while the above should work in most cases, the preferred way to include H2 Support in your project is still as follows:&lt;/p&gt;
 
-Plans for the future
-====================
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-xml&quot; data-lang=&quot;xml&quot;&gt;    &lt;span class=&quot;nt&quot;&gt;&amp;lt;h2-support.version&amp;gt;&lt;/span&gt;4.2.0&lt;span class=&quot;nt&quot;&gt;&amp;lt;/h2-support.version&amp;gt;&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;&amp;lt;!-- much better! --&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-In the future we plan to have a different strategy to bring H2 Support for Alfresco. Currently, we simply copy all the PostgreSQL in an H2 friendly package, so that the internal Alfresco machinery will automatically find them. Then, H2 compatibility mode is used to make the PostgreSQL dialect understood by the H2 driver. That's obviously suboptimal, and we will research methods to skip shuffling files around, but rather override the Alfresco SQL files locator strategy. The new strategy should provide a better integration with any Alfresco release, and we might very well need not new H2 Support releases per Alfresco version.
+&lt;h1 id=&quot;plans-for-the-future&quot;&gt;Plans for the future&lt;/h1&gt;
 
-If you'd like to help us realizing this integration sweet spot, you're so much welcome to joink the H2 Support crew!</content><author><name></name></author><category term="alfresco" /><category term="alm" /><category term="h2-support" /><category term="maven" /><summary type="html">Some time has passed since the last releases, and all the merits go once again to our dear John Evans from Ixxus. Let’s see what’s new in the project.</summary></entry><entry><title type="html">SeedUML, an online PlantUML editor</title><link href="http://localhost:4000/2014/02/09/seeduml-an-online-plantuml-editor/" rel="alternate" type="text/html" title="SeedUML, an online PlantUML editor" /><published>2014-02-09T00:00:00+01:00</published><updated>2014-02-09T00:00:00+01:00</updated><id>http://localhost:4000/2014/02/09/seeduml-an-online-plantuml-editor</id><content type="html" xml:base="http://localhost:4000/2014/02/09/seeduml-an-online-plantuml-editor/">Finally online
-==============
+&lt;p&gt;In the future we plan to have a different strategy to bring H2 Support for Alfresco. Currently, we simply copy all the PostgreSQL in an H2 friendly package, so that the internal Alfresco machinery will automatically find them. Then, H2 compatibility mode is used to make the PostgreSQL dialect understood by the H2 driver. That’s obviously suboptimal, and we will research methods to skip shuffling files around, but rather override the Alfresco SQL files locator strategy. The new strategy should provide a better integration with any Alfresco release, and we might very well need not new H2 Support releases per Alfresco version.&lt;/p&gt;
 
-It's my pleasure to announce the availability of [SeedUML](http://seeduml.com), the online editor for UML diagrams based on the great [PlantUML language](http://plantuml.sourceforge.net/).
+&lt;p&gt;If you’d like to help us realizing this integration sweet spot, you’re so much welcome to joink the H2 Support crew!&lt;/p&gt;</content><author><name></name></author><category term="alfresco" /><category term="alm" /><category term="h2-support" /><category term="maven" /><summary type="html">Some time has passed since the last releases, and all the merits go once again to our dear John Evans from Ixxus. Let’s see what’s new in the project.</summary></entry><entry><title type="html">SeedUML, an online PlantUML editor</title><link href="http://localhost:4000/2014/02/09/seeduml-an-online-plantuml-editor/" rel="alternate" type="text/html" title="SeedUML, an online PlantUML editor" /><published>2014-02-09T00:00:00+01:00</published><updated>2014-02-09T00:00:00+01:00</updated><id>http://localhost:4000/2014/02/09/seeduml-an-online-plantuml-editor</id><content type="html" xml:base="http://localhost:4000/2014/02/09/seeduml-an-online-plantuml-editor/">&lt;h1 id=&quot;finally-online&quot;&gt;Finally online&lt;/h1&gt;
 
-As it's in its early beta stages, I'm sure you'll find some rough edges here and there, but there's some great and useful features I'm sure you'll love. Especially if you're new to PlantUML, you'll find a damn easy way to create all sorts of UML diagrams, like [state](http://seeduml.com/GBK3c), [sequence](http://seeduml.com/Nmr0D), [class](http://seeduml.com/Jgfv9), etc, all with a crystal clear plain text description. The diagram updates as you type, and you can save the image for later use, or simply link it wherever you need it to show up.
+&lt;p&gt;It’s my pleasure to announce the availability of &lt;a href=&quot;http://seeduml.com&quot;&gt;SeedUML&lt;/a&gt;, the online editor for UML diagrams based on the great &lt;a href=&quot;http://plantuml.sourceforge.net/&quot;&gt;PlantUML language&lt;/a&gt;.&lt;/p&gt;
 
-Quick user guide
-================
+&lt;p&gt;As it’s in its early beta stages, I’m sure you’ll find some rough edges here and there, but there’s some great and useful features I’m sure you’ll love. Especially if you’re new to PlantUML, you’ll find a damn easy way to create all sorts of UML diagrams, like &lt;a href=&quot;http://seeduml.com/GBK3c&quot;&gt;state&lt;/a&gt;, &lt;a href=&quot;http://seeduml.com/Nmr0D&quot;&gt;sequence&lt;/a&gt;, &lt;a href=&quot;http://seeduml.com/Jgfv9&quot;&gt;class&lt;/a&gt;, etc, all with a crystal clear plain text description. The diagram updates as you type, and you can save the image for later use, or simply link it wherever you need it to show up.&lt;/p&gt;
 
-If you need an user guide, the site is itself not easy enough to use. But let's give a couple of pointers to start with:
+&lt;h1 id=&quot;quick-user-guide&quot;&gt;Quick user guide&lt;/h1&gt;
 
-- you need to start a new diagram, you go to [http://seeduml.com](http://seeduml.com)
-- a random diagram ID is generated, and you'll be redirected to such diagram page (eg: [http://seeduml.com/GBK3c](http://seeduml.com/GBK3c))
-- remember to bookmark the URL if the diagram is important, as there's no user save
-- you follow PlantUML docs and create beautiful diagram
-- whenever you need to edit the doc again, you go back to the same URL (you bookmarked it, right?)
+&lt;p&gt;If you need an user guide, the site is itself not easy enough to use. But let’s give a couple of pointers to start with:&lt;/p&gt;
 
-Done. Easy, huh?
+&lt;ul&gt;
+  &lt;li&gt;you need to start a new diagram, you go to &lt;a href=&quot;http://seeduml.com&quot;&gt;http://seeduml.com&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;a random diagram ID is generated, and you’ll be redirected to such diagram page (eg: &lt;a href=&quot;http://seeduml.com/GBK3c&quot;&gt;http://seeduml.com/GBK3c&lt;/a&gt;)&lt;/li&gt;
+  &lt;li&gt;remember to bookmark the URL if the diagram is important, as there’s no user save&lt;/li&gt;
+  &lt;li&gt;you follow PlantUML docs and create beautiful diagram&lt;/li&gt;
+  &lt;li&gt;whenever you need to edit the doc again, you go back to the same URL (you bookmarked it, right?)&lt;/li&gt;
+&lt;/ul&gt;
 
-Disclaimer
-==========
+&lt;p&gt;Done. Easy, huh?&lt;/p&gt;
 
-This is an **early beta**, use at your own risk (and pleasure, hopefully). Especially, don't expect to
+&lt;h1 id=&quot;disclaimer&quot;&gt;Disclaimer&lt;/h1&gt;
 
-- be guaranteed that your diagrams will stay there forever
-- the service will be up and running at all times
-- be able to save hidden diagrams
-- have a rock solid syntax highlight
-- etc etc etc
+&lt;p&gt;This is an &lt;strong&gt;early beta&lt;/strong&gt;, use at your own risk (and pleasure, hopefully). Especially, don’t expect to&lt;/p&gt;
 
-I will share some of the juicy technical details of that site later on on these pages, but for now, have fun and happy diagram authoring!</content><author><name></name></author><category term="seeduml" /><category term="uml" /><category term="design" /><category term="software" /><summary type="html">Finally online</summary></entry></feed>
+&lt;ul&gt;
+  &lt;li&gt;be guaranteed that your diagrams will stay there forever&lt;/li&gt;
+  &lt;li&gt;the service will be up and running at all times&lt;/li&gt;
+  &lt;li&gt;be able to save hidden diagrams&lt;/li&gt;
+  &lt;li&gt;have a rock solid syntax highlight&lt;/li&gt;
+  &lt;li&gt;etc etc etc&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;I will share some of the juicy technical details of that site later on on these pages, but for now, have fun and happy diagram authoring!&lt;/p&gt;</content><author><name></name></author><category term="seeduml" /><category term="uml" /><category term="design" /><category term="software" /><summary type="html">Finally online</summary></entry></feed>
