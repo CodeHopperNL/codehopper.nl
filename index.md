@@ -10,5 +10,4 @@ layout: home
 
 Software development, consulting and management, made in Amsterdam.
 
-
 <div class="footer">Registered at the Kamer van Koophandel, number 67007937</div>
