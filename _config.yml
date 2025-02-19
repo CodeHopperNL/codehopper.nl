@@ -26,34 +26,13 @@ sass:
   sass_dir:         assets/_sass
   style:            compressed
 
-# Google Analytics
-#google-analytics: UA-XXXXX-Y
-
 # Social Links
-email:              carlo.sciolla@gmail.com
-#google.plus:        username
+email:              info@codehopper.nl
 twitter:            skuro
-#facebook:           username
 github:             codehoppernl
 stackoverflow:      350923/skuro
 linkedin:           https://nl.linkedin.com/in/carlosciolla
-#xing:              username
-#instagram:          username
-#lastfm:            username
-#tumblr:            username
-#pinterest:         username
-#foursquare:        username
-#steam:              username
-#dribbble:          username
-#youtube:           username
-#soundcloud:        username
-#weibo:             username
-#flickr:            username
-#codepen:           username
-#keybase:           username
-#xmpp:              username@server.com
 hackernews:         skuro
-#behance:           username
 
 # Gems
 gems:
