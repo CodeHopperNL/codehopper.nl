@@ -85,12 +85,12 @@
       border-color: mix($white, #3b5998, 25%);
     }
   }
-  &_google-plus {
-    background-color: #dc4e41;
+  &_hn {
+    background-color: #ff6600;
     color: $white !important;
     &:hover {
-      background-color: mix($white, #dc4e41, 25%);
-      border-color: mix($white, #dc4e41, 25%);
+      background-color: mix($white, #ff6600, 25%);
+      border-color: mix($white, #ff6600, 25%);
     }
   }
   &_twitter {
