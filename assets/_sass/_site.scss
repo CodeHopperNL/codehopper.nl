@@ -114,6 +114,8 @@ canvas {
   height: 25px;
   border: 2px solid $gray;
   background: $white;
+  top: 25px;
+  right: 25px;
   &:before {
     content: '';
     width: 20px;
