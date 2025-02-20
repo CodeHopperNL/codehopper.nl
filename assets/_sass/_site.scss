@@ -319,6 +319,7 @@ canvas {
   font: 0/0 verdana;
   color: transparent;
   text-shadow: none;
+  position: relative;
 }
 
 .main-info,
@@ -481,9 +482,6 @@ canvas {
     img {
       width: 50px;
       height: auto;
-    }
-    &:after {
-      display: none;
     }
   }
 }
@@ -921,4 +919,32 @@ canvas {
       }
     }
   }
+}
+
+.logo::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: calc(100%);  /* SVG width plus padding */
+    height: calc(100%); /* SVG height plus padding */
+    background-color: #388a43ff;
+    border: 2px solid #333;
+    border-radius: 50%;
+    z-index: -1;               /* Place circle behind the SVG */
+}
+
+.logo::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: calc(90%);  /* SVG width plus padding */
+    height: calc(90%); /* SVG height plus padding */
+    background-color: #f0f0f0;
+    border: 2px solid #333;
+    border-radius: 50%;
+    z-index: -1;               /* Place circle behind the SVG */
 }
