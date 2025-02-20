@@ -3,46 +3,46 @@ layout: compress
 ---
 
 <!DOCTYPE html>
-<html>
-{% include head.html %}
-{% if page.primary_img %}
+<html lang="en">
+    {% include head.html %}
+    {% if page.primary_img %}
     {% assign bgimage = page.primary_img %}
-{% else %}
+    {% else %}
     {% assign bgimage = site.background.default-post %}
-{% endif %}
-<body id="posts" class="inner-post-page">
-    <div class="block-left" style="background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url({{ bgimage }}) no-repeat; background-size: cover">
-      <div class="content">
-        <a href="/" class="logo"><img src="/img/{{ site.logo | replace: '.', '-small.' }}"></a>
-        <div class="post-title-section">
-          <div class="section-line">Posts <em>/</em></div>
-          <h1 class="section-title">{{ page.title | markdownify | remove: "<p>" | remove: "</p>" }}</h1>
-          <ul class="tags">
-              {% for tag in page.tags %}
-              <li><a href="/tags#{{ tag }}">{{ tag }}</a></li>
-              {% unless forloop.last %}
-              {% endunless %}
-              {% endfor %}
-          </ul>
-          {% include share.html %}
-          <div class="section-line reverse"><a href="/posts">Back to posts</a> <em>/</em></div>
+    {% endif %}
+    <body id="posts" class="inner-post-page">
+        <div class="block-left" style="background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url({{ bgimage }}) no-repeat; background-size: cover">
+            <div class="content">
+                <a aria-label="Go to the homepage" href="/" class="logo"><img alt="Code Hopper small logo" src="/img/{{ site.logo | replace: '.', '-small.' }}"></a>
+                <div class="post-title-section">
+                    <div class="section-line">Posts <em>/</em></div>
+                    <h1 class="section-title">{{ page.title | markdownify | remove: "<p>" | remove: "</p>" }}</h1>
+                    <ul class="tags">
+                        {% for tag in page.tags %}
+                        <li><a href="/tags#{{ tag }}">{{ tag }}</a></li>
+                        {% unless forloop.last %}
+                        {% endunless %}
+                        {% endfor %}
+                    </ul>
+                    {% include share.html %}
+                    <div class="section-line reverse"><a href="/posts">Back to posts</a> <em>/</em></div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
 
-    <div class="block-right">
-      <div class="inner-post content">
-        {% include page-pagination.html %}
-        <div class="date-highlight">{% if page.date %}{{ page.date | date: '%d %b %Y' }}{% else %}&#x2756;{% endif %}</div>
-        {{ content }}
-        <br>
-        {% include page-pagination.html %}
-        {% include share.html %}
-        <br />
-      </div>
-    </div>
-    {% include scripts.html %}
-    {% include overlay.html %}
-    {% include analytics.html %}
-</body>
+        <div class="block-right">
+            <div class="inner-post content">
+                {% include page-pagination.html %}
+                <div class="date-highlight">{% if page.date %}{{ page.date | date: '%d %b %Y' }}{% else %}&#x2756;{% endif %}</div>
+                {{ content }}
+                <br>
+                {% include page-pagination.html %}
+                {% include share.html %}
+                <br />
+            </div>
+        </div>
+        {% include scripts.html %}
+        {% include overlay.html %}
+        {% include analytics.html %}
+    </body>
 </html>

@@ -3,13 +3,13 @@ layout: compress
 ---
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
     {% include head.html %}
     <body id="posts">
 
         <div class="block-left">
             <div class="content">
-                <a href="/" class="logo"><img src="/img/{{ site.logo | replace: '.', '-small.' }}"></a>
+                <a aria-label="Go to the homepage" href="/" class="logo"><img alt="Code Hopper small logo" src="/img/{{ site.logo | replace: '.', '-small.' }}"></a>
                 <h1 class="section-title">{{ page.title}}<em>/</em>
                 </h1>
             </div>
