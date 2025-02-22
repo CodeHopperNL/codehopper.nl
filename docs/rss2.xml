@@ -4,13 +4,36 @@
     <link type="application/atom+xml" href="http://localhost:4000/rss2.xml" rel="self"/>
     <link type="text" href="http://localhost:4000/rss2.xml" rel="alternate"/>
     <link href="http://localhost:4000" />
-    <updated>2025-02-20T15:15:55+01:00</updated>
+    <updated>2025-02-22T14:28:33+01:00</updated>
     <id>http://localhost:4000</id>
     <author>
         <name>Carlo Sciolla</name>
     </author>
     <rights>Copyright (c) 2010-2019 Carlo Sciolla</rights>
     
+<entry>
+  <title>A (not so) fresh start</title>
+  <link href="http://localhost:4000/2025/02/22/a-not-so-fresh-start/" rel="alternate" />
+  <updated>2025-02-22T00:00:00+01:00</updated>
+  <id>http://localhost:4000/2025/02/22/a-not-so-fresh-start/</id>
+  <summary type="html">&lt;blockquote&gt;
+  &lt;p&gt;There is no real ending. It’s just the place where you stop the story.&lt;br /&gt;
+– Frank Herbert&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h1 id=&quot;writing-content-in-the-age-of-generative-ai&quot;&gt;Writing content in the age of generative AI&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href=&quot;/2008/12/20/here-we-are-again/&quot;&gt;Already in 2008&lt;/a&gt; I had my doubts that writing into a Blog was really going to be a long running endeavor, and especially now that a growing % of the
+content that we consume comes straight out of an LLM it seems like maintaining an active blog is the least thing the world needs me to do.&lt;/p&gt;
+
+&lt;p&gt;And yet, guess what? I feel like writing again 😱&lt;/p&gt;
+
+&lt;p&gt;So yeah, you might read some stories here in the coming days / months / years / whatever time frame that will be. In the meanwhile, you can have fun with &lt;a href=&quot;https://claude.site/artifacts/89e53e5d-b735-4aa4-8264-5e9e122349e0&quot;&gt;an LLM-generated game of
+life&lt;/a&gt;, courtesy of Claude.&lt;/p&gt;
+</summary>
+</entry>
+
+
 <entry>
   <title>gcloud and kubectl on GCP ubuntu images</title>
   <link href="http://localhost:4000/2019/10/11/gcloud-and-kubectl-on-gcp-ubuntu/" rel="alternate" />
@@ -1426,37 +1449,6 @@ projects and a Java decompiler.&lt;/p&gt;
 &lt;p&gt;Video recordings are still a pending TODO in the meetup list, so if
 you’re around Amsterdam make sure you come and &lt;a href=&quot;http://www.meetup.com/The-Amsterdam-Clojure-Meetup-Group/&quot;&gt;join us&lt;/a&gt; for some other
 awesome Dutch Clojure nights!&lt;/p&gt;
-</summary>
-</entry>
-
-
-<entry>
-  <title>H2 support updated to the latest Alfresco versions</title>
-  <link href="http://localhost:4000/2012/06/27/h2-support-for-the-lates-alfresco-versions/" rel="alternate" />
-  <updated>2012-06-27T00:00:00+02:00</updated>
-  <id>http://localhost:4000/2012/06/27/h2-support-for-the-lates-alfresco-versions/</id>
-  <summary type="html">&lt;p&gt;&lt;strong&gt;tl;dr:&lt;/strong&gt; two new releases of &lt;a href=&quot;https://github.com/skuro/alfresco-h2-support&quot;&gt;H2 Support&lt;/a&gt; are available, to support both Alfresco v4.0.1 and v4.0.2 Enterprise edition&lt;/p&gt;
-
-&lt;p&gt;Time flies, and (good) software always keeps a fast development pace. This applies to &lt;a href=&quot;http://www.alfresco.com&quot;&gt;Alfresco&lt;/a&gt;, which released a couple of Enterprise versions since I last updated the &lt;a href=&quot;https://github.com/skuro/alfresco-h2-support&quot;&gt;H2 Support&lt;/a&gt; module. Promptly, &lt;a href=&quot;https://twitter.com/#!/pjlucidi&quot;&gt;Piergiorgio Lucidi&lt;/a&gt; &lt;a href=&quot;http://code.google.com/p/maven-alfresco-archetypes/issues/detail?id=94&quot;&gt;found out&lt;/a&gt; that the latest H2 Support version was incompatible with Alfresco v4.0.2. Time for a new release.&lt;/p&gt;
-
-&lt;h2 id=&quot;double-rainbows&quot;&gt;Double rainbows&lt;/h2&gt;
-
-&lt;p&gt;Last time I released H2 Support Alfresco was still on v4.0.0, with v4.0.1 and v4.0.2 already released in the meanwhile. The effort to upgrade H2 Support is fairly trivial, as it only requires some diff&amp;amp;merge of DB related configuration from the original Alfresco codebase to H2 Support sources. Hence, not one but &lt;strong&gt;two&lt;/strong&gt; releases of H2 Support were issued today, namely&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;a href=&quot;https://github.com/skuro/alfresco-h2-support/tree/v1.4&quot;&gt;v1.4&lt;/a&gt; – H2 Support for Alfresco v4.0.2&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;a href=&quot;https://github.com/skuro/alfresco-h2-support/tree/v1.3&quot;&gt;v1.3&lt;/a&gt; – H2 Support for Alfresco v4.0.1&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;As usual, please refer to the &lt;a href=&quot;https://github.com/skuro/alfresco-h2-support/wiki/H2-Database-support-for-Alfresco&quot;&gt;official documentation&lt;/a&gt; for matching H2 Support and Alfresco versions.&lt;/p&gt;
-
-&lt;h2 id=&quot;availability-on-central&quot;&gt;Availability on Central&lt;/h2&gt;
-
-&lt;p&gt;The new releases are already available on OSS Sonatype &lt;a href=&quot;https://oss.sonatype.org/content/groups/public/tk/skuro/alfresco/h2-support/&quot;&gt;maven repository&lt;/a&gt;. Give it enough time and they’ll end up in Maven Central.&lt;/p&gt;
 </summary>
 </entry>
 
