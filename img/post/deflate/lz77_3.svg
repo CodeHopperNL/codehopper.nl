@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="52mm"
+   height="8mm"
+   viewBox="0 0 52 8"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.4.2 (ebf0e940, 2025-05-08)"
+   sodipodi:docname="lz77_3.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     inkscape:zoom="5.1630952"
+     inkscape:cx="133.73761"
+     inkscape:cy="5.6167858"
+     inkscape:window-width="1920"
+     inkscape:window-height="1027"
+     inkscape:window-x="1728"
+     inkscape:window-y="62"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="opacity:1;fill:#ffb677;fill-opacity:1;stroke:#484646;stroke-width:0.206919;stroke-dasharray:none;stroke-opacity:1"
+       id="rect1-0"
+       width="4.4265881"
+       height="5.8199825"
+       x="31.400368"
+       y="1.0999935"
+       ry="0.5038529" />
+    <rect
+       style="opacity:1;fill:#ffb677;fill-opacity:1;stroke:#484646;stroke-width:0.206919;stroke-dasharray:none;stroke-opacity:1"
+       id="rect1-5-9"
+       width="4.4265881"
+       height="5.8199825"
+       x="38.916031"
+       y="1.151881"
+       ry="0.5038529" />
+    <rect
+       style="opacity:1;fill:#ffb677;fill-opacity:1;stroke:#484646;stroke-width:0.206919;stroke-dasharray:none;stroke-opacity:1"
+       id="rect1-5-0-2"
+       width="4.4265881"
+       height="5.8199825"
+       x="46.749344"
+       y="1.151881"
+       ry="0.5038529" />
+    <text
+       xml:space="preserve"
+       style="font-size:6.35px;font-family:'Avenir Next';-inkscape-font-specification:'Avenir Next, Normal';text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#ffffff;stroke-width:0.022"
+       x="1.0849739"
+       y="6.2899179"
+       id="text1"><tspan
+         sodipodi:role="line"
+         id="tspan1"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Meslo LG M for Powerline';-inkscape-font-specification:'Meslo LG M for Powerline';fill:#000000;fill-opacity:1;stroke-width:0.022"
+         x="1.0849739"
+         y="6.2899179">A B C D A B C</tspan></text>
+    <rect
+       style="opacity:0.587629;fill:none;fill-opacity:1;stroke:#484646;stroke-width:0.206919;stroke-dasharray:none;stroke-opacity:1"
+       id="rect1"
+       width="4.4265881"
+       height="5.8199825"
+       x="0.80551875"
+       y="1.1633155"
+       ry="0.5038529" />
+    <rect
+       style="opacity:0.587629;fill:none;fill-opacity:1;stroke:#484646;stroke-width:0.206919;stroke-dasharray:none;stroke-opacity:1"
+       id="rect1-5"
+       width="4.4265881"
+       height="5.8199825"
+       x="8.3211803"
+       y="1.215203"
+       ry="0.5038529" />
+    <rect
+       style="opacity:0.587629;fill:none;fill-opacity:1;stroke:#484646;stroke-width:0.206919;stroke-dasharray:none;stroke-opacity:1"
+       id="rect1-5-0"
+       width="4.4265881"
+       height="5.8199825"
+       x="16.154493"
+       y="1.215203"
+       ry="0.5038529" />
+    <rect
+       style="opacity:0.587629;fill:none;fill-opacity:1;stroke:#484646;stroke-width:0.206919;stroke-dasharray:none;stroke-opacity:1"
+       id="rect1-5-0-4"
+       width="4.4265881"
+       height="5.8199825"
+       x="23.630274"
+       y="1.215203"
+       ry="0.5038529" />
+  </g>
+</svg>
