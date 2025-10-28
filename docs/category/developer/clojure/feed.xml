@@ -4,7 +4,7 @@
     <link type="application/atom+xml" href="http://localhost:4000/category/developer/clojure/feed" rel="self"/>
     <link type="text" href="http://localhost:4000/category/developer/clojure/feed" rel="alternate"/>
     <link href="http://localhost:4000" />
-    <updated>2025-10-28T12:57:27+01:00</updated>
+    <updated>2025-10-28T14:09:35+01:00</updated>
     <id>http://localhost:4000</id>
     <author>
         <name>Carlo Sciolla</name>
@@ -22,7 +22,7 @@ Robert Barathon: Wear it in silence or I’ll honor you again.&lt;br /&gt;
 – George R. R. Martin&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;h1 id=&quot;tldr&quot;&gt;TL:DR;&lt;/h1&gt;
+&lt;h1 id=&quot;tldr&quot;&gt;TL;DR&lt;/h1&gt;
 
 &lt;p&gt;Have a project called &lt;code class=&quot;highlighter-rouge&quot;&gt;fizzbuzz&lt;/code&gt; that you deploy on &lt;a href=&quot;https://melpa.org&quot;&gt;MELPA&lt;/a&gt;?
 Add the following snippet to your &lt;code class=&quot;highlighter-rouge&quot;&gt;README.md&lt;/code&gt; in order to add a download count badge:&lt;/p&gt;

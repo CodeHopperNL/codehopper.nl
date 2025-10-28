@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2025-10-28T12:57:27+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">CodeHopper</title><subtitle>Software and technology done right</subtitle><entry><title type="html">Melpastats badges</title><link href="http://localhost:4000/2025/10/28/melpastats-badges/" rel="alternate" type="text/html" title="Melpastats badges" /><published>2025-10-28T00:00:00+01:00</published><updated>2025-10-28T00:00:00+01:00</updated><id>http://localhost:4000/2025/10/28/melpastats-badges</id><content type="html" xml:base="http://localhost:4000/2025/10/28/melpastats-badges/">&lt;blockquote&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2025-10-28T14:09:35+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">CodeHopper</title><subtitle>Software and technology done right</subtitle><entry><title type="html">Melpastats badges</title><link href="http://localhost:4000/2025/10/28/melpastats-badges/" rel="alternate" type="text/html" title="Melpastats badges" /><published>2025-10-28T00:00:00+01:00</published><updated>2025-10-28T00:00:00+01:00</updated><id>http://localhost:4000/2025/10/28/melpastats-badges</id><content type="html" xml:base="http://localhost:4000/2025/10/28/melpastats-badges/">&lt;blockquote&gt;
   &lt;p&gt;Cersei Lannister: I shall wear this as a badge of honor.&lt;br /&gt;
 Robert Barathon: Wear it in silence or I’ll honor you again.&lt;br /&gt;
 – George R. R. Martin&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;h1 id=&quot;tldr&quot;&gt;TL:DR;&lt;/h1&gt;
+&lt;h1 id=&quot;tldr&quot;&gt;TL;DR&lt;/h1&gt;
 
 &lt;p&gt;Have a project called &lt;code class=&quot;highlighter-rouge&quot;&gt;fizzbuzz&lt;/code&gt; that you deploy on &lt;a href=&quot;https://melpa.org&quot;&gt;MELPA&lt;/a&gt;?
 Add the following snippet to your &lt;code class=&quot;highlighter-rouge&quot;&gt;README.md&lt;/code&gt; in order to add a download count badge:&lt;/p&gt;

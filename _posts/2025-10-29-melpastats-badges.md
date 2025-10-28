@@ -12,7 +12,7 @@ tags:         [emacs, melpa, github, gitlab, badges, clojure, babashka]
 > Robert Barathon: Wear it in silence or I'll honor you again.<br/>
 > -- George R. R. Martin
 
-# TL:DR;
+# TL;DR
 
 Have a project called `fizzbuzz` that you deploy on [MELPA][melpa]?
 Add the following snippet to your `README.md` in order to add a download count badge:
